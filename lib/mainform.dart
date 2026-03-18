@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 
  class Mainform extends StatelessWidget {
-   const Mainform({super.key});
+    Mainform({super.key});
 
    InputDecoration  _inputDecoration (String lable ){
      return InputDecoration(
