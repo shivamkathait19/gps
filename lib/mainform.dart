@@ -2,8 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
- class Mainform extends StatelessWidget {
+ class Mainform extends StatefulWidget {
     Mainform({super.key});
+
+  @override
+  State<Mainform> createState() => _MainformState();
+}
+
+
+
+class _MainformState extends State<Mainform> {
+   TextEditingController usernameController = TextEditingController();
+   TextEditingController fullnameController = TextEditingController();
+   TextEditingController phoneController = TextEditingController();
+   TextEditingController EmailController = TextEditingController();
+   TextEditingController passwordController = TextEditingController();
+
+
+
+  String? selectedGender;
 
    InputDecoration  _inputDecoration (String lable ){
      return InputDecoration(
@@ -41,6 +58,7 @@ import 'package:flutter/services.dart';
                  Expanded(child:ListTile(
                    leading: Icon(Icons.person,color: Colors.black,),
                    title: TextFormField(
+                     controller: usernameController,
                      decoration: _inputDecoration('username'),
                    )
                  )),
@@ -118,7 +136,7 @@ import 'package:flutter/services.dart';
                      RadioListTile<String>(
                        title: const Text("Male",style: TextStyle(color: Colors.white),),
                        value: "Male",
-                       groupValue: selectedGender;
+                       groupValue: selectedGender,
                        onChanged: (value) =>
                            setState(() => selectedGender = value),
                      ),
@@ -147,7 +165,7 @@ import 'package:flutter/services.dart';
                  ),
                ),
              ),
-         ElevatedButton(onPressed: (){}, child:shiva, latay)
+         ElevatedButton(onPressed: (){}, child: Text("Done"))
            ],
          ),
              ),
@@ -157,4 +175,4 @@ import 'package:flutter/services.dart';
        ),
      );
    }
- }
+}
