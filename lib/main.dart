@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gps/Loginscreen.dart';
+import 'package:gps/Mainpages.dart';
 import 'package:gps/mainform.dart';
 
 void main() {
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:Mainform());
+      home:mainPages());
   }
 }
 
