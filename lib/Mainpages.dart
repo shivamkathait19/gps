@@ -10,6 +10,13 @@ class mainPages extends StatelessWidget {
       AppBar(
         title: Text("Gps location "),
       ),
+    body: Container(
+     child: Column(
+       children: [
+         
+       ],
+     ),
+    ),
     );
   }
 }
