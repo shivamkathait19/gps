@@ -1,6 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.gps"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 📍 LOCATION PERMISSIONS -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -11,6 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gps"
-        tools:targetApi="31" />
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <!-- 🗺️ GOOGLE MAP API KEY -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_API_KEY"/>
+
+    </application>
 
 </manifest>
