@@ -32,7 +32,7 @@ class _mainPagesState extends State<mainPages> {
             right: 20,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              height: 55,
+              height: 59,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(15),
