@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart';
 
 class mainPages extends StatefulWidget {
   const mainPages({super.key});
@@ -8,21 +11,65 @@ class mainPages extends StatefulWidget {
 }
 
 class _mainPagesState extends State<mainPages> {
+
+  LatLng? currentLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    startTracking();
+  }
+
+  /// 📍 LIVE LOCATION
+  void startTracking() {
+    Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 5,
+      ),
+    ).listen((Position position) {
+      setState(() {
+        currentLocation = LatLng(position.latitude, position.longitude);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: currentLocation == null
+          ? const Center(child: CircularProgressIndicator())
+          : Stack(
         children: [
 
-          /// 🌍 MAP BACKGROUND (Dummy for now)
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff0f2027), Color(0xff203a43), Color(0xff2c5364)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+          /// 🗺️ REAL MAP BACKGROUND (FREE)
+          FlutterMap(
+            options: MapOptions(
+              initialCenter: currentLocation!,
+              initialZoom: 17,
             ),
+            children: [
+              TileLayer(
+                urlTemplate:
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+              ),
+
+              /// 📍 MOVING MARKER
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    point: currentLocation!,
+                    width: 80,
+                    height: 80,
+                    child: const Icon(
+                      Icons.navigation,
+                      color: Colors.blue,
+                      size: 40,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
 
           /// 🔍 SEARCH BAR
@@ -34,18 +81,14 @@ class _mainPagesState extends State<mainPages> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               height: 59,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.white24),
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.search, color: Colors.white),
+                  Icon(Icons.search),
                   SizedBox(width: 10),
-                  Text(
-                    "Search location...",
-                    style: TextStyle(color: Colors.white70),
-                  )
+                  Text("Search location...")
                 ],
               ),
             ),
@@ -57,12 +100,14 @@ class _mainPagesState extends State<mainPages> {
             right: 20,
             child: FloatingActionButton(
               backgroundColor: Colors.blueAccent,
-              onPressed: () {},
+              onPressed: () {
+                // future: camera move karenge
+              },
               child: const Icon(Icons.my_location),
             ),
           ),
 
-          /// 🚗 BOTTOM CARD (Tracking / Ride Info)
+          /// 🚗 BOTTOM CARD (same tumhara)
           Positioned(
             bottom: 0,
             left: 0,
@@ -82,7 +127,6 @@ class _mainPagesState extends State<mainPages> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    /// HANDLE BAR
                     Center(
                       child: Container(
                         height: 5,
@@ -96,7 +140,6 @@ class _mainPagesState extends State<mainPages> {
 
                     const SizedBox(height: 15),
 
-                    /// LOCATION INFO
                     const Row(
                       children: [
                         Icon(Icons.location_on, color: Colors.green),
@@ -123,7 +166,6 @@ class _mainPagesState extends State<mainPages> {
 
                     const Spacer(),
 
-                    /// BUTTON
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
