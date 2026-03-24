@@ -109,7 +109,7 @@ class _mainPagesState extends State<mainPages> {
 
           /// 🚗 BOTTOM CARD (same tumhara)
           Positioned(
-            bottom: 0,
+            bottom:1,
             left: 0,
             right: 0,
             child: Container(
