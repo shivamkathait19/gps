@@ -60,7 +60,7 @@ class _mainPagesState extends State<mainPages> {
                 markers: [
                   Marker(
                     point: currentLocation!,
-                    width: 80,
+                    width: 82,
                     height: 80,
                     child: const Icon(
                       Icons.navigation,
