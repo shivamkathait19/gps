@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -44,7 +45,7 @@ class _mainPagesState extends State<mainPages> {
 
           /// 🗺️ REAL MAP BACKGROUND (FREE)
           FlutterMap(
-            options: MapOptions(
+            options: MapOption(
               initialCenter: currentLocation!,
               initialZoom: 17,
             ),
