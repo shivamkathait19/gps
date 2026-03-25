@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,14 +13,49 @@ class mainPages extends StatefulWidget {
 class _mainPagesState extends State<mainPages> {
 
   LatLng? currentLocation;
+  final MapController mapController = MapController();
 
   @override
   void initState() {
     super.initState();
+    initLocation();
+  }
+
+  /// 🔥 INIT LOCATION (IMPORTANT)
+  Future<void> initLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // 📍 Check GPS ON hai ya nahi
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      print("GPS OFF hai");
+      return;
+    }
+
+    // 🔐 Permission check
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      print("Permission permanently denied");
+      return;
+    }
+
+    /// 📍 FIRST LOCATION (IMPORTANT 🔥)
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      currentLocation = LatLng(position.latitude, position.longitude);
+    });
+
+    /// 🔄 LIVE TRACKING
     startTracking();
   }
 
-  /// 📍 LIVE LOCATION
+  /// 📍 LIVE TRACKING
   void startTracking() {
     Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
@@ -43,8 +77,9 @@ class _mainPagesState extends State<mainPages> {
           : Stack(
         children: [
 
-          /// 🗺️ REAL MAP BACKGROUND (FREE)
+          /// 🗺️ MAP
           FlutterMap(
+            mapController: mapController,
             options: MapOptions(
               initialCenter: currentLocation!,
               initialZoom: 17,
@@ -55,12 +90,11 @@ class _mainPagesState extends State<mainPages> {
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
               ),
 
-              /// 📍 MOVING MARKER
               MarkerLayer(
                 markers: [
                   Marker(
                     point: currentLocation!,
-                    width: 82,
+                    width: 80,
                     height: 80,
                     child: const Icon(
                       Icons.navigation,
@@ -73,119 +107,19 @@ class _mainPagesState extends State<mainPages> {
             ],
           ),
 
-          /// 🔍 SEARCH BAR
-          Positioned(
-            top: 50,
-            left: 20,
-            right: 20,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              height: 59,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.search),
-                  SizedBox(width: 10),
-                  Text("Search location...")
-                ],
-              ),
-            ),
-          ),
-
-          /// 📍 CURRENT LOCATION BUTTON
+          /// 📍 BUTTON
           Positioned(
             bottom: 200,
             right: 20,
             child: FloatingActionButton(
-              backgroundColor: Colors.blueAccent,
               onPressed: () {
-                // future: camera move karenge
+                if (currentLocation != null) {
+                  mapController.move(currentLocation!, 17);
+                }
               },
               child: const Icon(Icons.my_location),
             ),
           ),
-
-          /// 🚗 BOTTOM CARD (same tumhara)
-          Positioned(
-            bottom:1,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 180,
-              decoration: const BoxDecoration(
-                color: Colors.black87,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    Center(
-                      child: Container(
-                        height: 5,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white30,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    const Row(
-                      children: [
-                        Icon(Icons.location_on, color: Colors.green),
-                        SizedBox(width: 10),
-                        Text(
-                          "Current Location",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        )
-                      ],
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    const Row(
-                      children: [
-                        Icon(Icons.flag, color: Colors.red),
-                        SizedBox(width: 10),
-                        Text(
-                          "Destination",
-                          style: TextStyle(color: Colors.white70),
-                        )
-                      ],
-                    ),
-
-                    const Spacer(),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const Text("Start Navigation"),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );

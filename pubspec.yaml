@@ -18,12 +18,15 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_map: ^8.2.2
   latlong2: ^0.9.1
-  google_maps_flutter: ^2.16.0
   geolocator: ^14.0.2
+
   
   # For API calls if needed
   # The following adds the Cupertino Icons font to your application.
