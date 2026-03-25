@@ -45,7 +45,7 @@ class _mainPagesState extends State<mainPages> {
 
           /// 🗺️ REAL MAP BACKGROUND (FREE)
           FlutterMap(
-            options: MapOption(
+            options: MapOptions(
               initialCenter: currentLocation!,
               initialZoom: 17,
             ),
