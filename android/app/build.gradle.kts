@@ -7,8 +7,9 @@ plugins {
 
 android {
     namespace = "com.example.gps"
-    compileSdk = flutter.compileSdkVersion
-   ndkVersion = "25.2.9519653"
+    compileSdk = 36
+    // compileSdk = flutter.compileSdkVersion
+   ndkVersion = "27.0.12077973"
    // ndkVersion = "26.3.11579264"
 
     compileOptions {
@@ -26,7 +27,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 36 /*flutter.targetSdkVersion*/
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
