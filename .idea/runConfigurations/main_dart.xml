@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" focusToolWindowBeforeRun="true">
-    <option name="filePath" value="main.dart" />
+    <option name="filePath" value="lib/main.dart" />
     <method v="2" />
   </configuration>
 </component>
