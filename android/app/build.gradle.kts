@@ -88,7 +88,7 @@ android {
 flutter {
     source = "../.."
 }*/
-plugins {
+ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("dev.flutter.flutter-gradle-plugin")
@@ -97,7 +97,7 @@ plugins {
 android {
     namespace = "com.example.gps"
     compileSdk = 35
-    ndkVersion = "26.3.11579264"   // ⚠️ stable version use karo
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
