@@ -1,4 +1,4 @@
-/*plugins {
+plugins {
     id("com.android.application")
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -7,8 +7,8 @@
 
 android {
     namespace = "com.example.gps"
-    compileSdk = 35
-    // compileSdk = flutter.compileSdkVersion
+   // compileSdk = 35
+     compileSdk = flutter.compileSdkVersion
    //ndkVersion = "27.0.12077973"
     ndkVersion = '29.0.13599879'
 
@@ -18,8 +18,8 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "17"
-    //jvmTarget = JavaVersion.VERSION_17.toString()
+    //    jvmTarget = "17"
+       jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     defaultConfig {
@@ -47,87 +47,3 @@ flutter {
 }
 
 
-plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id("dev.flutter.flutter-gradle-plugin")
-}
-
-android {
-    namespace "com.example.gps"
-    compileSdk 35
-    ndkVersion = '29.0.13599879'
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-                targetCompatibility JavaVersion.VERSION_17
-
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    defaultConfig {
-        applicationId "com.example.card_x"
-        minSdkVersion flutter.minSdkVersion
-                targetSdk 34
-        versionCode flutter.versionCode
-                versionName flutter.versionName
-                multiDexEnabled true
-    }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-                    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-}
-
-flutter {
-    source = "../.."
-}*/
- plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("dev.flutter.flutter-gradle-plugin")
-}
-
-android {
-    namespace = "com.example.gps"
-    compileSdk = 35
-    ndkVersion = "27.0.12077973"
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    defaultConfig {
-        applicationId = "com.example.card_x"
-        minSdk = flutter.minSdkVersion
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-        multiDexEnabled = true
-    }
-
-    buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("debug")
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-}
-
-flutter {
-    source = "../.."
-}
