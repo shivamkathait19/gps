@@ -7,8 +7,8 @@ plugins {
 
 android {
     namespace = "com.example.gps"
-   // compileSdk = 35
-     compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
+   //  compileSdk = flutter.compileSdkVersion
    //ndkVersion = "27.0.12077973"
     ndkVersion = '29.0.13599879'
 
