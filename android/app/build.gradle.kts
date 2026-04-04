@@ -7,20 +7,26 @@ plugins {
 
 android {
     namespace = "com.example.gps"
-    compileSdk = 35
+    compileSdk = 36
    //  compileSdk = flutter.compileSdkVersion
    //ndkVersion = "27.0.12077973"
-    ndkVersion = '29.0.13599879'
+    ndkVersion = "29.0.13599879"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
+    }
+
+    /*kotlinOptions {
     //    jvmTarget = "17"
        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
+    }*/
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
