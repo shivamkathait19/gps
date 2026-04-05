@@ -9,7 +9,7 @@ android {
     namespace = "com.example.gps"
     //compileSdk = 36
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "30.0.14904198"
    
 
     compileOptions {
