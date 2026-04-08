@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.deepPurple,
         ),
       ),
-      home: mainPages(),
+      home: Mainpages(),
     );
   }
 }
