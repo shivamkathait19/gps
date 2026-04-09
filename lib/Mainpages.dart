@@ -45,7 +45,7 @@ class Mainpages extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.brown,
-        title: Center(child: Text("GoooGps ",style: TextStyle(
+        title: Center(child: Text("GoGps ",style: TextStyle(
          fontSize: 20, backgroundColor: Colors.brown.withOpacity(0.5000), fontStyle: FontStyle.italic
         ),)),
       ),
