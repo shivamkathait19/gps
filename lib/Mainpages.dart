@@ -37,7 +37,8 @@ class Mainpages extends StatelessWidget {
              ),
                  child: Row(
                    children: [
-                    Builder(builder: (context)=> IconButton(onPressed: (){}, icon:Icon(Icons.menu)))
+                    Builder(builder: (context)=> IconButton(onPressed: (){}, icon:Icon(Icons.menu))),
+                     TextFormField()
                      ]
                  ),
            ),
