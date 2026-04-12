@@ -45,7 +45,9 @@ class Mainpages extends StatelessWidget {
                            labelText: "Search here  ",labelStyle: TextStyle(
                               color: Colors.white
                             ),
-                           border: InputBorder.none,),),)),
+                           border: InputBorder.none, enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black)
+                            ) ),),)),
                       Icon(Icons.mic,color: Colors.black,),
 
                    ],
