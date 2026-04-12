@@ -25,16 +25,12 @@ class Mainpages extends StatelessWidget {
                left: 15,
                right: 15,
                child: Container(
-                 padding: EdgeInsets.symmetric(horizontal: 15),
-             height: 50,
-             decoration: BoxDecoration(color: Colors.white,
-               borderRadius: BorderRadius.circular(30),
-               boxShadow:[
-                 BoxShadow(
-                   color: Colors.black
-                 )
-               ]
-             ),
+                 margin: EdgeInsets.all(10),
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+             color: Colors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(30),),
+                 height: 50,
                  child: Row(
                    children: [
                      Builder(builder: (context)=> IconButton(onPressed: (){
@@ -47,7 +43,7 @@ class Mainpages extends StatelessWidget {
                           child: TextField(
                             decoration: InputDecoration(
                            labelText: "Search here  ",labelStyle: TextStyle(
-                              color: Colors.black
+                              color: Colors.white
                             ),
                            border: InputBorder.none,),),)),
                       Icon(Icons.mic,color: Colors.black,),
