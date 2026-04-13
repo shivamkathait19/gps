@@ -57,7 +57,7 @@ class Mainpages extends StatelessWidget {
 
            ),
               Center(
-                child: Icon(Icons.location_on,color: Colors.red,size: 50,),
+                child: Icon(Icons.location_on,color: Colors.red,size: 40,),
               ),
             Positioned(
               right: 20,
