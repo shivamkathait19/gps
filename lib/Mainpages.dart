@@ -93,7 +93,7 @@ class Mainpages extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.vertical( top: Radius.circular(20)
                     ),
-                    //backgroundBlendMode: BlendMode.colorDodge
+                    backgroundBlendMode: BlendMode.colorDodge
                   ),
                       child: TextButton.icon(onPressed: (){},
                           icon: Icon(Icons.location_on,color: Colors.red,),
