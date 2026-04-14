@@ -110,6 +110,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "google_fonts",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-8.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
       "name": "hooks",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/hooks-1.0.2",
       "packageUri": "lib/",
