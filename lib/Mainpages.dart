@@ -83,6 +83,13 @@ class Mainpages extends StatelessWidget {
               ],
             ),
             ),
+            Positioned(child: Column(
+              children: [
+                FloatingActionButton(onPressed: (){},
+                  mini: true,
+                  child: Icon(Icons.photo),)
+              ],
+            )),
             Positioned(
                 bottom: 0,
                 left: 0,
