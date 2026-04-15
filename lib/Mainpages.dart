@@ -1,9 +1,14 @@
-
 import 'package:flutter/material.dart';
 
-class Mainpages extends StatelessWidget {
+
+class Mainpages extends StatefulWidget {
   const Mainpages({super.key});
 
+  @override
+  State<Mainpages> createState() => _MainpagesState();
+}
+
+class _MainpagesState extends State<Mainpages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +50,9 @@ class Mainpages extends StatelessWidget {
                            labelText: "Search here  ",labelStyle: TextStyle(
                               color: Colors.white
                             ),
-                           border: InputBorder.none, enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black)
-                            ) ),),)),
+                           border: InputBorder.none, /*enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white)
+                            )*/ ),),)),
                       Icon(Icons.mic,color: Colors.black,),
 
                    ],
@@ -79,15 +84,20 @@ class Mainpages extends StatelessWidget {
                   onPressed: (){},
                 child: Icon(Icons.remove,blendMode: BlendMode.modulate
                   ,),
-                )
+                ),
+                FloatingActionButton(onPressed: (){},
+                  mini: true,
+                  child: Icon(Icons.photo,color: Colors.black,size: 20,),)
               ],
             ),
             ),
-            Positioned(child: Column(
+            Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Column(
               children: [
-                FloatingActionButton(onPressed: (){},
-                  mini: true,
-                  child: Icon(Icons.photo),)
+
               ],
             )),
             Positioned(
