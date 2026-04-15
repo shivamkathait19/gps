@@ -10,9 +10,11 @@ class Mainpages extends StatefulWidget {
 
 class _MainpagesState extends State<Mainpages> {
 
-  late GoogleMapController mapController;
+  GoogleMapController? mapController;
 
-  final LatLng _initialPosition = const LatLng(28.6139, 77.2090); // Delhi
+  final LatLng _initialPosition = const LatLng(28.6139, 77.2090);
+
+  bool isMapReady = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class _MainpagesState extends State<Mainpages> {
       body: Stack(
         children: [
 
-          /// 🔥 GOOGLE MAP
+          /// 🔥 GOOGLE MAP (SAFE VERSION)
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: _initialPosition,
@@ -31,6 +33,9 @@ class _MainpagesState extends State<Mainpages> {
             ),
             onMapCreated: (controller) {
               mapController = controller;
+              setState(() {
+                isMapReady = true;
+              });
             },
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
@@ -60,7 +65,6 @@ class _MainpagesState extends State<Mainpages> {
                       icon: const Icon(Icons.menu, color: Colors.white),
                     ),
                   ),
-
                   const SizedBox(width: 10),
 
                   const Expanded(
@@ -85,40 +89,52 @@ class _MainpagesState extends State<Mainpages> {
             child: Icon(Icons.location_on, color: Colors.red, size: 40),
           ),
 
-          /// 🎯 FLOATING BUTTONS
+          /// 🎯 FLOATING BUTTONS (FIXED)
           Positioned(
             right: 20,
             bottom: 120,
             child: Column(
               children: [
+
+                /// 📍 Current Location (Safe)
                 FloatingActionButton(
                   mini: true,
                   onPressed: () {
-                    mapController.animateCamera(
-                      CameraUpdate.newLatLng(_initialPosition),
-                    );
+                    if (isMapReady && mapController != null) {
+                      mapController!.animateCamera(
+                        CameraUpdate.newLatLng(_initialPosition),
+                      );
+                    }
                   },
                   child: const Icon(Icons.my_location),
                 ),
+
                 const SizedBox(height: 10),
 
+                /// ➕ Zoom In
                 FloatingActionButton(
                   mini: true,
                   onPressed: () {
-                    mapController.animateCamera(
-                      CameraUpdate.zoomIn(),
-                    );
+                    if (isMapReady && mapController != null) {
+                      mapController!.animateCamera(
+                        CameraUpdate.zoomIn(),
+                      );
+                    }
                   },
                   child: const Icon(Icons.add),
                 ),
+
                 const SizedBox(height: 10),
 
+                /// ➖ Zoom Out
                 FloatingActionButton(
                   mini: true,
                   onPressed: () {
-                    mapController.animateCamera(
-                      CameraUpdate.zoomOut(),
-                    );
+                    if (isMapReady && mapController != null) {
+                      mapController!.animateCamera(
+                        CameraUpdate.zoomOut(),
+                      );
+                    }
                   },
                   child: const Icon(Icons.remove),
                 ),
@@ -126,7 +142,7 @@ class _MainpagesState extends State<Mainpages> {
             ),
           ),
 
-          /// 📍 BOTTOM LOCATION BAR
+          /// 📍 BOTTOM BAR
           Positioned(
             bottom: 0,
             left: 0,
@@ -139,7 +155,13 @@ class _MainpagesState extends State<Mainpages> {
                 BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  if (isMapReady && mapController != null) {
+                    mapController!.animateCamera(
+                      CameraUpdate.newLatLng(_initialPosition),
+                    );
+                  }
+                },
                 icon: const Icon(Icons.location_on, color: Colors.red),
                 label: Text(
                   "Your Location",

@@ -216,6 +216,25 @@
       ]
     },
     {
+      "name": "google_maps_flutter_ios",
+      "version": "2.18.1",
+      "dependencies": [
+        "flutter",
+        "google_maps_flutter_platform_interface",
+        "stream_transform"
+      ]
+    },
+    {
+      "name": "google_maps_flutter_android",
+      "version": "2.19.6",
+      "dependencies": [
+        "flutter",
+        "flutter_plugin_android_lifecycle",
+        "google_maps_flutter_platform_interface",
+        "stream_transform"
+      ]
+    },
+    {
       "name": "path_provider",
       "version": "2.1.5",
       "dependencies": [
@@ -371,6 +390,27 @@
       "dependencies": []
     },
     {
+      "name": "stream_transform",
+      "version": "2.1.1",
+      "dependencies": []
+    },
+    {
+      "name": "sanitize_html",
+      "version": "2.1.0",
+      "dependencies": [
+        "html",
+        "meta"
+      ]
+    },
+    {
+      "name": "google_maps",
+      "version": "8.2.0",
+      "dependencies": [
+        "meta",
+        "web"
+      ]
+    },
+    {
       "name": "flutter_web_plugins",
       "version": "0.0.0",
       "dependencies": [
@@ -382,6 +422,13 @@
       "version": "2.1.8",
       "dependencies": [
         "meta"
+      ]
+    },
+    {
+      "name": "flutter_plugin_android_lifecycle",
+      "version": "2.0.34",
+      "dependencies": [
+        "flutter"
       ]
     },
     {
@@ -472,6 +519,14 @@
       "dependencies": []
     },
     {
+      "name": "html",
+      "version": "0.15.6",
+      "dependencies": [
+        "csslib",
+        "source_span"
+      ]
+    },
+    {
       "name": "ffi",
       "version": "2.2.0",
       "dependencies": []
@@ -507,6 +562,13 @@
       "version": "0.3.1",
       "dependencies": [
         "lists"
+      ]
+    },
+    {
+      "name": "csslib",
+      "version": "1.0.2",
+      "dependencies": [
+        "source_span"
       ]
     },
     {
@@ -586,68 +648,6 @@
       "dependencies": [
         "meta",
         "path"
-      ]
-    },
-    {
-      "name": "google_maps_flutter_ios",
-      "version": "2.18.1",
-      "dependencies": [
-        "flutter",
-        "google_maps_flutter_platform_interface",
-        "stream_transform"
-      ]
-    },
-    {
-      "name": "sanitize_html",
-      "version": "2.1.0",
-      "dependencies": [
-        "html",
-        "meta"
-      ]
-    },
-    {
-      "name": "google_maps",
-      "version": "8.2.0",
-      "dependencies": [
-        "meta",
-        "web"
-      ]
-    },
-    {
-      "name": "stream_transform",
-      "version": "2.1.1",
-      "dependencies": []
-    },
-    {
-      "name": "google_maps_flutter_android",
-      "version": "2.19.6",
-      "dependencies": [
-        "flutter",
-        "flutter_plugin_android_lifecycle",
-        "google_maps_flutter_platform_interface",
-        "stream_transform"
-      ]
-    },
-    {
-      "name": "html",
-      "version": "0.15.6",
-      "dependencies": [
-        "csslib",
-        "source_span"
-      ]
-    },
-    {
-      "name": "csslib",
-      "version": "1.0.2",
-      "dependencies": [
-        "source_span"
-      ]
-    },
-    {
-      "name": "flutter_plugin_android_lifecycle",
-      "version": "2.0.34",
-      "dependencies": [
-        "flutter"
       ]
     }
   ],
