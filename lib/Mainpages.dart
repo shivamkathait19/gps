@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Mainpages extends StatefulWidget {
   const Mainpages({super.key});
@@ -10,36 +10,43 @@ class Mainpages extends StatefulWidget {
 
 class _MainpagesState extends State<Mainpages> {
 
-  GoogleMapController? mapController;
+  final ImagePicker _picker = ImagePicker();
 
-  final LatLng _initialPosition = const LatLng(28.6139, 77.2090);
+  /// 📷 OPEN CAMERA
+  Future<void> openCamera() async {
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
 
-  bool isMapReady = false;
+    if (photo != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Photo Captured: ${photo.name}")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.black,
+        child: const Center(
+          child: Text(
+            "Drawer Menu",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ),
       body: Stack(
         children: [
 
-          /// 🔥 GOOGLE MAP (SAFE VERSION)
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: _initialPosition,
-              zoom: 14,
+          /// 🔥 BACKGROUND (MAP की जगह)
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"),
+                fit: BoxFit.cover,
+              ),
             ),
-            onMapCreated: (controller) {
-              mapController = controller;
-              setState(() {
-                isMapReady = true;
-              });
-            },
-            myLocationEnabled: true,
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: false,
           ),
 
           /// 🔍 SEARCH BAR
@@ -84,58 +91,54 @@ class _MainpagesState extends State<Mainpages> {
             ),
           ),
 
-          /// 📍 CENTER PIN
+          /// 📍 CENTER ICON (optional)
           const Center(
-            child: Icon(Icons.location_on, color: Colors.red, size: 40),
+            child: Icon(Icons.place, color: Colors.red, size: 40),
           ),
 
-          /// 🎯 FLOATING BUTTONS (FIXED)
+          /// 🎯 FLOATING BUTTONS
           Positioned(
             right: 20,
             bottom: 120,
             child: Column(
               children: [
 
-                /// 📍 Current Location (Safe)
+                /// 📷 CAMERA BUTTON
                 FloatingActionButton(
                   mini: true,
-                  onPressed: () {
-                    if (isMapReady && mapController != null) {
-                      mapController!.animateCamera(
-                        CameraUpdate.newLatLng(_initialPosition),
-                      );
-                    }
-                  },
-                  child: const Icon(Icons.my_location),
+                  backgroundColor: Colors.black,
+                  onPressed: openCamera,
+                  child: const Icon(Icons.camera_alt, color: Colors.white),
                 ),
 
                 const SizedBox(height: 10),
 
-                /// ➕ Zoom In
+                /// 🔄 REFRESH BUTTON (map हट गया इसलिए replace)
                 FloatingActionButton(
                   mini: true,
                   onPressed: () {
-                    if (isMapReady && mapController != null) {
-                      mapController!.animateCamera(
-                        CameraUpdate.zoomIn(),
-                      );
-                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Refreshed")),
+                    );
                   },
+                  child: const Icon(Icons.refresh),
+                ),
+
+                const SizedBox(height: 10),
+
+                /// ➕ ADD
+                FloatingActionButton(
+                  mini: true,
+                  onPressed: () {},
                   child: const Icon(Icons.add),
                 ),
 
                 const SizedBox(height: 10),
 
-                /// ➖ Zoom Out
+                /// ➖ REMOVE
                 FloatingActionButton(
                   mini: true,
-                  onPressed: () {
-                    if (isMapReady && mapController != null) {
-                      mapController!.animateCamera(
-                        CameraUpdate.zoomOut(),
-                      );
-                    }
-                  },
+                  onPressed: () {},
                   child: const Icon(Icons.remove),
                 ),
               ],
@@ -156,16 +159,14 @@ class _MainpagesState extends State<Mainpages> {
               ),
               child: TextButton.icon(
                 onPressed: () {
-                  if (isMapReady && mapController != null) {
-                    mapController!.animateCamera(
-                      CameraUpdate.newLatLng(_initialPosition),
-                    );
-                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Bottom Clicked")),
+                  );
                 },
                 icon: const Icon(Icons.location_on, color: Colors.red),
-                label: Text(
+                label: const Text(
                   "Your Location",
-                  style: TextStyle(color: Colors.red.shade800),
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
             ),
