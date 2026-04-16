@@ -108,7 +108,7 @@ class _MainpagesState extends State<Mainpages> {
                   mini: true,
                   backgroundColor: Colors.black,
                   onPressed: openCamera,
-                  child: const Icon(Icons.camera_alt, color: Colors.white),
+                  child: const Icon(Icons.camera_alt, color: Colors.white, size:50),
                 ),
 
                 const SizedBox(height: 10),
