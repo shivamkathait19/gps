@@ -53,10 +53,8 @@ class _MainformState extends State<Mainform> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-
-                const SizedBox(height: 20),
-
-                const Text(
+                SizedBox(height: 20),
+                 Text(
                   "Create Profile",
                   style: TextStyle(
                     fontSize: 28,

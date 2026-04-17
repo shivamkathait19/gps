@@ -104,7 +104,7 @@ class _MainpagesState extends State<Mainpages> {
               children: [
 
                 /// 📷 CAMERA BUTTON
-                FloatingActionButton(
+              FloatingActionButton(
                   mini: true,
                   backgroundColor: Colors.black,
                   onPressed: openCamera,
