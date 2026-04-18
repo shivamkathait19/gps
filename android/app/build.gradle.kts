@@ -14,7 +14,7 @@ plugins {
 
 android {
     namespace = "com.example.gps"
-    
+
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "30.0.14904198"
    
@@ -30,10 +30,7 @@ android {
         }
     }
 
-    /*kotlinOptions {
-    //    jvmTarget = "17"
-       jvmTarget = JavaVersion.VERSION_17.toString()
-    }*/
+  
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
