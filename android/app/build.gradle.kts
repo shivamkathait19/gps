@@ -8,12 +8,7 @@ plugins {
 }
 
 
-    /*dependencies {
-        implementation(platfrom("com.google.firebase:firebase-bom:34.2.0"))
-        implementation("com.google.firebase:firebase-analytics")
-        implementation 'com.google.android.gms:play-services-auth:20.7.0'
-
-    }*/
+    
 
 
 
