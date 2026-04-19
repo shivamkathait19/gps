@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
           seedColor: Colors.deepPurpleAccent,
         ),
       ),
-      home: Mainpages(),
+      home: (),
     );
   }
 }
