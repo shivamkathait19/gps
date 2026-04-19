@@ -15,7 +15,6 @@ class _MainpagesState extends State<Mainpages> {
   /// 📷 OPEN CAMERA
   Future<void> openCamera() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-
     if (photo != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Photo Captured: ${photo.name}")),
