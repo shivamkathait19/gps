@@ -8,6 +8,13 @@ import 'package:flutter/material.dart';
        appBar: AppBar(
          title: Text("Gogo Gps "),
        ),
+       body: Container(
+         child: Column(
+           children: [
+             Image.network(src)
+           ],
+         ),
+       )
      );
    }
  }
