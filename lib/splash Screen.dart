@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
        body: Container(
          child: Column(
            children: [
-             Image.network(src)
+
            ],
          ),
        )

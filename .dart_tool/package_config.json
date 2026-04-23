@@ -159,7 +159,7 @@
     },
     {
       "name": "flutter_map",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_map-8.2.2",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_map-8.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -402,12 +402,6 @@
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/lists-1.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
-    },
-    {
-      "name": "logger",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/logger-2.7.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.17"
     },
     {
       "name": "logging",

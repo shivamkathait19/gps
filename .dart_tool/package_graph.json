@@ -138,7 +138,7 @@
     },
     {
       "name": "flutter_map",
-      "version": "8.2.2",
+      "version": "8.3.0",
       "dependencies": [
         "async",
         "collection",
@@ -147,7 +147,6 @@
         "flutter",
         "http",
         "latlong2",
-        "logger",
         "meta",
         "path",
         "path_provider",
@@ -573,14 +572,6 @@
         "meta",
         "mgrs_dart",
         "wkt_parser"
-      ]
-    },
-    {
-      "name": "logger",
-      "version": "2.7.0",
-      "dependencies": [
-        "clock",
-        "meta"
       ]
     },
     {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gps/Loginscreen.dart';
 import 'package:gps/Mainpages.dart';
 import 'package:gps/mainform.dart';
+import 'package:gps/splash%20Screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
           seedColor: Colors.deepPurpleAccent,
         ),
       ),
-      home: (),
+      home: Mainpages(),
     );
   }
 }
