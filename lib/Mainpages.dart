@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:google_maps/google_maps.dart';
-import 'package:latlong2/latlong.dart';
+
 
 
 class Mainpages extends StatefulWidget {
