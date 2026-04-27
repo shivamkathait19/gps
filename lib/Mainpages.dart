@@ -99,9 +99,78 @@ class _MainpageState extends State<Mainpage> {
         backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.orange,
-       drawer: Drawer(
+      drawer: Drawer(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.black, Colors.blueGrey.shade900],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
 
-       ),
+              // 🔥 HEADER
+              UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                accountName: Text(
+                  "Shivam Singh",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                accountEmail: Text("shivam@email.com"),
+                currentAccountPicture: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.orange,
+                  child: Icon(Icons.person, size: 35, color: Colors.white),
+                ),
+              ),
+
+              // 📷 Camera
+              ListTile(
+                leading: Icon(Icons.camera_alt, color: Colors.white),
+                title: Text("Camera", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  Navigator.pop(context);
+                  takePhoto();
+                },
+              ),
+
+              // 🖼️ Gallery
+
+
+              // 🗺️ Map
+              ListTile(
+                leading: Icon(Icons.map, color: Colors.white),
+                title: Text("Map View", style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  Navigator.pop(context);
+                  // yaha map screen open kar sakte ho
+                },
+              ),
+
+              Divider(color: Colors.white54),
+
+              // ⚙️ Settings
+              ListTile(
+                leading: Icon(Icons.settings, color: Colors.white),
+                title: Text("Settings", style: TextStyle(color: Colors.white)),
+                onTap: () {},
+              ),
+
+              // ℹ️ About
+              ListTile(
+                leading: Icon(Icons.info, color: Colors.white),
+                title: Text("About", style: TextStyle(color: Colors.white)),
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Center(
         child: _image == null
             ? const Text(
