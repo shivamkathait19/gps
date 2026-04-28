@@ -96,10 +96,11 @@ class _MainpageState extends State<Mainpage> {
       appBar: AppBar(
         title: const Text("GPS Photo App"),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.orange,
       drawer: Drawer(
+        surfaceTintColor: Colors.white,
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
