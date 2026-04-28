@@ -188,16 +188,16 @@ class _MainpageState extends State<Mainpage> {
               left: 10,
               right: 10,
               child: Container(
-                padding: const EdgeInsets.all(10),
+                padding:  EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   locationText,
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
+                    color: Colors.black,
+                    fontSize: 20,
                   ),
                 ),
               ),
@@ -206,9 +206,10 @@ class _MainpageState extends State<Mainpage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
         onPressed: takePhoto,
-        backgroundColor: Colors.orange,
-        child: const Icon(Icons.camera_alt),
+        backgroundColor: Colors.black ,
+        child:  Icon(Icons.camera_alt),
       ),
     );
   }
