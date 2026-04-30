@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:gps/Loginscreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -169,6 +170,13 @@ class _MainpageState extends State<Mainpage> {
                 title: Text("About", style: TextStyle(color: Colors.white)),
                 onTap: () {},
               ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("logout"),
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> loginScreen));
+                }
+              )
             ],
           ),
         ),
