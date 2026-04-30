@@ -94,7 +94,7 @@ class _MainpageState extends State<Mainpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("GPS Photo App"),
+        title: const Text("GPS Photo App",style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
@@ -122,6 +122,7 @@ class _MainpageState extends State<Mainpage> {
                   "Shivam Singh",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+
                 accountEmail: Text("shivam@email.com"),
                 currentAccountPicture: CircleAvatar(
                   radius: 30,
