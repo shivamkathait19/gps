@@ -63,8 +63,7 @@ class _MainformState extends State<Mainform> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
-
+                SizedBox(height: 20),
                 Card(
                   color: Colors.white10,
                   shape: RoundedRectangleBorder(
@@ -145,7 +144,7 @@ class _MainformState extends State<Mainform> {
                           decoration: _inputDecoration("Email"),
                         ),
 
-                        const SizedBox(height: 15),
+                         SizedBox(height: 15),
 
                         /// Password
                         TextFormField(
