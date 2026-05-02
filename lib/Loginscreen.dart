@@ -7,20 +7,68 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+
+
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(vsync: this,
+duration: Duration(seconds: 5),
+    )..repeat(reverse: true);
+  }
+  @override
+   void dispose (){
+    _controller.dispose();
+   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(
+      body: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+      return Container(
+        height: 950,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.lerp(Colors.deepPurple, Colors.blue, _controller.value)!,
+              Color.lerp(Colors.black, Colors.pink, _controller.value)!,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: child,
+      );
+    },
+        child:SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 120),
-
+              TweenAnimationBuilder(
+                tween: Tween<double>(begin: 0.5, end: 1),
+                duration: const Duration(seconds: 1),
+                curve: Curves.elasticInOut,
+                builder: (context, double scale, child) {
+                  return Transform.scale(
+                    scale: scale,
+                    child: const Icon(
+                      Icons.lock_outline,
+                      size: 80,
+                      color: Colors.blueAccent,
+                    ),
+                  );
+                },
+              ),
               /// 🔹 Title
               const Text(
                 "Welcome Back!",
@@ -191,6 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    )
     );
   }
 }
