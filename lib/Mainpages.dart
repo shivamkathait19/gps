@@ -173,7 +173,7 @@ class _MainpageState extends State<Mainpage> {
                 leading: Icon(Icons.logout),
                 title: Text("logout"),
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>loginScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                 }
               )
             ],

@@ -1,147 +1,196 @@
 import 'package:flutter/material.dart';
 
-class loginScreen extends StatefulWidget {
-  const loginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<loginScreen> createState() => _loginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _loginScreenState extends State<loginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+
   @override
-      Widget build(BuildContext context) {
-    return  Scaffold(
-      body:Container(
-        decoration: BoxDecoration(
-          color: Colors.black
-        ),
-        child:SingleChildScrollView(
-          child: Stack(
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-            SafeArea(
-              child:SingleChildScrollView(
-                child:Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRect(
-                ),
-                SizedBox(height: 200,),
-                Text("Welcome back!",
+              const SizedBox(height: 120),
+
+              /// 🔹 Title
+              const Text(
+                "Welcome Back!",
                 style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold
-                ),),
-                Text("Login to continue",style: TextStyle(color: Colors.white54),),
-              SizedBox(height: 40,),
-                Padding(padding: EdgeInsetsGeometry.all(20),
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Text(
+                "Login to continue",
+                style: TextStyle(color: Colors.white70),
+              ),
+
+              const SizedBox(height: 40),
+
+              /// 🔹 Card Container
+              Padding(
+                padding: const EdgeInsets.all(20),
                 child: Container(
-                  height: 505,
-                  width: 500,
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.10),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white10),
+                    color: Colors.white.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                      blurRadius : 10,
-                        offset: Offset(0, 5),
+                        color: Colors.black.withOpacity(0.6),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
                       )
-                    ]
+                    ],
                   ),
-                  child: Form(child: Column(
+
+                  /// 🔹 Form
+                  child: Column(
                     children: [
-                      Padding(padding: EdgeInsets.only(left: 10, right: 10,top: 20),
-                     child:  TextFormField(
+                      /// Email
+                      TextFormField(
                         controller: _emailController,
-                        style: TextStyle(color: Colors.white10),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(color: Colors.white70),
-                        prefixIcon: Icon(Icons.email,color: Colors.white70,),
-                         filled: true,
-                        fillColor: Colors.grey[900],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        )
-                      ),
-                ),
-                ),
-              SizedBox(height: 20),
-              Padding(padding: EdgeInsets.only(left: 10,right: 10),
-              child: TextFormField(
-                 controller: _passController,
-                 obscureText: true,
-                 style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'password',
-                  labelStyle: TextStyle(color: Colors.white),
-                  prefixIcon: Icon(Icons.lock,color: Colors.white,),
-                    filled : true,
-                  fillColor: Colors.grey[900],
-                   border: OutlineInputBorder(
-                     borderRadius: BorderRadius.circular(12),
-                   )
-
-                ),
-               )
-              ),
-                 Align(
-                   alignment: Alignment.centerRight,
-                 child: TextButton(onPressed: (){}, child: Text('Forgot Password?',
-                   style: TextStyle(color: Colors.blueAccent),)),
-                 ),
-
-                      ElevatedButton(onPressed:(){}, child: Text('Login ',style: TextStyle(color: Colors.blue),)),
-                     SizedBox(
-                       width: double.infinity,
-                       child: ElevatedButton.icon(onPressed: () {},
-                           icon: Icon(Icons.facebook,color: Colors.white,),
-                           label: Text("Continue with Facebook",style: TextStyle(color: Colors.black),),
-                       style: ElevatedButton.styleFrom(
-                         backgroundColor: Colors.blueAccent
-                       ),
-                       ),
-                     ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(onPressed: () {},
-                          icon: Icon(Icons.eighteen_mp,color: Colors.white,),
-                          label: Text("Continue with Facebook",style: TextStyle(color: Colors.black),),
-
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          labelStyle:
+                          const TextStyle(color: Colors.white70),
+                          prefixIcon: const Icon(Icons.email,
+                              color: Colors.white70),
+                          filled: true,
+                          fillColor: Colors.grey[900],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
-                      SizedBox(height: 50,),
+
+                      const SizedBox(height: 20),
+
+                      /// Password
+                      TextFormField(
+                        controller: _passController,
+                        obscureText: true,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          labelStyle:
+                          const TextStyle(color: Colors.white70),
+                          prefixIcon: const Icon(Icons.lock,
+                              color: Colors.white70),
+                          filled: true,
+                          fillColor: Colors.grey[900],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+
+                      /// Forgot
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(color: Colors.blueAccent),
+                          ),
+                        ),
+                      ),
+
+                      /// Login Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// Facebook
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.facebook,
+                              color: Colors.white),
+                          label: const Text(
+                            "Continue with Facebook",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      /// Gmail
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon:
+                          const Icon(Icons.email, color: Colors.white),
+                          label: const Text(
+                            "Continue with Gmail",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      /// Signup
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Dont have an account? ',
-                          style: TextStyle(color: Colors.white),
+                          const Text(
+                            "Don't have an account? ",
+                            style: TextStyle(color: Colors.white),
                           ),
-                          TextButton(onPressed: (){}, child: TextButton(onPressed: (){}, child: Text("sign up ",style: TextStyle(color: Colors.blue),))),
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              "Sign Up",
+                              style:
+                              TextStyle(color: Colors.blueAccent),
+                            ),
+                          ),
                         ],
-
-                      )
-                ],
-            )
-              )
-            ),
+                      ),
+                    ],
+                  ),
                 ),
-]
-    ),
-        ),
-    ),
-          ]
-    )
+              ),
+            ],
+          ),
         ),
       ),
     );
-
   }
 }
