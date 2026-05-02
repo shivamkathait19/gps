@@ -154,7 +154,7 @@ class _MainformState extends State<Mainform> {
                           decoration: _inputDecoration("Password"),
                         ),
 
-                        const SizedBox(height: 20),
+                         SizedBox(height: 20),
 
                         /// Gender
                         Container(
