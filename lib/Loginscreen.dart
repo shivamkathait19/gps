@@ -83,7 +83,7 @@ duration: Duration(seconds: 5),
                 style: TextStyle(color: Colors.white70),
               ),
 
-              const SizedBox(height: 40),
+               SizedBox(height: 40),
 
               /// 🔹 Card Container
               Padding(
