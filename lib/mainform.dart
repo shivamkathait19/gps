@@ -74,15 +74,8 @@ class _MainformState extends State<Mainform> {
           },
 
           child :Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xff141E30), Color(0xff243B55)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
 
-        child: SafeArea(
+            child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
