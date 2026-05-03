@@ -13,18 +13,23 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
 
 
   late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(vsync: this,
-duration: Duration(seconds: 5),
+duration: Duration(seconds:1),
     )..repeat(reverse: true);
+    _animation = Tween<double>(begin: -1,end:1 ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.slowMiddle),
+    );
   }
   @override
    void dispose (){
     _controller.dispose();
+    super.dispose();
    }
 
   @override
@@ -54,7 +59,7 @@ duration: Duration(seconds: 5),
           child: Column(
             children: [
               const SizedBox(height: 120),
-              TweenAnimationBuilder(
+             /* TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0.5, end: 1),
                 duration: const Duration(seconds: 1),
                 curve: Curves.elasticInOut,
@@ -68,7 +73,20 @@ duration: Duration(seconds: 5),
                     ),
                   );
                 },
+              ),*/
+              AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(3, _animation.value),
+                    child: child,
+                  );
+                },
+                child:Image.network("https://static.vecteezy.com/system/resources/thumbnails/009/085/230/small/cartoon-cute-dogs-with-big-bone-vector.jpg", height: 50,)
+
               ),
+
+              SizedBox(height: 20),
               /// 🔹 Title
               const Text(
                 "Welcome Back!",
