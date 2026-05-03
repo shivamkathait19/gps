@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gps/Mainpages.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
 
   late AnimationController _controller;
   late Animation<double> _animation;
+   bool isLoading = false;
 
   @override
   void initState() {
@@ -179,16 +181,24 @@ duration: Duration(seconds:1),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueAccent,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                          ),
-                          child: const Text(
-                            'Login',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                          onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+
+                            await Future.delayed(Duration(seconds: 2)); // fake delay
+
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => Mainpage()),
+                            );
+                          },
+                          child: Text("Login"),
+                        )
                       ),
 
                       const SizedBox(height: 20),
