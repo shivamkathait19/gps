@@ -87,7 +87,7 @@ duration: Duration(seconds: 5),
 
               /// 🔹 Card Container
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding:  EdgeInsets.all(20),
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
