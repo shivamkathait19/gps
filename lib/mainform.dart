@@ -18,6 +18,21 @@ class _MainformState extends State<Mainform> {
   TextEditingController dobController = TextEditingController();
 
   String? selectedGender;
+  late AnimationController _controller;
+
+
+  @override
+ /* void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 5),
+    )..repeat(reverse: true);
+  }*/
+
+  @override
+  void dispose (){
+    super.dispose();
+  }
 
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
@@ -39,7 +54,26 @@ class _MainformState extends State<Mainform> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child ){
+            return Container(
+              height: 950,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.lerp(Colors.deepPurple, Colors.blue, _controller.value)!,
+                    Color.lerp(Colors.black, Colors.pink, _controller.value)!,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: child,
+            );
+          },
+
+          child :Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xff141E30), Color(0xff243B55)],
@@ -233,6 +267,6 @@ class _MainformState extends State<Mainform> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

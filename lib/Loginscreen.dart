@@ -21,8 +21,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller = AnimationController(vsync: this,
-duration: Duration(seconds:1),
+    _controller = AnimationController(vsync: this, duration: Duration(seconds:1),
     )..repeat(reverse: true);
     _animation = Tween<double>(begin: -1,end:1 ).animate(
       CurvedAnimation(parent: _controller, curve: Curves.slowMiddle),
@@ -185,9 +184,7 @@ duration: Duration(seconds:1),
                             setState(() {
                               isLoading = true;
                             });
-
                             await Future.delayed(Duration(seconds: 2)); // fake delay
-
                             setState(() {
                               isLoading = false;
                             });
