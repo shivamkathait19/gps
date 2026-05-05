@@ -177,7 +177,7 @@ class _MainpageState extends State<Mainpage> {
                 title: Text("Map View", style: TextStyle(color: Colors.white)),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreeen()));
                   // yaha map screen open kar sakte ho
                 },
               ),
@@ -253,7 +253,7 @@ class _MainpageState extends State<Mainpage> {
 }
 
 
-class Profile extends StatefulWidget {
+class ProfileScreeen extends StatefulWidget {
 
 
   final String username;
@@ -263,7 +263,7 @@ class Profile extends StatefulWidget {
   final String dob;
   final String gender;
 
-  Profile({super.key,
+  ProfileScreeen({super.key,
    required this.username,
      required this.fullname,
      required this.phone,
@@ -273,10 +273,10 @@ class Profile extends StatefulWidget {
    });
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfileScreeen> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<ProfileScreeen> {
 
 
   @override
