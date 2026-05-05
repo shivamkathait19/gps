@@ -8,7 +8,9 @@ class Mainform extends StatefulWidget {
   State<Mainform> createState() => _MainformState();
 }
 
-class _MainformState extends State<Mainform> {
+class _MainformState extends State<Mainform>
+with SingleTickerProviderStateMixin
+{
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController fullnameController = TextEditingController();
@@ -18,27 +20,20 @@ class _MainformState extends State<Mainform> {
   TextEditingController dobController = TextEditingController();
 
   String? selectedGender;
-  late TextEditingController _controller;
+  late AnimationController _controller;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller= TextEditingController();
+    _controller= AnimationController(vsync: this, duration: Duration(milliseconds: 100))..repeat(reverse: true);
   }
 
 
   @override
- /* void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 5),
-    )..repeat(reverse: true);
-  }*/
-
-  @override
   void dispose (){
+    _controller.dispose();
     super.dispose();
   }
 
@@ -70,8 +65,8 @@ class _MainformState extends State<Mainform> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.lerp(Colors.deepPurple, Colors.blue, _controller.value)!,
-                    Color.lerp(Colors.black, Colors.pink, _controller.value)!,
+                    Color.lerp(Colors.pink, Colors.orange, _controller.value)!,
+                    Color.lerp(Colors.white, Colors.pink, _controller.value)!,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -82,7 +77,6 @@ class _MainformState extends State<Mainform> {
           },
 
           child :Container(
-
             child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -130,7 +124,7 @@ class _MainformState extends State<Mainform> {
                           ],
                         ),
 
-                        const SizedBox(height: 15),
+                        SizedBox(height: 15),
 
                         /// DOB
                         TextFormField(

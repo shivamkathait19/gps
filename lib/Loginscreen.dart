@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gps/Mainpages.dart';
+import 'package:gps/mainform.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -247,8 +248,10 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                             style: TextStyle(color: Colors.white),
                           ),
                           TextButton(
-                            onPressed: () {},
-                            child: const Text(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Mainform()));
+                            },
+                            child:  Text(
                               "Sign Up",
                               style:
                               TextStyle(color: Colors.blueAccent),
