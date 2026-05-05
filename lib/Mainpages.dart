@@ -177,7 +177,7 @@ class _MainpageState extends State<Mainpage> {
                 title: Text("Map View", style: TextStyle(color: Colors.white)),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
                   // yaha map screen open kar sakte ho
                 },
               ),
