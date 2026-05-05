@@ -99,7 +99,7 @@ class _MainpageState extends State<Mainpage> {
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
-      backgroundColor: Colors.orange,
+      backgroundColor: Colors.white10,
       drawer: Drawer(
         surfaceTintColor: Colors.white,
         child: Container(
@@ -133,13 +133,21 @@ class _MainpageState extends State<Mainpage> {
 
               // 📷 Camera
               ListTile(
+                leading: Icon(Icons.person,color: Colors.white,),
+                title: Text("Profile",style: TextStyle(color: Colors.white),),
+             onTap: (){
+                  Navigator.pop(context);
+             },
+              )
+
+              /*ListTile(
                 leading: Icon(Icons.camera_alt, color: Colors.white),
                 title: Text("Camera", style: TextStyle(color: Colors.white)),
                 onTap: () {
                   Navigator.pop(context);
                   takePhoto();
                 },
-              ),
+              ),*/
 
               // 🖼️ Gallery
 

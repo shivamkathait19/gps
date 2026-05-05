@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gps/Mainpages.dart';
 
 class Mainform extends StatefulWidget {
   const Mainform({super.key});
@@ -45,10 +46,10 @@ with SingleTickerProviderStateMixin
       fillColor: Colors.white12,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.white38),
+        borderSide:  BorderSide(color: Colors.black.withOpacity(0.2)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.orange, width: 2),
+        borderSide:  BorderSide(color: Colors.orange, width: 2),
         borderRadius: BorderRadius.circular(12),
       ),
     );
@@ -247,10 +248,13 @@ with SingleTickerProviderStateMixin
                                 print("Form Submitted");
                               }
                             },
-                            child: const Text(
+                            child: ElevatedButton(onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Mainpage()));
+                            },
+                            child: Text(
                               "Submit",
-                              style: TextStyle(fontSize: 18),
-                            ),
+                              style: TextStyle(fontSize: 18,),
+                            ),),
                           ),
                         )
                       ],
