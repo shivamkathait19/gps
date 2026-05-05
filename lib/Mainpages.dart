@@ -176,7 +176,8 @@ class _MainpageState extends State<Mainpage> {
                 leading: Icon(Icons.map, color: Colors.white),
                 title: Text("Map View", style: TextStyle(color: Colors.white)),
                 onTap: () {
-                 // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Profile));
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => Profile()));
                   // yaha map screen open kar sakte ho
                 },
               ),
@@ -252,7 +253,9 @@ class _MainpageState extends State<Mainpage> {
 }
 
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+
+
   final String username;
   final String fullname;
   final String phone;
@@ -260,9 +263,7 @@ class Profile extends StatelessWidget {
   final String dob;
   final String gender;
 
-
-
-   Profile({super.key,
+  Profile({super.key,
    required this.username,
      required this.fullname,
      required this.phone,
@@ -270,6 +271,13 @@ class Profile extends StatelessWidget {
      required this.dob,
      required this.gender,
    });
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -282,12 +290,12 @@ class Profile extends StatelessWidget {
   crossAxisAlignment: CrossAxisAlignment.center,
    children: [
 
-     Text("Usernaem: $username"),
-     Text("fullnaem: $fullname"),
-     Text("phone : $phone"),
-     Text("email : $email"),
-     Text("Dob: $dob"),
-     Text("Gender: $gender"),
+     Text("Usernaem: ${widget.username}"),
+     Text("fullnaem: ${widget.fullname}"),
+     Text("phone : ${widget.phone}"),
+     Text("email : ${widget.email}"),
+     Text("Dob: ${widget.dob}"),
+     Text("Gender: ${widget.gender}"),
    ],
  ),
     );
