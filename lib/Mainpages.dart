@@ -4,6 +4,7 @@ import 'package:gps/Loginscreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Mainpage extends StatefulWidget {
@@ -14,9 +15,28 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
+
   File? _image;
   String locationText = "No location";
   double? lat, lng;
+ String email = '';
+ String username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  void loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      email = prefs.getString("email") ?? "No Email";
+      username = prefs.getString("username") ?? "User";
+    });
+  }
+
 
   Future<void> getLocation() async {
     try {
@@ -118,12 +138,11 @@ class _MainpageState extends State<Mainpage> {
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                 ),
-                accountName: Text(
-                  "Shivam Singh",
+                accountName: Text( username,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
 
-                accountEmail: Text("shivam@email.com"),
+                accountEmail: Text(email),
                 currentAccountPicture: CircleAvatar(
                   radius: 30,
                   backgroundColor: Colors.orange,
@@ -138,7 +157,7 @@ class _MainpageState extends State<Mainpage> {
              onTap: (){
                   Navigator.pop(context);
              },
-              )
+              ),
 
               /*ListTile(
                 leading: Icon(Icons.camera_alt, color: Colors.white),
@@ -157,6 +176,7 @@ class _MainpageState extends State<Mainpage> {
                 leading: Icon(Icons.map, color: Colors.white),
                 title: Text("Map View", style: TextStyle(color: Colors.white)),
                 onTap: () {
+                 // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Profile));
                   // yaha map screen open kar sakte ho
                 },
               ),
