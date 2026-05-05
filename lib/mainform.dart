@@ -245,7 +245,8 @@ with SingleTickerProviderStateMixin
                                       content: Text("Select Gender")),
                                 );
                               } else {
-                                print("Form Submitted");
+                                Navigator.push(context, MaterialPageRoute(builder: (_)=>
+                                Profile(username: usernameController.text, fullname: fullnameController.text, phone: phoneController.text, email: emailController.text, dob: dobController.text, gender: selectedGender!)));
                               }
                             },
                             child: ElevatedButton(onPressed: (){

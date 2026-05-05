@@ -157,7 +157,6 @@ class _MainpageState extends State<Mainpage> {
                 leading: Icon(Icons.map, color: Colors.white),
                 title: Text("Map View", style: TextStyle(color: Colors.white)),
                 onTap: () {
-                  Navigator.pop(context);
                   // yaha map screen open kar sakte ho
                 },
               ),
@@ -228,6 +227,49 @@ class _MainpageState extends State<Mainpage> {
         backgroundColor: Colors.black ,
         child:  Icon(Icons.camera_alt),
       ),
+    );
+  }
+}
+
+
+class Profile extends StatelessWidget {
+  final String username;
+  final String fullname;
+  final String phone;
+  final String email ;
+  final String dob;
+  final String gender;
+
+
+
+   Profile({super.key,
+   required this.username,
+     required this.fullname,
+     required this.phone,
+     required this.email,
+     required this.dob,
+     required this.gender,
+   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("profile"),
+      ),
+      backgroundColor: Colors.black,
+ body: Column(
+  crossAxisAlignment: CrossAxisAlignment.center,
+   children: [
+
+     Text("Usernaem: $username"),
+     Text("fullnaem: $fullname"),
+     Text("phone : $phone"),
+     Text("email : $email"),
+     Text("Dob: $dob"),
+     Text("Gender: $gender"),
+   ],
+ ),
     );
   }
 }
