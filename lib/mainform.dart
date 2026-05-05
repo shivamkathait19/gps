@@ -18,7 +18,15 @@ class _MainformState extends State<Mainform> {
   TextEditingController dobController = TextEditingController();
 
   String? selectedGender;
-  late AnimationController _controller;
+  late TextEditingController _controller;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller= TextEditingController();
+  }
 
 
   @override
