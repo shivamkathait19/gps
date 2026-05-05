@@ -27,7 +27,7 @@ with SingleTickerProviderStateMixin
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller= AnimationController(vsync: this, duration: Duration(milliseconds: 100))..repeat(reverse: true);
+    _controller= AnimationController(vsync: this, duration: Duration(seconds: 5))..repeat(reverse: true);
   }
 
 
