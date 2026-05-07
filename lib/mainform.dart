@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gps/Mainpages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mainform extends StatefulWidget {
   const Mainform({super.key});
@@ -238,26 +239,31 @@ with SingleTickerProviderStateMixin
                               ),
                               backgroundColor: Colors.orange,
                             ),
-                            onPressed: () {
+                            onPressed: () async{
+                              final prefs= await SharedPreferences.getInstance();
+                                 await prefs.setString("user", usernameController.text);
+                                 await prefs.setString("fullname", fullnameController.text);
+                                 await prefs.setString("phone", phoneController.text);
+                                 await prefs.setString("email",emailController.text);
+                                 await prefs.setString("dob", dobController.text);
+                                 await prefs.setString("gender", selectedGender ?? "");
                               if (selectedGender == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text("Select Gender")),
                                 );
-                              } else {
-                                Navigator.push(context, MaterialPageRoute(builder: (_)=>
-                                    ProfileScreeen(username: usernameController.text, fullname: fullnameController.text, phone: phoneController.text, email: emailController.text, dob: dobController.text, gender: selectedGender!)));
                               }
+                              Navigator.push(context, MaterialPageRoute(builder: (_)=>Mainpage()));
+
                             },
-                            child: ElevatedButton(onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Mainpage()));
-                            },
+
+
                             child: Text(
                               "Submit",
                               style: TextStyle(fontSize: 18,),
                             ),),
                           ),
-                        )
+
                       ],
                     ),
                   ),

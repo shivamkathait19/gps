@@ -121,6 +121,7 @@ class _MainpageState extends State<Mainpage> {
       ),
       backgroundColor: Colors.white10,
       drawer: Drawer(
+        elevation: 5,
         surfaceTintColor: Colors.white,
         child: Container(
           decoration: BoxDecoration(
@@ -248,6 +249,24 @@ class _MainpageState extends State<Mainpage> {
         backgroundColor: Colors.black ,
         child:  Icon(Icons.camera_alt),
       ),
+    );
+  }
+}
+
+
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder(
+
     );
   }
 }
