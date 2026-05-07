@@ -255,68 +255,60 @@ class _MainpageState extends State<Mainpage> {
 
 
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder(
-
-    );
-  }
-}
-
-
 class ProfileScreeen extends StatefulWidget {
-
-
-  final String username;
-  final String fullname;
-  final String phone;
-  final String email ;
-  final String dob;
-  final String gender;
-
-  ProfileScreeen({super.key,
-   required this.username,
-     required this.fullname,
-     required this.phone,
-     required this.email,
-     required this.dob,
-     required this.gender,
-   });
+  const ProfileScreeen({super.key});
 
   @override
-  State<ProfileScreeen> createState() => _ProfileState();
+  State<ProfileScreeen> createState() => _ProfileScreeenState();
 }
 
-class _ProfileState extends State<ProfileScreeen> {
+class _ProfileScreeenState extends State<ProfileScreeen> {
+  String username="";
+  String fullname = "";
+  String phone ="";
+  String email  ="";
+  String dob = "";
+  String gender = "";
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+
+  void loadData()async{
+    final prefs = await SharedPreferences.getInstance();
+     setState(() {
+       username =prefs.getString("username") ??"";
+       fullname = prefs.getString("fullname") ?? "";
+       phone = prefs.getString("phone") ?? "";
+       email = prefs.getString("email") ?? "";
+       dob = prefs.getString("dob") ?? "";
+       gender = prefs.getString("gender") ?? "";
+     });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("profile"),
-      ),
-      backgroundColor: Colors.black,
- body: Column(
-  crossAxisAlignment: CrossAxisAlignment.center,
-   children: [
+      body: Column(
+        children: [
+          Text("username: $username"),
+          Text("fullname : $fullname"),
+          Text("phone : $phone"),
+          Text("Email: $email"),
+          Text("DOb: $dob"),
+           Text("Gender $gender"),
 
-     Text("Usernaem: ${widget.username}"),
-     Text("fullnaem: ${widget.fullname}"),
-     Text("phone : ${widget.phone}"),
-     Text("email : ${widget.email}"),
-     Text("Dob: ${widget.dob}"),
-     Text("Gender: ${widget.gender}"),
-   ],
- ),
+
+        ],
+      ),
     );
   }
 }
+
+
+
+
