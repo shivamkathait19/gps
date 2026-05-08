@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gps/Mainpages.dart';
 import 'package:gps/mainform.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +22,53 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
   late AnimationController _controller;
   late Animation<double> _animation;
    bool isLoading = false;
+
+
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+
+      final GoogleSignInAccount? googleUser =
+      await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        return null;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+      await FirebaseAuth.instance
+          .signInWithCredential(credential);
+
+      // SAVE USER DATA
+
+      final prefs =
+      await SharedPreferences.getInstance();
+
+      prefs.setString(
+        "username",
+        userCredential.user?.displayName ?? "",
+      );
+
+      prefs.setString(
+        "email",
+        userCredential.user?.email ?? "",
+      );
+
+      return userCredential;
+
+    } catch (e) {
+      print(e);
+    }
+
+    return null;
+  }
 
   @override
   void initState() {
@@ -203,7 +255,12 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () async{
+                            UserCredential? user = await signInWithGoogle();
+                            if(user != null){
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
+                            }
+                          },
                           icon: const Icon(Icons.facebook,
                               color: Colors.white),
                           label: const Text(
