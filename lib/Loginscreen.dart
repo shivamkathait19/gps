@@ -123,10 +123,8 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                     ],
                   ),
 
-                  /// 🔹 Form
                   child: Column(
                     children: [
-                      /// Email
                       TextFormField(
                         controller: _emailController,
                         style: const TextStyle(color: Colors.white),
