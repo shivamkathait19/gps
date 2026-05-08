@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
       await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
+        accessToken: googleAuth.access.tokon,
         idToken: googleAuth.idToken,
       );
 

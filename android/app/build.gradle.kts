@@ -8,11 +8,6 @@ plugins {
     //id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
-
-
-
-
-
 android {
     namespace = "com.example.gps"
 
@@ -31,7 +26,9 @@ android {
         }
     }
 
-
+    dependencies {
+        classpath 'com.google.gms:google-services:4.4.2'
+    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
