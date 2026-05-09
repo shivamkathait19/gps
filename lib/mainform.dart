@@ -104,8 +104,6 @@ with SingleTickerProviderStateMixin
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-
-                        /// Username + Fullname
                         Row(
                           children: [
                             Expanded(
@@ -113,17 +111,34 @@ with SingleTickerProviderStateMixin
                                 controller: usernameController,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _inputDecoration("Username"),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter username";
+                                  }
+                                  return null;
+                                },
                               ),
-                            ),
-                            const SizedBox(width: 10),
+
+                             ),
+
+
+                             SizedBox(width: 10),
                             Expanded(
                               child: TextFormField(
                                 controller: fullnameController,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _inputDecoration("Full Name"),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter Full name";
+                                  }
+                                  return null;
+                                },
                               ),
+
                             ),
                           ],
+
                         ),
 
                         SizedBox(height: 15),
@@ -150,7 +165,12 @@ with SingleTickerProviderStateMixin
                               .copyWith(
                             suffixIcon: const Icon(Icons.calendar_today,
                                 color: Colors.white),
-                          ),
+                          ),  validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter DOB";
+                          }
+                          return null;
+                        },
                         ),
 
                         const SizedBox(height: 15),
@@ -173,6 +193,12 @@ with SingleTickerProviderStateMixin
                           controller: emailController,
                           style: const TextStyle(color: Colors.white),
                           decoration: _inputDecoration("Email"),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter Email";
+                            }
+                            return null;
+                          },
                         ),
 
                          SizedBox(height: 15),
@@ -183,6 +209,12 @@ with SingleTickerProviderStateMixin
                           obscureText: true,
                           style: const TextStyle(color: Colors.white),
                           decoration: _inputDecoration("Password"),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter Password";
+                            }
+                            return null;
+                          },
                         ),
 
                          SizedBox(height: 20),
@@ -222,6 +254,7 @@ with SingleTickerProviderStateMixin
                                   });
                                 },
                               ),
+
                             ],
                           ),
                         ),
@@ -239,29 +272,52 @@ with SingleTickerProviderStateMixin
                               ),
                               backgroundColor: Colors.orange,
                             ),
-                            onPressed: () async{
-                              final prefs= await SharedPreferences.getInstance();
-                                 await prefs.setString("user", usernameController.text);
-                                 await prefs.setString("fullname", fullnameController.text);
-                                 await prefs.setString("phone", phoneController.text);
-                                 await prefs.setString("email",emailController.text);
-                                 await prefs.setString("dob", dobController.text);
-                                 await prefs.setString("gender", selectedGender ?? "");
-                              if (selectedGender == null) {
+
+                            onPressed: () async {
+
+                              // FIRST CHECK EMPTY FIELDS
+                              if (usernameController.text.isEmpty ||
+                                  fullnameController.text.isEmpty ||
+                                  phoneController.text.isEmpty ||
+                                  emailController.text.isEmpty ||
+                                  dobController.text.isEmpty ||
+                                  selectedGender == null) {
+
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                      content: Text("Select Gender")),
+                                    content: Text("Please fill all fields"),
+                                  ),
+                                );
+
+                              } else {
+
+                                // SAVE DATA
+                                final prefs = await SharedPreferences.getInstance();
+
+                                await prefs.setString("user", usernameController.text);
+                                await prefs.setString("fullname", fullnameController.text);
+                                await prefs.setString("phone", phoneController.text);
+                                await prefs.setString("email", emailController.text);
+                                await prefs.setString("dob", dobController.text);
+                                await prefs.setString("gender", selectedGender ?? "");
+
+                                // NEXT PAGE
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => Mainpage(),
+                                  ),
                                 );
                               }
-                              Navigator.push(context, MaterialPageRoute(builder: (_)=>Mainpage()));
-
                             },
 
-
-                            child: Text(
+                            child: const Text(
                               "Submit",
-                              style: TextStyle(fontSize: 18,),
-                            ),),
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
                           ),
 
                       ],

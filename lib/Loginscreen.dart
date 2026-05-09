@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
       await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.access.tokon,
+        accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
           child: Column(
             children: [
               const SizedBox(height: 120),
-             /* TweenAnimationBuilder(
+             TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0.5, end: 1),
                 duration: const Duration(seconds: 1),
                 curve: Curves.elasticInOut,
@@ -127,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                     ),
                   );
                 },
-              ),*/
-              AnimatedBuilder(
+              ),
+             /* AnimatedBuilder(
                 animation: _animation,
                 builder: (context, child) {
                   return Transform.translate(
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                 },
                 child:Image.network("https://static.vecteezy.com/system/resources/thumbnails/009/085/230/small/cartoon-cute-dogs-with-big-bone-vector.jpg", height: 50,)
 
-              ),
+              ),*/
 
               SizedBox(height: 20),
               /// 🔹 Title
@@ -192,6 +192,12 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
+                        validator: (value){
+                          if(value == null ||value.isEmpty){
+                            return "please enter email";
+                          }
+                          return null ;
+                        }
                       ),
 
                       const SizedBox(height: 20),
@@ -213,6 +219,13 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
+                          validator: (value){
+                          if (value == null || value.isEmpty){
+                            return "please enter password";
+                          }
+                          return null ;
+                          },
+
                       ),
 
                       /// Forgot
@@ -261,10 +274,10 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
                             }
                           },
-                          icon: const Icon(Icons.facebook,
+                          icon: const Icon(Icons.mail,
                               color: Colors.white),
                           label: const Text(
-                            "Continue with Facebook",
+                            "Continue with Gmail",
                             style: TextStyle(color: Colors.white),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -276,21 +289,21 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                       const SizedBox(height: 10),
 
                       /// Gmail
-                      SizedBox(
+                     /* SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () {},
                           icon:
-                          const Icon(Icons.email, color: Colors.white),
+                          const Icon(Icons.facebook0, color: Colors.white),
                           label: const Text(
-                            "Continue with Gmail",
-                            style: TextStyle(color: Colors.white),
+                            "Continue with Facebook ",
+                           // style: TextStyle(color: Colors.white),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.redAccent,
                           ),
                         ),
-                      ),
+                      ),*/
 
                       const SizedBox(height: 30),
 
