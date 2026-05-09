@@ -245,10 +245,19 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
+
+                            if (_emailController.text.isEmpty || _passController.text.isEmpty){
+                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                 content: Text("Please fill all detalis"),
+                               )
+                               );
+                               return;
+                            }
+
                             setState(() {
                               isLoading = true;
                             });
-                            await Future.delayed(Duration(seconds: 2)); // fake delay
+                            await Future.delayed(Duration(seconds: 5)); // fake delay
                             setState(() {
                               isLoading = false;
                             });

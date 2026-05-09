@@ -111,12 +111,7 @@ with SingleTickerProviderStateMixin
                                 controller: usernameController,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _inputDecoration("Username"),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter username";
-                                  }
-                                  return null;
-                                },
+
                               ),
 
                              ),
@@ -128,12 +123,7 @@ with SingleTickerProviderStateMixin
                                 controller: fullnameController,
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _inputDecoration("Full Name"),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter Full name";
-                                  }
-                                  return null;
-                                },
+
                               ),
 
                             ),
@@ -165,12 +155,7 @@ with SingleTickerProviderStateMixin
                               .copyWith(
                             suffixIcon: const Icon(Icons.calendar_today,
                                 color: Colors.white),
-                          ),  validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter DOB";
-                          }
-                          return null;
-                        },
+                          ),
                         ),
 
                         const SizedBox(height: 15),
@@ -193,12 +178,7 @@ with SingleTickerProviderStateMixin
                           controller: emailController,
                           style: const TextStyle(color: Colors.white),
                           decoration: _inputDecoration("Email"),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter Email";
-                            }
-                            return null;
-                          },
+
                         ),
 
                          SizedBox(height: 15),
@@ -209,12 +189,7 @@ with SingleTickerProviderStateMixin
                           obscureText: true,
                           style: const TextStyle(color: Colors.white),
                           decoration: _inputDecoration("Password"),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter Password";
-                            }
-                            return null;
-                          },
+
                         ),
 
                          SizedBox(height: 20),
