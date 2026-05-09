@@ -268,7 +268,23 @@ with SingleTickerProviderStateMixin
 
                                 // SAVE DATA
                                 final prefs = await SharedPreferences.getInstance();
+                                //final prefs = await SharedPreferences.getInstance();
 
+                                await prefs.setString(
+                                  "email",
+                                  emailController.text,
+                                );
+
+                                await prefs.setString(
+                                  "password",
+                                  passwordController.text,
+                                );
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Account Created"),
+                                  ),
+                                );
                                 await prefs.setString("user", usernameController.text);
                                 await prefs.setString("fullname", fullnameController.text);
                                 await prefs.setString("phone", phoneController.text);

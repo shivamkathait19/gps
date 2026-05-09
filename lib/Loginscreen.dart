@@ -248,10 +248,21 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
 
                             if (_emailController.text.isEmpty || _passController.text.isEmpty){
                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                 content: Text("Please fill all detalis"),
+                                 content: Center(child: Text("Please fill all detalis")),
                                )
                                );
                                return;
+                            }
+
+                            final prefs= await SharedPreferences.getInstance();
+                            String savedEmail = prefs.getString("email") ?? "";
+                            String savedPassword = prefs.getString("password") ?? "";
+
+                            // CHECK LOGIN
+                            if (_emailController.text == savedEmail &&
+                                _passController.text == savedPassword) {
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Wrong Email or password")));
                             }
 
                             setState(() {
