@@ -23,8 +23,8 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
   late Animation<double> _animation;
    bool isLoading = false;
 
-
   Future<UserCredential?> signInWithGoogle() async {
+
     try {
 
       final GoogleSignInAccount? googleUser =
@@ -37,7 +37,8 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
       final GoogleSignInAuthentication googleAuth =
       await googleUser.authentication;
 
-      final credential = GoogleAuthProvider.credential(
+      final credential =
+      GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
@@ -47,27 +48,28 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
           .signInWithCredential(credential);
 
       // SAVE USER DATA
-
       final prefs =
       await SharedPreferences.getInstance();
 
-      prefs.setString(
+      await prefs.setString(
         "username",
         userCredential.user?.displayName ?? "",
       );
 
-      prefs.setString(
+      await prefs.setString(
         "email",
         userCredential.user?.email ?? "",
       );
 
+      // RETURN AFTER SAVE
       return userCredential;
 
     } catch (e) {
-      print(e);
-    }
 
-    return null;
+      print("Google Sign In Error: $e");
+
+      return null;
+    }
   }
 
   @override
@@ -292,7 +294,11 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                             UserCredential? user = await signInWithGoogle();
                             if(user != null){
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
+                            }else{
+                              print("LOGIN FAIED");
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Google Login Failed"),));
                             }
+
                           },
                           icon: const Icon(Icons.mail,
                               color: Colors.white),

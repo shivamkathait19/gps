@@ -12,7 +12,20 @@
           "package_name": "com.example.gps"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "59557951480-bkuj9j7s87gkf1rm7go3qj5oaebm65a3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gps",
+            "certificate_hash": "2e1365539ea3cbcb04b181905ae067a9e6883d0c"
+          }
+        },
+        {
+          "client_id": "59557951480-dufq467vrru1a9jn3vr3q7d295phsk66.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDE3976JoGjy0WHnJ7Ct6DMDd-mjvYyZvw"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59557951480-dufq467vrru1a9jn3vr3q7d295phsk66.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
