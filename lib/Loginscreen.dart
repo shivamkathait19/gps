@@ -6,6 +6,7 @@ import 'package:gps/mainform.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,54 +24,42 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
   late Animation<double> _animation;
    bool isLoading = false;
 
-  Future<UserCredential?> signInWithGoogle() async {
-
+  Future<User?> signInWithGoogle() async {
+    setState(() => isLoading = true);
     try {
-
-      final GoogleSignInAccount? googleUser =
-      await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       if (googleUser == null) {
-        return null;
+        // 👉 User ne cancel / bg pe click kiya
+
+
+        setState(() => isLoading = false);
+        return null; // ❌ yaha se return ho jayega, aage nahi jayega
       }
 
+      // ✅ Agar user ne account select kiya
       final GoogleSignInAuthentication googleAuth =
       await googleUser.authentication;
 
-      final credential =
-      GoogleAuthProvider.credential(
+      final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      UserCredential userCredential =
-      await FirebaseAuth.instance
-          .signInWithCredential(credential);
+      final user =
+          (await FirebaseAuth.instance.signInWithCredential(credential)).user;
 
-      // SAVE USER DATA
-      final prefs =
-      await SharedPreferences.getInstance();
 
-      await prefs.setString(
-        "username",
-        userCredential.user?.displayName ?? "",
-      );
 
-      await prefs.setString(
-        "email",
-        userCredential.user?.email ?? "",
-      );
-
-      // RETURN AFTER SAVE
-      return userCredential;
-
+      return user;
     } catch (e) {
 
-      print("Google Sign In Error: $e");
-
       return null;
+    } finally {
+      setState(() => isLoading = false);
     }
   }
+
 
   @override
   void initState() {
@@ -289,25 +278,44 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                       /// Facebook
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton.icon(
-                          onPressed: () async{
-                            UserCredential? user = await signInWithGoogle();
-                            if(user != null){
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
-                            }else{
-                              print("LOGIN FAIED");
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Google Login Failed"),));
-                            }
+                        height: 40,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          child : isLoading ? Padding(
+                            padding: const EdgeInsets.only(bottom: 50),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(),
+                                SizedBox(height: 5,),
+                                Text(" Signing in , please wait ")
+                              ],
+                            ),
+                          ) : ElevatedButton.icon(
 
-                          },
-                          icon: const Icon(Icons.mail,
-                              color: Colors.white),
-                          label: const Text(
-                            "Continue with Gmail",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            onPressed: ()async{
+                              setState(() {
+                                isLoading = true;
+                              });
+                              final user = await signInWithGoogle();
+                              if(signInWithGoogle!=null){
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
+                              }
+
+                            },
+                            icon:  Icon(
+                              FontAwesomeIcons.google,
+                              color: Colors.white,
+                            ),
+                            label: Text("Continue with Google"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:  Colors.blue.withOpacity(0.70), // Google red
+                              // padding:  EdgeInsets.symmetric(vertical:5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              foregroundColor: Colors.white,
+                            ),
                           ),
                         ),
                       ),

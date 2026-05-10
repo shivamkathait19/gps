@@ -224,6 +224,12 @@
       "languageVersion": "3.9"
     },
     {
+      "name": "font_awesome_flutter",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/font_awesome_flutter-10.12.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
       "name": "geocoding",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/geocoding-2.2.2",
       "packageUri": "lib/",

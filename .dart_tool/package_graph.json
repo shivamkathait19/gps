@@ -12,6 +12,7 @@
         "firebase_core",
         "flutter",
         "flutter_map",
+        "font_awesome_flutter",
         "geocoding",
         "geolocator",
         "google_fonts",
@@ -49,6 +50,13 @@
         "stream_channel",
         "test_api",
         "vector_math"
+      ]
+    },
+    {
+      "name": "font_awesome_flutter",
+      "version": "10.12.0",
+      "dependencies": [
+        "flutter"
       ]
     },
     {
