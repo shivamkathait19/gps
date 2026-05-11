@@ -25,6 +25,11 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
    bool isLoading = false;
 
   Future<User?> signInWithGoogle() async {
+    await GoogleSignIn().signOut();
+
+    final GoogleSignInAccount? googleUser= await GoogleSignIn(
+      forceCodeForRefreshToken: true,
+    ).signOut();
     setState(() => isLoading = true);
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
