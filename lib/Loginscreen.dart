@@ -458,6 +458,12 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                               if(signInWithGoogle!=null){
                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
                               }
+                              if (user == null){
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                               return;
 
                             },
                             icon:  Icon(
