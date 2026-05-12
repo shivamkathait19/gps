@@ -225,13 +225,165 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                       ),
 
                       /// Forgot
+                      /// ======================================================
+                      /// ================= FORGOT PASSWORD ====================
+                      /// ======================================================
+
                       Align(
                         alignment: Alignment.centerRight,
+
                         child: TextButton(
-                          onPressed: () {},
+
+                          onPressed: () {
+
+                            TextEditingController resetController =
+                            TextEditingController();
+
+                            showDialog(
+
+                              context: context,
+
+                              builder: (context) {
+
+                                return AlertDialog(
+
+                                  backgroundColor: Colors.grey[900],
+
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+
+                                  title: const Text(
+                                    "Reset Password",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  content: TextField(
+
+                                    controller: resetController,
+
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+
+                                    decoration: InputDecoration(
+
+                                      hintText: "Enter your Gmail",
+
+                                      hintStyle: const TextStyle(
+                                        color: Colors.white54,
+                                      ),
+
+                                      prefixIcon: const Icon(
+                                        Icons.email,
+                                        color: Colors.blueAccent,
+                                      ),
+
+                                      filled: true,
+
+                                      fillColor: Colors.black54,
+
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                    ),
+                                  ),
+
+                                  actions: [
+
+                                    /// CANCEL BUTTON
+                                    TextButton(
+
+                                      onPressed: () {
+
+                                        Navigator.pop(context);
+                                      },
+
+                                      child: const Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.redAccent,
+                                        ),
+                                      ),
+                                    ),
+
+                                    /// SEND BUTTON
+                                    ElevatedButton(
+
+                                      onPressed: () async {
+
+                                        if (resetController.text.isEmpty) {
+
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+
+                                            const SnackBar(
+                                              content: Text(
+                                                "Please enter email",
+                                              ),
+                                            ),
+                                          );
+
+                                          return;
+                                        }
+
+                                        try {
+
+                                          await FirebaseAuth.instance
+                                              .sendPasswordResetEmail(
+                                            email:
+                                            resetController.text.trim(),
+                                          );
+
+                                          Navigator.pop(context);
+
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+
+                                            const SnackBar(
+                                              content: Text(
+                                                "Reset link sent to Gmail",
+                                              ),
+                                            ),
+                                          );
+
+                                        } on FirebaseAuthException catch (e) {
+
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+
+                                            SnackBar(
+                                              content: Text(
+                                                e.message ??
+                                                    "Something went wrong",
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueAccent,
+                                      ),
+
+                                      child: const Text(
+                                        "Send",
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+
                           child: const Text(
                             'Forgot Password?',
-                            style: TextStyle(color: Colors.blueAccent),
+                            style: TextStyle(
+                              color: Colors.blueAccent,
+                            ),
                           ),
                         ),
                       ),
