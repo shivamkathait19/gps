@@ -429,9 +429,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                           child: Text("Login"),
                         )
                       ),
-
                       const SizedBox(height: 20),
-
                       /// Facebook
                       SizedBox(
                         width: double.infinity,
