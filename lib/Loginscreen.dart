@@ -484,21 +484,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                       const SizedBox(height: 10),
 
                       /// Gmail
-                     /* SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          onPressed: () {},
-                          icon:
-                          const Icon(Icons.facebook0, color: Colors.white),
-                          label: const Text(
-                            "Continue with Facebook ",
-                           // style: TextStyle(color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.redAccent,
-                          ),
-                        ),
-                      ),*/
+                     
 
                       const SizedBox(height: 30),
 
