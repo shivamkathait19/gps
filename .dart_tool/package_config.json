@@ -8,12 +8,6 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "archive",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.9",
-      "packageUri": "lib/",
-      "languageVersion": "3.0"
-    },
-    {
       "name": "async",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/async-2.13.0",
       "packageUri": "lib/",
@@ -236,12 +230,6 @@
       "languageVersion": "3.9"
     },
     {
-      "name": "gallery_saver_plus",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/gallery_saver_plus-3.2.9",
-      "packageUri": "lib/",
-      "languageVersion": "3.0"
-    },
-    {
       "name": "geocoding",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/geocoding-2.2.2",
       "packageUri": "lib/",
@@ -408,12 +396,6 @@
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
-    },
-    {
-      "name": "image",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/image-4.8.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.0"
     },
     {
       "name": "image_picker",
@@ -596,12 +578,6 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "petitparser",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/petitparser-7.0.2",
-      "packageUri": "lib/",
-      "languageVersion": "3.8"
-    },
-    {
       "name": "platform",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/platform-3.1.6",
       "packageUri": "lib/",
@@ -610,12 +586,6 @@
     {
       "name": "plugin_platform_interface",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/plugin_platform_interface-2.1.8",
-      "packageUri": "lib/",
-      "languageVersion": "3.0"
-    },
-    {
-      "name": "posix",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/posix-6.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -774,12 +744,6 @@
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
-    },
-    {
-      "name": "xml",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.6.1",
-      "packageUri": "lib/",
-      "languageVersion": "3.8"
     },
     {
       "name": "yaml",
