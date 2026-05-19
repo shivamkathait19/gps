@@ -85,6 +85,7 @@ class _MainpageState extends State<Mainpage> {
       setState(() {
         locationText =
         "$name\n$street\n$city, $state\n$country - $pincode\n\nLat: $lat\nLng: $lng";
+          String currentTime = "${DateTime.now().hour}:${DateTime.now().minute}";
       });
 
     } catch (e) {
@@ -115,7 +116,7 @@ class _MainpageState extends State<Mainpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("GPS Photo App",style: TextStyle(color: Colors.white),),
+        title:  Text("GPS Photo App",style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -202,7 +203,9 @@ class _MainpageState extends State<Mainpage> {
                 leading: Icon(Icons.logout),
                 title: Text("logout"),
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen())
+                    ,(route) => false, );
+
                 }
               )
             ],
