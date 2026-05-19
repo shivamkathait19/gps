@@ -117,7 +117,7 @@ class _MainpageState extends State<Mainpage> {
       appBar: AppBar(
         title: const Text("GPS Photo App",style: TextStyle(color: Colors.white),),
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.white10,
       drawer: Drawer(
@@ -281,7 +281,7 @@ class _ProfileScreeenState extends State<ProfileScreeen> {
   void loadData()async{
     final prefs = await SharedPreferences.getInstance();
      setState(() {
-       username =prefs.getString("username") ??"";
+       username =prefs.getString("user") ??"";
        fullname = prefs.getString("fullname") ?? "";
        phone = prefs.getString("phone") ?? "";
        email = prefs.getString("email") ?? "";
