@@ -136,7 +136,7 @@ class _MainpageState extends State<Mainpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-        surfaceTintColor: Colors.white,
+        
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -425,7 +425,7 @@ class _MainpageState extends State<Mainpage> {
           ],
         ),
         child: FloatingActionButton(
-          elevation: 0,
+          elevation: 5,
           backgroundColor: Colors.transparent,
           onPressed: takePhoto,
           child: const Icon(
