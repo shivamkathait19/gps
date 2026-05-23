@@ -1,10 +1,21 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:gps/Loginscreen.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const Mainpage(),
+      theme: ThemeData.dark(),
+    );
+  }
 
 
 class Mainpage extends StatefulWidget {
@@ -15,12 +26,13 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
-
   File? _image;
+
   String locationText = "No location";
   double? lat, lng;
- String email = '';
- String username = '';
+
+  String email = '';
+  String username = '';
 
   @override
   void initState() {
@@ -37,60 +49,68 @@ class _MainpageState extends State<Mainpage> {
     });
   }
 
-
   Future<void> getLocation() async {
     try {
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      bool serviceEnabled =
+      await Geolocator.isLocationServiceEnabled();
+
       if (!serviceEnabled) {
         setState(() {
-          locationText = "Location OFF hai";
+          locationText = "Location Service OFF";
         });
         return;
       }
 
-      LocationPermission permission = await Geolocator.checkPermission();
+      LocationPermission permission =
+      await Geolocator.checkPermission();
 
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
+        permission =
+        await Geolocator.requestPermission();
       }
 
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
+      if (permission ==
+          LocationPermission.denied ||
+          permission ==
+              LocationPermission.deniedForever) {
         setState(() {
-          locationText = "Permission denied";
+          locationText = "Permission Denied";
         });
         return;
       }
 
-      Position position = await Geolocator.getCurrentPosition(
+      Position position =
+      await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
 
       lat = position.latitude;
       lng = position.longitude;
 
-      // 🔥 Address + Pin Code
       List<Placemark> placemarks =
-      await placemarkFromCoordinates(lat!, lng!);
+      await placemarkFromCoordinates(
+        lat!,
+        lng!,
+      );
 
-      Placemark place = placemarks[0];
+      Placemark place = placemarks.first;
 
-      String name = place.name ?? "";
-      String street = place.street ?? "";
-      String city = place.locality ?? "";
-      String state = place.administrativeArea ?? "";
-      String country = place.country ?? "";
-      String pincode = place.postalCode ?? "";
+      String currentTime =
+          "${DateTime.now().hour}:${DateTime.now().minute}";
 
       setState(() {
         locationText =
-        "$name\n$street\n$city, $state\n$country - $pincode\n\nLat: $lat\nLng: $lng";
-          String currentTime = "${DateTime.now().hour}:${DateTime.now().minute}";
+        "${place.name}\n"
+            "${place.street}\n"
+            "${place.locality}, ${place.administrativeArea}\n"
+            "${place.country} - ${place.postalCode}\n\n"
+            "Lat: $lat\n"
+            "Lng: $lng\n\n"
+            "Time: $currentTime";
       });
-
     } catch (e) {
       setState(() {
-        locationText = "Error: $e";
+        locationText = "Error : $e";
       });
     }
   }
@@ -98,16 +118,16 @@ class _MainpageState extends State<Mainpage> {
   Future<void> takePhoto() async {
     final picker = ImagePicker();
 
-    final XFile? picked =
-    await picker.pickImage(source: ImageSource.camera);
+    final XFile? picked = await picker.pickImage(
+      source: ImageSource.camera,
+    );
 
     if (picked != null) {
       setState(() {
         _image = File(picked.path);
-        locationText = "Getting location...";
+        locationText = "Getting GPS Location...";
       });
 
-      // 🔥 location baad me lo (UI freeze nahi hoga)
       await getLocation();
     }
   }
@@ -115,19 +135,15 @@ class _MainpageState extends State<Mainpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:  Text("GPS Photo App",style: TextStyle(color: Colors.white),),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-      ),
-      backgroundColor: Colors.white10,
       drawer: Drawer(
-        elevation: 5,
         surfaceTintColor: Colors.white,
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.black, Colors.blueGrey.shade900],
+              colors: [
+                Colors.black,
+                Colors.blueGrey.shade900,
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -135,183 +151,455 @@ class _MainpageState extends State<Mainpage> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              // 🔥 HEADER
               UserAccountsDrawerHeader(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.transparent,
                 ),
-                accountName: Text( username,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                accountName: Text(
+                  username,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-
                 accountEmail: Text(email),
-                currentAccountPicture: CircleAvatar(
-                  radius: 30,
+                currentAccountPicture:
+                const CircleAvatar(
+                  radius: 35,
                   backgroundColor: Colors.orange,
-                  child: Icon(Icons.person, size: 35, color: Colors.white),
+                  child: Icon(
+                    Icons.person,
+                    size: 40,
+                    color: Colors.white,
+                  ),
                 ),
               ),
 
-              // 📷 Camera
+              /// PROFILE
               ListTile(
-                leading: Icon(Icons.person,color: Colors.white,),
-                title: Text("Profile",style: TextStyle(color: Colors.white),),
-             onTap: (){
-                  Navigator.pop(context);
-             },
-              ),
-
-              /*ListTile(
-                leading: Icon(Icons.camera_alt, color: Colors.white),
-                title: Text("Camera", style: TextStyle(color: Colors.white)),
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Profile",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
                 onTap: () {
-                  Navigator.pop(context);
-                  takePhoto();
-                },
-              ),*/
-
-              // 🖼️ Gallery
-
-
-              // 🗺️ Map
-              ListTile(
-                leading: Icon(Icons.map, color: Colors.white),
-                title: Text("Map View", style: TextStyle(color: Colors.white)),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfileScreeen()));
-                  // yaha map screen open kar sakte ho
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                      const ProfileScreen(),
+                    ),
+                  );
                 },
               ),
 
-              Divider(color: Colors.white54),
-
-              // ⚙️ Settings
+              /// SETTINGS
               ListTile(
-                leading: Icon(Icons.settings, color: Colors.white),
-                title: Text("Settings", style: TextStyle(color: Colors.white)),
-                onTap: () {},
+                leading: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Settings",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
 
-              // ℹ️ About
+              /// ABOUT
               ListTile(
-                leading: Icon(Icons.info, color: Colors.white),
-                title: Text("About", style: TextStyle(color: Colors.white)),
-                onTap: () {},
+                leading: const Icon(
+                  Icons.info,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "About",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("logout"),
-                onTap: (){
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen())
-                    ,(route) => false, );
 
-                }
-              )
+              /// LOGOUT
+              ListTile(
+                leading: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         ),
       ),
-      body: Center(
-        child: _image == null
-            ? const Text(
-          "No Image Captured",
-          style: TextStyle(color: Colors.white),
-        )
-            : Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.file(_image!),
-            ),
-            Positioned(
-              bottom: 20,
-              left: 10,
-              right: 10,
-              child: Container(
-                padding:  EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(20),
+
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.black,
+        title: const Text(
+          "GPS Photo App",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.black,
+              Colors.blueGrey.shade900,
+              Colors.black,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+
+        child: Center(
+          child: _image == null
+              ? Column(
+            mainAxisAlignment:
+            MainAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.camera_alt,
+                size: 120,
+                color: Colors.white54,
+              ),
+
+              SizedBox(height: 20),
+
+              Text(
+                "Capture GPS Photo",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight:
+                  FontWeight.bold,
                 ),
-                child: Text(
-                  locationText,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+              ),
+            ],
+          )
+              : Stack(
+            children: [
+              ClipRRect(
+                borderRadius:
+                BorderRadius.circular(20),
+                child: Image.file(
+                  _image!,
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+              /// GPS BADGE
+              Positioned(
+                top: 20,
+                right: 20,
+                child: Container(
+                  padding:
+                  const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius:
+                    BorderRadius.circular(
+                      20,
+                    ),
+                  ),
+                  child: const Text(
+                    "GPS ON",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight:
+                      FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
+
+              /// LOCATION CARD
+              Positioned(
+                bottom: 20,
+                left: 15,
+                right: 15,
+                child: Container(
+                  padding:
+                  const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                    BorderRadius.circular(
+                      25,
+                    ),
+                    color: Colors.black
+                        .withOpacity(0.4),
+                    border: Border.all(
+                      color: Colors.white24,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment:
+                    CrossAxisAlignment
+                        .start,
+                    children: [
+                      Row(
+                        children: const [
+                          Icon(
+                            Icons.location_on,
+                            color:
+                            Colors.orange,
+                          ),
+
+                          SizedBox(width: 8),
+
+                          Text(
+                            "LIVE GPS",
+                            style: TextStyle(
+                              color:
+                              Colors.orange,
+                              fontWeight:
+                              FontWeight
+                                  .bold,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(
+                          height: 10),
+
+                      Text(
+                        locationText,
+                        style:
+                        const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: const LinearGradient(
+            colors: [
+              Colors.orange,
+              Colors.deepOrange,
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color:
+              Colors.orange.withOpacity(0.5),
+              blurRadius: 20,
+              spreadRadius: 5,
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: Colors.white,
-        onPressed: takePhoto,
-        backgroundColor: Colors.black ,
-        child:  Icon(Icons.camera_alt),
+        child: FloatingActionButton(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          onPressed: takePhoto,
+          child: const Icon(
+            Icons.camera_alt,
+            size: 30,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
 }
 
-
-
-class ProfileScreeen extends StatefulWidget {
-  const ProfileScreeen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreeen> createState() => _ProfileScreeenState();
+  State<ProfileScreen> createState() =>
+      _ProfileScreenState();
 }
 
-class _ProfileScreeenState extends State<ProfileScreeen> {
-  String username="";
+class _ProfileScreenState
+    extends State<ProfileScreen> {
+  String username = "";
   String fullname = "";
-  String phone ="";
-  String email  ="";
+  String phone = "";
+  String email = "";
   String dob = "";
   String gender = "";
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadData();
   }
 
-
-  void loadData()async{
+  void loadData() async {
     final prefs = await SharedPreferences.getInstance();
-     setState(() {
-       username =prefs.getString("user") ??"";
-       fullname = prefs.getString("fullname") ?? "";
-       phone = prefs.getString("phone") ?? "";
-       email = prefs.getString("email") ?? "";
-       dob = prefs.getString("dob") ?? "";
-       gender = prefs.getString("gender") ?? "";
-     });
+
+    setState(() {
+      username =
+          prefs.getString("username") ?? "";
+      fullname =
+          prefs.getString("fullname") ?? "";
+      phone = prefs.getString("phone") ?? "";
+      email = prefs.getString("email") ?? "";
+      dob = prefs.getString("dob") ?? "";
+      gender = prefs.getString("gender") ?? "";
+    });
+  }
+
+  Widget profileTile(
+      IconData icon,
+      String title,
+      String value,
+      ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.08),
+        borderRadius:
+        BorderRadius.circular(18),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Colors.orange,
+          ),
+
+          const SizedBox(width: 15),
+
+          Column(
+            crossAxisAlignment:
+            CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white54,
+                ),
+              ),
+
+              Text(
+                value,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Text("username: $username"),
-          Text("fullname : $fullname"),
-          Text("phone : $phone"),
-          Text("Email: $email"),
-          Text("DOb: $dob"),
-           Text("Gender $gender"),
+      appBar: AppBar(
+        title: const Text("Profile"),
+        backgroundColor: Colors.black,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.black,
+              Colors.blueGrey.shade900,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding:
+            const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const CircleAvatar(
+                  radius: 55,
+                  backgroundColor:
+                  Colors.orange,
+                  child: Icon(
+                    Icons.person,
+                    size: 55,
+                    color: Colors.white,
+                  ),
+                ),
 
+                const SizedBox(height: 25),
 
-        ],
+                profileTile(
+                  Icons.person,
+                  "Username",
+                  username,
+                ),
+
+                profileTile(
+                  Icons.badge,
+                  "Full Name",
+                  fullname,
+                ),
+
+                profileTile(
+                  Icons.phone,
+                  "Phone",
+                  phone,
+                ),
+
+                profileTile(
+                  Icons.email,
+                  "Email",
+                  email,
+                ),
+
+                profileTile(
+                  Icons.calendar_month,
+                  "DOB",
+                  dob,
+                ),
+
+                profileTile(
+                  Icons.wc,
+                  "Gender",
+                  gender,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
-
-
-
-
