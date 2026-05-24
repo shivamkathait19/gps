@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,7 +63,7 @@ Future<void> saveImageToFolder()async{
       }
       String filename ="Gps_${DateTime.now().microsecondsSinceEpoch}.jpg";
       final newImage = await _image.copy('$folderPath/$filename');
-       savedImagePath = newImage.path;
+      savedImagePath = newImage.path;
        await GallerySaver.saveImage(newImage.path);
        ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.green,
        content: Text(" Image Saved Successfully "),
@@ -449,7 +450,21 @@ Future<void> saveImageToFolder()async{
                     ),
                   ),
 
-                  
+                  GestureDetector(
+                    onTap: shareImage,
+                    child: Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+
+                      ),
+                      child: Icon(
+                        Icons.share,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
                 ],
               ),)
             ],
