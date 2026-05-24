@@ -35,7 +35,8 @@ dependencies:
   firebase_auth: ^6.4.0
   google_sign_in: ^6.2.1
   font_awesome_flutter: ^10.7.0
-  
+  gallery_saver_plus: ^3.0.1
+  share_plus: ^10.0.2
 
 
 
