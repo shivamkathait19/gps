@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gallery_saver_plus/gallery_saver.dart';
 
 
 
@@ -52,34 +53,48 @@ class _MainpageState extends State<Mainpage> {
       username = prefs.getString("username") ?? "User";
     });
   }
-Future<void> saveImageToFolder()async{
+
+  Future<void> saveImageToFolder() async {
     if (_image == null) return;
+
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final folderPath ="${directory.path}/GPSPhotos";
-      final folder = Directory(folderPath);
-      if(!await folder.exists()){
-        await folder.create(recursive: true);
-      }
-      String filename ="Gps_${DateTime.now().microsecondsSinceEpoch}.jpg";
-      final newImage = await _image.copy('$folderPath/$filename');
-      savedImagePath = newImage.path;
-       await GallerySaver.saveImage(newImage.path);
-       ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.green,
-       content: Text(" Image Saved Successfully "),
-       ));
+      final directory =
+      await getApplicationDocumentsDirectory();
 
+  final folderPath = "${directory.path}/GPSPhotos";
 
-    }catch(e){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(" Error : $e")));
-    }
-}
-  Future<void> shareImage ()async{
-    if(_image == null) return;
-    await Share.shareXFiles([XFile(_image!.path)],
-    text: "Shared form Gps Photo App");
+  final folder = Directory(folderPath);
+
+  if (!await folder.exists()) {
+  await folder.create(recursive: true);
   }
 
+  String fileName =
+  "GPS_${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+  final newImage =
+  await _image!.copy('$folderPath/$fileName');
+
+  savedImagePath = newImage.path;
+
+  await GallerySaver.saveImage(newImage.path);
+
+  ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+  backgroundColor: Colors.green,
+  content: Text(
+  "Image Saved Successfully",
+  ),
+  ),
+  );
+} catch (e) {
+ScaffoldMessenger.of(context).showSnackBar(
+SnackBar(
+content: Text("Error : $e"),
+),
+);
+}
+}
 
   Future<void> getLocation() async {
     try {
