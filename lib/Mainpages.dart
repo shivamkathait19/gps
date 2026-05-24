@@ -31,7 +31,7 @@ class Mainpage extends StatefulWidget {
 
 class _MainpageState extends State<Mainpage> {
   File? _image;
-
+ String savedImagePath ="";
 
   String locationText = "No location";
   double? lat, lng;
