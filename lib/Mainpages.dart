@@ -448,40 +448,45 @@ content: Text("Error : $e"),
                   ),
                 ),
               ),
-              Positioned(child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: saveImageToFolder,
-                    child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Icon(
-                        Icons.save,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-
-                  GestureDetector(
-                    onTap: shareImage,
-                    child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-
-                      ),
-                      child: Icon(
-                        Icons.share,
-                        color: Colors.white,
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: saveImageToFolder,
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.save,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  )
-                ],
-              ),)
+
+                    SizedBox(width: 12),
+
+                    GestureDetector(
+                      onTap: shareImage,
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.share,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
