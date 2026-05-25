@@ -96,6 +96,14 @@ content: Text("Error : $e"),
 }
 }
 
+Future<void> shareImage()async{
+    if(_image == null) return;
+    await Share.shareXFiles(
+      [XFile(_image!.path)],
+      text: "Shared from GPS photo App"
+    );
+}
+
   Future<void> getLocation() async {
     try {
       bool serviceEnabled =
