@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:gallery_saver_plus/gallery_saver.dart';
 
 
 
@@ -150,18 +149,30 @@ Future<void> shareImage()async{
 
       Placemark place = placemarks.first;
 
+      String village = place.locality ?? "";
+      String area = place.subLocality ?? "";
+      String district = place.subAdministrativeArea ?? "";
+      String street = place.street ?? "";
+      String state = place.administrativeArea ?? "";
+      String country = place.country ?? "";
+      String pincode = place.postalCode ?? "";
+
       String currentTime =
           "${DateTime.now().hour}:${DateTime.now().minute}";
 
       setState(() {
         locationText =
-        "${place.name}\n"
-            "${place.street}\n"
-            "${place.locality}, ${place.administrativeArea}\n"
-            "${place.country} - ${place.postalCode}\n\n"
-            "Lat: $lat\n"
-            "Lng: $lng\n\n"
-            "Time: $currentTime";
+        "🏡 Village : $village\n\n"
+            "📍 Area : $area\n\n"
+            "🏢 District : $district\n\n"
+            "🛣️ Street : $street\n\n"
+            "🌍 State : $state\n\n"
+            "📮 PinCode : $pincode\n\n"
+            "🌏 Country : $country\n\n"
+            "📅 Date : $currentTime\n\n"
+            "⏰ Time : $currentTime\n\n"
+            "📌 Latitude : $lat\n\n"
+            "📌 Longitude : $lng";
       });
     } catch (e) {
       setState(() {
