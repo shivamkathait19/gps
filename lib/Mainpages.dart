@@ -313,7 +313,7 @@ Future<void> shareImage()async{
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey,
         title: const Text(
           "GPS Photo App",
           style: TextStyle(
