@@ -199,7 +199,6 @@ Future<void> shareImage()async{
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-        
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -216,7 +215,10 @@ Future<void> shareImage()async{
             children: [
               UserAccountsDrawerHeader(
                 decoration: const BoxDecoration(
-                  color: Colors.transparent,
+                  gradient: LinearGradient(colors:[
+                    Color(0xff1e3c72),
+                    Color(0xff2a5298),]
+                  )
                 ),
                 accountName: Text(
                   username,
@@ -226,16 +228,15 @@ Future<void> shareImage()async{
                   ),
                 ),
                 accountEmail: Text(email),
-                currentAccountPicture:
-                const CircleAvatar(
-                  radius: 35,
-                  backgroundColor: Colors.orange,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Colors.white,
-                  ),
-                ),
+                 currentAccountPicture: Container(
+                   decoration: BoxDecoration(
+                     shape: BoxShape.circle,
+                     border: Border.all(
+                       color: Colors.white,
+                       width: 3
+                     )
+                   ),
+                 ),
               ),
 
               /// PROFILE
