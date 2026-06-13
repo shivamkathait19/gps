@@ -153,6 +153,7 @@ Future<void> shareImage()async{
       String state = place.administrativeArea ?? "";
       String country = place.country ?? "";
       String pincode = place.postalCode ?? "";
+      String Mapphoto =mapPhoto.
 
       String currentTime =
           "${DateTime.now().hour}:${DateTime.now().minute}";
@@ -204,37 +205,42 @@ Future<void> shareImage()async{
             gradient: LinearGradient(
               colors: [
                 Colors.black,
-                Colors.blueGrey.shade900,
+                Colors.white,
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
           child: ListView(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.all(30),
             children: [
               UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(colors:[
-                    Color(0xff1e3c72),
-                    Color(0xff2a5298),]
-                  )
+                decoration:  BoxDecoration(
+
                 ),
-                accountName: Text(
-                  username,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+
+                accountName: Padding(
+                  padding:  EdgeInsets.only(top: 25),
+                  child: Text(
+                    username,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 accountEmail: Text(email),
-                 currentAccountPicture: Container(
-                   decoration: BoxDecoration(
-                     shape: BoxShape.circle,
-                     border: Border.all(
-                       color: Colors.white,
-                       width: 3
-                     )
+                 currentAccountPicture: Padding(
+                   padding: const EdgeInsets.only(right: 20),
+                   child: Container(
+                     decoration: BoxDecoration(
+                       shape: BoxShape.circle,
+                         border: Border.all(
+                         color: Colors.white,
+                           width: 1,
+
+                       )
+                     ),
                    ),
                  ),
               ),
