@@ -153,7 +153,7 @@ Future<void> shareImage()async{
       String state = place.administrativeArea ?? "";
       String country = place.country ?? "";
       String pincode = place.postalCode ?? "";
-      String Mapphoto =mapPhoto.
+
 
       String currentTime =
           "${DateTime.now().hour}:${DateTime.now().minute}";
@@ -325,6 +325,7 @@ Future<void> shareImage()async{
           "GPS Photo App",
           style: TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.bold
           ),
         ),
       ),
@@ -638,7 +639,8 @@ class _ProfileScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile"),
+        title:  Text("Profile",style: TextStyle(color: Colors.white),),
+        centerTitle: true,
         backgroundColor: Colors.black,
       ),
       body: Container(
@@ -668,19 +670,22 @@ class _ProfileScreenState
                 ),
 
                 const SizedBox(height: 25),
-
+               Row(
+                 children: [
                 profileTile(
+
                   Icons.person,
                   "Username",
                   username,
                 ),
+                SizedBox(width: 60,),
 
                 profileTile(
                   Icons.badge,
                   "Full Name",
                   fullname,
-                ),
-
+                ),]
+               ),
                 profileTile(
                   Icons.phone,
                   "Phone",
