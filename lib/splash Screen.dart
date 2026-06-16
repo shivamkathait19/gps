@@ -11,23 +11,20 @@ import 'package:flutter/material.dart';
 
        ),
        body: Container(
-         child: Column(
+         child: SafeArea(child: Column(
+           mainAxisAlignment: MainAxisAlignment.start,
+           //crossAxisAlignment: CrossAxisAlignment.start,
            children: [
-           SafeArea(child: Column(
-             children: [
-               
-               Padding(
-                 padding: EdgeInsets.all(0.0),
-                 child: Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold),),
-               ),
-                Padding(
-                  padding: EdgeInsets.only(bottom:10),
-                  child: Text("Capture proof , not just photos",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w800),),
-                )
-             ],
-           ))
+             Padding(
+               padding: EdgeInsets.all(0.0),
+               child: Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold),),
+             ),
+             Padding(
+               padding: EdgeInsets.only(bottom:10),
+               child: Text("Capture proof,not just photos",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w800),),
+             )
            ],
-         ),
+         )),
        )
      );
    }
