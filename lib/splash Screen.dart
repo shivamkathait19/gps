@@ -6,12 +6,18 @@ import 'package:flutter/material.dart';
    Widget build(BuildContext context) {
      return Scaffold(
        appBar: AppBar(
-         title: Text("Gogo Gps "),
+         title: Text("Gogo Gps ",style: TextStyle(fontStyle: FontStyle.italic),),
+         centerTitle: true,
+
        ),
        body: Container(
          child: Column(
            children: [
-
+           SafeArea(child: Column(
+             children: [
+               Text("GOGO GPS")
+             ],
+           ))
            ],
          ),
        )
