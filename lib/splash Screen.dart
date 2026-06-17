@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
        ),
        body: Container(
          child: SafeArea(child: Column(
-           mainAxisAlignment: MainAxisAlignment.start,
+           mainAxisAlignment: MainAxisAlignment.center,
            //crossAxisAlignment: CrossAxisAlignment.start,
            children: [
              Padding(
@@ -22,7 +22,11 @@ import 'package:flutter/material.dart';
              Padding(
                padding: EdgeInsets.only(bottom:10),
                child: Text("Capture proof,not just photos",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w800),),
-             )
+             ),
+             Text("Trusted."),
+             Text("Accrurate."),
+             Text("Authentic.")
+
            ],
          )),
        )
