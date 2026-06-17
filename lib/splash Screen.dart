@@ -23,10 +23,15 @@ import 'package:flutter/material.dart';
                padding: EdgeInsets.only(bottom:10),
                child: Text("Capture proof,not just photos",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w800),),
              ),
+             Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+
              Text("Trusted."),
              Text("Accrurate."),
-             Text("Authentic.")
-
+             Text("Authentic.") ]
+             )
            ],
          )),
        )

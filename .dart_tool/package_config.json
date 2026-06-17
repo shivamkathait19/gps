@@ -3,13 +3,25 @@
   "packages": [
     {
       "name": "_flutterfire_internals",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/_flutterfire_internals-1.3.69",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/_flutterfire_internals-1.3.73",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "archive",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.9",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "args",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/args-2.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
     },
     {
       "name": "async",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/async-2.13.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/async-2.13.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -27,9 +39,9 @@
     },
     {
       "name": "camera_android",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/camera_android-0.10.10+16",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/camera_android-0.10.10+18",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.10"
     },
     {
       "name": "camera_avfoundation",
@@ -45,9 +57,9 @@
     },
     {
       "name": "camera_web",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/camera_web-0.3.5+3",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/camera_web-0.3.5+4",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.10"
     },
     {
       "name": "characters",
@@ -63,9 +75,9 @@
     },
     {
       "name": "code_assets",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/code_assets-1.0.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/code_assets-1.2.1",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.10"
     },
     {
       "name": "collection",
@@ -147,39 +159,39 @@
     },
     {
       "name": "firebase_auth",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_auth-6.4.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_auth-6.5.3",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.6"
     },
     {
       "name": "firebase_auth_platform_interface",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_auth_platform_interface-8.1.9",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_auth_platform_interface-9.0.3",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.6"
     },
     {
       "name": "firebase_auth_web",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_auth_web-6.1.5",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_auth_web-6.2.3",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.6"
     },
     {
       "name": "firebase_core",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core-4.7.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core-4.11.0",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.6"
     },
     {
       "name": "firebase_core_platform_interface",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core_platform_interface-6.0.3",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core_platform_interface-7.1.0",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.6"
     },
     {
       "name": "firebase_core_web",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core_web-3.6.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core_web-3.9.0",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.6"
     },
     {
       "name": "fixnum",
@@ -207,9 +219,9 @@
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.34",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.35",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.10"
     },
     {
       "name": "flutter_test",
@@ -273,13 +285,13 @@
     },
     {
       "name": "geolocator_apple",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_apple-2.3.13",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_apple-2.3.14",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
     {
       "name": "geolocator_platform_interface",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_platform_interface-4.2.6",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/geolocator_platform_interface-4.2.8",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -296,14 +308,8 @@
       "languageVersion": "3.5"
     },
     {
-      "name": "glob",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/glob-2.1.3",
-      "packageUri": "lib/",
-      "languageVersion": "3.3"
-    },
-    {
       "name": "google_fonts",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-8.0.2",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-8.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.9"
     },
@@ -321,19 +327,19 @@
     },
     {
       "name": "google_maps_flutter",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter-2.17.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter-2.17.1",
       "packageUri": "lib/",
       "languageVersion": "3.10"
     },
     {
       "name": "google_maps_flutter_android",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_android-2.19.6",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_android-2.19.10",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.10"
     },
     {
       "name": "google_maps_flutter_ios",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_ios-2.18.1",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_ios-2.18.3",
       "packageUri": "lib/",
       "languageVersion": "3.10"
     },
@@ -345,9 +351,9 @@
     },
     {
       "name": "google_maps_flutter_web",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_web-0.6.2",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/google_maps_flutter_web-0.6.2+3",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.10"
     },
     {
       "name": "google_sign_in",
@@ -381,7 +387,7 @@
     },
     {
       "name": "hooks",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/hooks-1.0.2",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/hooks-2.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.10"
     },
@@ -405,13 +411,13 @@
     },
     {
       "name": "image_picker",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker-1.2.1",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker-1.2.2",
       "packageUri": "lib/",
-      "languageVersion": "3.7"
+      "languageVersion": "3.9"
     },
     {
       "name": "image_picker_android",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_android-0.8.13+16",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_android-0.8.13+17",
       "packageUri": "lib/",
       "languageVersion": "3.9"
     },
@@ -458,6 +464,18 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "jni",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/jni-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "jni_flutter",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/jni_flutter-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "latlong2",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/latlong2-0.9.1",
       "packageUri": "lib/",
@@ -483,15 +501,9 @@
     },
     {
       "name": "lints",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/lints-6.0.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/lints-6.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.8"
-    },
-    {
-      "name": "lists",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/lists-1.0.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
     },
     {
       "name": "logging",
@@ -519,9 +531,9 @@
     },
     {
       "name": "mgrs_dart",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/mgrs_dart-2.0.0",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/mgrs_dart-3.0.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.0"
     },
     {
       "name": "mime",
@@ -530,16 +542,16 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "native_toolchain_c",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/native_toolchain_c-0.17.6",
+      "name": "objective_c",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/objective_c-9.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.10"
     },
     {
-      "name": "objective_c",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/objective_c-9.3.0",
+      "name": "package_config",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/package_config-2.2.0",
       "packageUri": "lib/",
-      "languageVersion": "3.10"
+      "languageVersion": "3.4"
     },
     {
       "name": "path",
@@ -549,13 +561,13 @@
     },
     {
       "name": "path_provider",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider-2.1.5",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider-2.1.6",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.10"
     },
     {
       "name": "path_provider_android",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_android-2.2.23",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_android-2.3.1",
       "packageUri": "lib/",
       "languageVersion": "3.9"
     },
@@ -573,9 +585,9 @@
     },
     {
       "name": "path_provider_platform_interface",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_platform_interface-2.1.2",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/path_provider_platform_interface-2.1.3",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.10"
     },
     {
       "name": "path_provider_windows",
@@ -596,16 +608,28 @@
       "languageVersion": "3.0"
     },
     {
-      "name": "proj4dart",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/proj4dart-2.1.0",
+      "name": "posix",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/posix-6.5.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "proj4dart",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/proj4dart-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "pub_semver",
       "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/pub_semver-2.2.0",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "record_use",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/record_use-0.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
     },
     {
       "name": "sanitize_html",
@@ -668,6 +692,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "simple_sparse_list",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/simple_sparse_list-0.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///C:/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -675,7 +705,7 @@
     },
     {
       "name": "source_span",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/source_span-1.10.1",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/source_span-1.10.2",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
@@ -723,9 +753,9 @@
     },
     {
       "name": "unicode",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/unicode-0.3.1",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/unicode-1.1.9",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.0"
     },
     {
       "name": "url_launcher_linux",
@@ -765,7 +795,7 @@
     },
     {
       "name": "vm_service",
-      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-15.0.2",
+      "rootUri": "file:///C:/Users/jyoti/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-15.2.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
