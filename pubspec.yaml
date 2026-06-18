@@ -86,19 +86,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: GravitasOne-Regular
-      fonts:
-        - asset: fonts/GravitasOne-Regular.ttf
-    #  - asset: fonts/Schyler-Italic.ttf
-    #    style: italic
-    - family: StoryScript-Regular
-      fonts:
-        - asset: fonts/StoryScript-Regular.ttf
-    #       - asset: fonts/TrajanPro_Bold.ttf
-    #         weight: 700
-    - family: EBGaramond-Italic-VariableFont_wght
-      fonts:
-        - asset: fonts/EBGaramond-Italic-VariableFont_wght.ttf
+
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
