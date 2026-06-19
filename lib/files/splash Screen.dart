@@ -28,8 +28,8 @@ import 'package:flutter/material.dart';
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
                  Text("Trusted."),
-             Text("Accrurate."),
-             Text("Authentic.") ]
+                 Text("Accrurate."),
+                 Text("Authentic.") ]
              )
            ],
          )),
