@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
    @override
    Widget build(BuildContext context) {
      return Scaffold(
+       backgroundColor: Colors.grey,
        appBar: AppBar(
          //title: Text("Gogo Gps ",style: TextStyle(fontStyle: FontStyle.italic),),
          centerTitle: true,
