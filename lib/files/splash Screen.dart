@@ -27,10 +27,12 @@ import 'package:flutter/material.dart';
                    children: [
 
                      Container(
-                       decoration: BoxDecoration(
-
-                         )
-                       ),
+                     decoration: BoxDecoration(
+                       border: Border.all(
+                         color: Colors.orangeAccent,
+                         width: 2
+                       )
+                     ),
                        height: 100,
                        width: 90,
                        color: Colors.black,
