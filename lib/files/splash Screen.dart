@@ -12,27 +12,56 @@ import 'package:flutter/material.dart';
 
        ),
        body: Container(
-         child: SafeArea(child: Column(
+
+         child: SafeArea(
+             child: Column(
            mainAxisAlignment: MainAxisAlignment.center,
            //crossAxisAlignment: CrossAxisAlignment.start,
            children: [
+
              Padding(
                padding: EdgeInsets.all(0.0),
-               child: Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold),),
+               child: Padding(
+                 padding:  EdgeInsets.only(left: 30),
+                 child: Row(
+                   children: [
+
+                     Container(
+                       height: 100,
+                       width: 90,
+                       color: Colors.black,
+                     ),
+                     SizedBox(width: 10,),
+                     Column(
+                       children: [
+                         Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.bold,backgroundColor: Colors.yellow),),
+                           SizedBox(height: 2,),
+                         Text("CAPTURE PROOF, NOT JUST PHOTOS",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w800,backgroundColor: Colors.white),),
+
+                       ],
+                     ),
+
+                   ],
+                 ),
+               ),
              ),
+               SizedBox(height: 20,),
              Padding(
-               padding: EdgeInsets.only(bottom:10),
-               child: Text("CAPTURE PROOF, NOT JUST PHOTOS",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w800),),
+               padding:  EdgeInsets.only(right:200),
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+                     Text("TRUSTED.",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                     Text("ACCUURATE.",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                     Text("AUTHENTIC.",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold)) ]
+                  ),
              ),
-             Column(
-               mainAxisAlignment: MainAxisAlignment.center,
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 
-                 Text("TRUSTED."),
-                 Text("ACCUURATE."),
-                 Text("AUTHENTIC.") ]
-             )
+                  Positioned(
+                      top: 100,
+                      right: 20,
+                      child: Text("version 12.1"))
+
            ],
          )),
        )
