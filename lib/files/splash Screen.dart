@@ -27,23 +27,20 @@ import 'package:flutter/material.dart';
                    children: [
 
                      Container(
-                     decoration: BoxDecoration(
-                       border: Border.all(
-                         color: Colors.orangeAccent,
-                         width: 2
-                       )
-                     ),
-                       height: 100,
+                       height: 50,
                        width: 90,
                        color: Colors.black,
+                       decoration: BoxDecoration(
+                         shape: BoxShape.circle
+                       ),
 
                      ),
                      SizedBox(width: 10,),
                      Column(
                        children: [
-                         Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.bold,backgroundColor: Colors.yellow),),
+                         Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 26,fontWeight: FontWeight.bold,),),
                            SizedBox(height: 2,),
-                         Text("CAPTURE PROOF, NOT JUST PHOTOS",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w800,backgroundColor: Colors.white),),
+                         Text("CAPTURE PROOF, NOT JUST PHOTOS",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,),),
 
                        ],
                      ),
