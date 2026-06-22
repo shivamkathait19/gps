@@ -27,9 +27,14 @@ import 'package:flutter/material.dart';
                    children: [
 
                      Container(
+                       decoration: BoxDecoration(
+
+                         )
+                       ),
                        height: 100,
                        width: 90,
                        color: Colors.black,
+
                      ),
                      SizedBox(width: 10,),
                      Column(
@@ -57,14 +62,12 @@ import 'package:flutter/material.dart';
                      Text("AUTHENTIC.",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold)) ]
                   ),
              ),
-                  Positioned(
-                      top: 100,
-                      right: 20,
-                      child: Text("version 12.1"))
+                  Text("Version 12.1")
 
            ],
          )),
        )
+         
      );
    }
  }
