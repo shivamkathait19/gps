@@ -1,0 +1,1 @@
+ C:\\gps\\.dart_tool\\flutter_build\\19d6ff66d0e672a5f258cea4f224001d\\native_assets.json: 
