@@ -58,8 +58,21 @@ class _secondState extends State<second> {
                        color: selectedIndex == index ?
                            Colors.amber.shade50:Colors.white,
                        borderRadius: BorderRadius.circular(15),
-                       border: Border.all(color: Colors.grey.shade300)
-                     ),
+                       border: Border.all(color: Colors.grey.shade300),
+                     boxShadow:[ BoxShadow(
+                       color: Colors.grey.shade200,
+                       blurRadius: 5
+                     )
+                         ] ),
+                       child: Row(
+                         children: [
+                           Text(languages[index]["flag"]!,
+                           style: TextStyle(
+                             fontSize:40,
+                           ),
+                           )
+                         ],
+                       ),
                    ),
                  );
               } ))
