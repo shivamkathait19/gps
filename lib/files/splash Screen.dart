@@ -18,14 +18,13 @@ import 'package:flutter/material.dart';
            mainAxisAlignment: MainAxisAlignment.center,
            //crossAxisAlignment: CrossAxisAlignment.start,
            children: [
-
              Padding(
                padding: EdgeInsets.all(0.0),
                child: Padding(
                  padding:  EdgeInsets.only(left:10),
                  child: Row(
                    children: [
-                     SizedBox(height: 500,),
+                     SizedBox(height: 200,),
                      Container(
                        height: 50,
                        width: 90,
@@ -34,7 +33,7 @@ import 'package:flutter/material.dart';
                      Column(
                        children: [
                          Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.bold,),),
-                           SizedBox(height: 2, width: 2),
+                           SizedBox(height: 3, width: 2),
                          Padding(
                            padding:EdgeInsets.only(left:5),
                            child: Text("CAPTURE PROOF, NOT JUST PHOTOS",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,),),
@@ -45,10 +44,10 @@ import 'package:flutter/material.dart';
 
                    ],
                  ),
+
                ),
              ),
-               SizedBox(height: 10,),
-             const Align(
+             Align(
                alignment: Alignment.centerLeft,
                child: Text(
                  "Trusted.\nAccurate.\nAuthentic.",
@@ -61,7 +60,10 @@ import 'package:flutter/material.dart';
                ),
              ),
 
-              Spacer(),
+
+
+
+             Spacer(),
 
               Container(
                 width: 40,height: 20,
