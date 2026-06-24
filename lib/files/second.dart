@@ -19,6 +19,9 @@ class _secondState extends State<second> {
     {"name": "ไทย (Thai)", "flag": "🇹🇭"},
     {"name": "Português", "flag": "🇵🇹"},
     {"name": "Русский", "flag": "🇷🇺"},
+    {"name": "India", "flag": "🇷🇺"},
+
+
   ];
 
   @override
@@ -59,7 +62,8 @@ class _secondState extends State<second> {
                            Colors.amber.shade50:Colors.white,
                        borderRadius: BorderRadius.circular(15),
                        border: Border.all(color: Colors.grey.shade300),
-                     boxShadow:[ BoxShadow(
+                     boxShadow:[
+                       BoxShadow(
                        color: Colors.grey.shade200,
                        blurRadius: 5
                      )
@@ -70,12 +74,29 @@ class _secondState extends State<second> {
                            style: TextStyle(
                              fontSize:40,
                            ),
-                           )
+                           ),
+                           SizedBox(width: 20,),
+                           Expanded(child: Text(languages[index]["name"]!,
+                           style: TextStyle(
+                             fontSize: 20,
+                             fontWeight: FontWeight.w600
+                           ),
+                           )),
+                           if(selectedIndex == index)
+                             Icon(Icons.check_circle,
+                             color: Colors.amber,)
                          ],
                        ),
                    ),
                  );
-              } ))
+              } )),
+               ElevatedButton( style: ElevatedButton.styleFrom(
+                 backgroundColor: Colors.amber, shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadiusGeometry.circular(15),
+               ),shadowColor: Colors.black
+               ),
+                   onPressed: (){}, child: Text("Next",style: TextStyle(
+                 fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white,) ,))
         ],
       ),
       ),
