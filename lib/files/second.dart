@@ -19,7 +19,7 @@ class _secondState extends State<second> {
     {"name": "ไทย (Thai)", "flag": "🇹🇭"},
     {"name": "Português", "flag": "🇵🇹"},
     {"name": "Русский", "flag": "🇷🇺"},
-    {"name": "India", "flag": "🇷🇺"},
+
 
 
   ];
@@ -90,7 +90,9 @@ class _secondState extends State<second> {
                    ),
                  );
               } )),
-               ElevatedButton( style: ElevatedButton.styleFrom(
+               ElevatedButton(
+
+                   style: ElevatedButton.styleFrom(
                  backgroundColor: Colors.amber, shape: RoundedRectangleBorder(
                  borderRadius: BorderRadiusGeometry.circular(15),
                ),shadowColor: Colors.black
