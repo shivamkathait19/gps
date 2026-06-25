@@ -27,7 +27,7 @@ class _ThiredState extends State<Thired> {
             ),
              Container(
                decoration: BoxDecoration(
-                 color: Colors.white,
+                 color: Colors.grey,
                  borderRadius: BorderRadius.circular(16),
                  border: Border.all(
                    color: Colors.grey.shade100
@@ -68,11 +68,44 @@ class _ThiredState extends State<Thired> {
 
                  ],
                ),
-             )
+             ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Colors.grey.shade600
+                )
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.amber,
+                    child: Icon(Icons.location_city,size: 50,),
+                  ),
+                  Expanded(child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-          ],
-        ),
+                      Text("Location Access,",style: TextStyle(
+                          fontWeight: FontWeight.bold,fontSize: 20,
+                      ),)
+
+                    ],
+                  ))
+
+                ],
+              ),
+            )
+           ],
+
+
       )),
+    ),
     );
   }
 }
