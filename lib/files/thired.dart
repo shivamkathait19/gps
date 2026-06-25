@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 
 class Thired extends StatefulWidget {
   const Thired({super.key});
@@ -9,11 +10,13 @@ class Thired extends StatefulWidget {
 
 class _ThiredState extends State<Thired> {
   bool cemeraAccess = false;
+  bool LocationAccess = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SafeArea(child: Padding(
+      body:SafeArea(
+        child: Padding(
         padding:  EdgeInsets.all(20.0),
         child: Column(
           children: [
@@ -25,7 +28,9 @@ class _ThiredState extends State<Thired> {
                 " Photo Library and Location to take photos ore record video", textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18,color: Colors.black, fontWeight: FontWeight.w400 ),
             ),
+             SizedBox(height: 20,),
              Container(
+
                decoration: BoxDecoration(
                  color: Colors.grey,
                  borderRadius: BorderRadius.circular(16),
@@ -38,20 +43,21 @@ class _ThiredState extends State<Thired> {
                  children: [
                    CircleAvatar(
                      radius: 28,
-                     backgroundColor: Colors.amber,
+                     backgroundColor: Colors.transparent,
                      child: Icon(Icons.camera_alt,
-                       color: Colors.orange,size: 32,),
+                       color: Colors.black,size: 35,),
                    ),
                    Expanded(child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
-                       Text("Cemera Access",style: TextStyle(
+                       Text(
+                         "Cemera Access",style: TextStyle(
                          fontSize: 22,
                          fontWeight: FontWeight.bold,
 
                        ),),
                        Text("App needs access to your cemera for capture photo & videos",style: TextStyle(
-                         color: Colors.grey.shade600,
+                         color: Colors.black,
                          fontSize: 15,
                        ),
                        ),
@@ -84,26 +90,84 @@ class _ThiredState extends State<Thired> {
                 children: [
                   CircleAvatar(
                     radius: 28,
-                    backgroundColor: Colors.amber,
-                    child: Icon(Icons.location_city,size: 50,),
+                    backgroundColor: Colors.transparent,
+                    child: Icon(Icons.location_on,size: 50,),
                   ),
                   Expanded(child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                      Text("Location Access,",style: TextStyle(
+                 Text("Location Access,",style: TextStyle(
                           fontWeight: FontWeight.bold,fontSize: 20,
-                      ),)
-
+                      ),),
+                       Text(    "App needs access to your location for display current location.",),
+                      Switch(value: LocationAccess,
+                          activeColor: Colors.amber,
+                          onChanged: (value){
+                        setState(() {
+                          LocationAccess = value;
+                        });
+                          })
                     ],
-                  ))
+                  )),
 
                 ],
+
               ),
-            )
-           ],
+            ),
+            Spacer(),
+            Text.rich(
+              TextSpan (
+                  text: "By tapping Next, you agree to our ",style: TextStyle(
+                  fontSize: 15
+              ),
+                children: [
+                  TextSpan(
+                    text: "Terms end Service " ,style: TextStyle(
+                    color: Colors.blue
+                  ),
 
-
+                  ),
+                  TextSpan(
+                    text: "And ",style: TextStyle(
+                    color: Colors.amber
+                  ),
+                  ),
+                  TextSpan(text: "Privacy Policy ",style: TextStyle(
+                    color: Colors.blue,fontSize: 15
+                  ))
+                ]
+              ),
+              textAlign: TextAlign.center,
+             // textDirection: TextDirection.ltr,
+            ),
+           SizedBox(
+             width: double.infinity,
+             height:20,
+           ),
+            SizedBox(
+                width: double.infinity,
+                height: 60,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amber,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Next Screen
+                  },
+                  child: const Text(
+                    "NEXT",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ), ),
+]
       )),
     ),
     );

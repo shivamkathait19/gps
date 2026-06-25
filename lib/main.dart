@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
           seedColor: Colors.deepPurpleAccent,
         ),
       ),
-      home: Thired(),
+      home: splasgScreen(),
     );
   }
 }
