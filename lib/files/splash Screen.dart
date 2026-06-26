@@ -6,17 +6,13 @@ import 'package:flutter/material.dart';
    Widget build(BuildContext context) {
      return Scaffold(
        backgroundColor: Colors.grey,
-       appBar: AppBar(
-         //title: Text("Gogo Gps ",style: TextStyle(fontStyle: FontStyle.italic),),
-         centerTitle: true,
 
-       ),
+
        body: Container(
-
          child: SafeArea(
              child: Column(
-           mainAxisAlignment: MainAxisAlignment.center,
-           //crossAxisAlignment: CrossAxisAlignment.start,
+           //mainAxisAlignment: MainAxisAlignment.center,
+           crossAxisAlignment: CrossAxisAlignment.center,
            children: [
              Padding(
                padding: EdgeInsets.all(0.0),
@@ -28,10 +24,19 @@ import 'package:flutter/material.dart';
                      Container(
                        height: 50,
                        width: 90,
-                       color: Colors.black,
+                       decoration: BoxDecoration(
+                         color: Colors.white24,
+                         borderRadius: BorderRadius.circular(50),
+                         border: Border.all(
+                           color: Colors.amber,
+
+                         ),
+                       ),
+                       child: Icon(Icons.location_on),
                      ),
                      Column(
                        children: [
+
                          Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.bold,),),
                            SizedBox(height: 3, width: 2),
                          Padding(
@@ -47,15 +52,19 @@ import 'package:flutter/material.dart';
 
                ),
              ),
-             Align(
-               alignment: Alignment.centerLeft,
-               child: Text(
-                 "Trusted.\nAccurate.\nAuthentic.",
-                 style: TextStyle(
-                   fontSize: 40,
-                   fontWeight: FontWeight.bold,
-                   color: Color(0xff11184D),
-                   height: 1.1,
+
+             Padding(
+               padding:  EdgeInsets.only(bottom: 50),
+               child: Align(
+                 alignment: Alignment.centerLeft,
+                 child: Text(
+                   "Trusted.\nAccurate.\nAuthentic.",
+                   style: TextStyle(
+                     fontSize: 40,
+                     fontWeight: FontWeight.bold,
+                     color: Color(0xff11184D),
+                     height: 1.5,
+                   ),
                  ),
                ),
              ),
