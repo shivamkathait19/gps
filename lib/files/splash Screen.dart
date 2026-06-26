@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
- class splasgScreen extends StatelessWidget {
+import 'package:gps/files/second.dart';
+ class splasgScreen extends StatefulWidget {
    const splasgScreen({super.key});
- 
+
+  @override
+  State<splasgScreen> createState() => _splasgScreenState();
+}
+
+class _splasgScreenState extends State<splasgScreen>
+ with TickerProviderStateMixin{
+   late AnimationController _controller;
+
+      @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+            _controller = AnimationController(vsync: this, duration: Duration(seconds: 5))..repeat(reverse: true);
+  }
+
    @override
    Widget build(BuildContext context) {
      return Scaffold(
@@ -9,6 +25,16 @@ import 'package:flutter/material.dart';
 
 
        body: Container(
+         decoration: BoxDecoration(
+           gradient: LinearGradient(
+             colors: [
+               Color.lerp(Colors.pink, Colors.orange, _controller.value)!,
+               Color.lerp(Colors.white, Colors.pink, _controller.value)!,
+             ],
+             begin: Alignment.topLeft,
+             end: Alignment.bottomRight,
+           ),
+         ),
          child: SafeArea(
              child: Column(
            //mainAxisAlignment: MainAxisAlignment.center,
@@ -90,8 +116,7 @@ import 'package:flutter/material.dart';
            ],
          )),
        )
-         
+
      );
    }
- }
- 
+}
