@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:gps/Mainpages.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Thired extends StatefulWidget {
   const Thired({super.key});
@@ -11,6 +13,20 @@ class Thired extends StatefulWidget {
 class _ThiredState extends State<Thired> {
   bool cemeraAccess = false;
   bool LocationAccess = false;
+
+  Future<void> requsetCemeraPermi()async{
+   PermissionStatus status = await Permission.camera.request();
+    setState(() {
+      cemeraAccess = status.isGranted;
+    });
+  }
+
+  Future<void> requsetLocationpermi()async{
+    PermissionStatus status= await Permission.location.request();
+  setState(() {
+    LocationAccess = status.isGranted;
+  });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +79,8 @@ class _ThiredState extends State<Thired> {
                        ),
                        Switch(value: cemeraAccess,
                          activeColor: Colors.amber,
-                         onChanged: (value){
-                         setState((){
-                           cemeraAccess = value;
-                         });
+                         onChanged: (value)async{
+                         await requsetCemeraPermi();
                          },
                        )
                      ],
@@ -103,10 +117,8 @@ class _ThiredState extends State<Thired> {
                        Text(    "App needs access to your location for display current location.",),
                       Switch(value: LocationAccess,
                           activeColor: Colors.amber,
-                          onChanged: (value){
-                        setState(() {
-                          LocationAccess = value;
-                        });
+                          onChanged: (value)async{
+                       await requsetLocationpermi();
                           })
                     ],
                   )),
@@ -156,7 +168,13 @@ class _ThiredState extends State<Thired> {
                     ),
                   ),
                   onPressed: () {
-                    // Next Screen
+                      if(cemeraAccess && LocationAccess){
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>Mainpage()));
+                      } else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Please allow Cemera & Location permission")),
+                        );
+                      }// Next Screen
                   },
                   child: const Text(
                     "NEXT",

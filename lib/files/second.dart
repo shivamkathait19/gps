@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gps/files/thired.dart';
 class second extends StatefulWidget {
   const second({super.key});
 
@@ -97,7 +98,15 @@ class _secondState extends State<second> {
                  borderRadius: BorderRadiusGeometry.circular(15),
                ),shadowColor: Colors.black
                ),
-                   onPressed: (){}, child: Text("Next",style: TextStyle(
+                   onPressed: () {
+                     if(languages.isEmpty ){
+                       Navigator.push(context, MaterialPageRoute(builder: (_) =>Thired()
+                     )
+                     );
+                   }else{
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Select the languages")));
+                     }
+                       }, child: Text("Next",style: TextStyle(
                  fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white,) ,))
         ],
       ),

@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:gps/files/forth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:camera/camera.dart';
+
 
 @override
   Widget build(BuildContext context){
@@ -23,9 +26,12 @@ class Mainpage extends StatefulWidget {
 
   @override
   State<Mainpage> createState() => _MainpageState();
+
 }
 
 class _MainpageState extends State<Mainpage> {
+  bool showResult = false;
+  CameraController? _controller;
   File? _image;
  String savedImagePath ="";
 
@@ -39,7 +45,25 @@ class _MainpageState extends State<Mainpage> {
   void initState() {
     super.initState();
     loadUserData();
+    initCamera();
   }
+  @override
+  void dispose(){
+    _controller?.dispose();
+  }
+
+   Future<void> initCamera()async{
+    final cameras = await availableCameras();
+    _controller = CameraController(
+        cameras.first,
+        ResolutionPreset.high);
+    await _controller!.initialize();
+    if (mounted){
+      setState(() {
+
+      });
+    }
+   }
 
   void loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -86,11 +110,7 @@ class _MainpageState extends State<Mainpage> {
 } catch (e) {
 ScaffoldMessenger.of(context).showSnackBar(
 SnackBar(
-content: Text("Error : $e"),
-),
-);
-}
-}
+content: Text("Error : $e"),),);}}
 
 Future<void> shareImage()async{
     if(_image == null) return;
@@ -147,7 +167,7 @@ Future<void> shareImage()async{
       Placemark place = placemarks.first;
 
       String village = place.locality ?? "";
-      String area = place.subLocality ?? "";
+      //String area = place.subLocality ?? "";
       String district = place.subAdministrativeArea ?? "";
       String street = place.street ?? "";
       String state = place.administrativeArea ?? "";
@@ -159,18 +179,10 @@ Future<void> shareImage()async{
           "${DateTime.now().hour}:${DateTime.now().minute}";
 
       setState(() {
-        locationText =
-        "🏡 Village : $village\n\n"
-            "📍 Area : $area\n\n"
-            "🏢 District : $district\n\n"
-            "🛣️ Street : $street\n\n"
-            "🌍 State : $state\n\n"
-            "📮 PinCode : $pincode\n\n"
-            "🌏 Country : $country\n\n"
-            "📅 Date : $currentTime\n\n"
-            "⏰ Time : $currentTime\n\n"
-            "📌 Latitude : $lat\n\n"
-            "📌 Longitude : $lng";
+        locationText = "🏡 Village : $village 🏢 District : $district\n\n,"
+            " 🛣️ Street : $street 🌍 State : $state 📮 PinCode : $pincode"
+            "🌏 Country : $country 📅 Date : $currentTime ⏰ Time : $currentTime";
+        //"📍 Area : $area\n\n"
       });
     } catch (e) {
       setState(() {
@@ -180,25 +192,32 @@ Future<void> shareImage()async{
   }
 
   Future<void> takePhoto() async {
-    final picker = ImagePicker();
+    if (_controller == null ||
+        !_controller!.value.isInitialized) return;
 
-    final XFile? picked = await picker.pickImage(
-      source: ImageSource.camera,
-    );
+    final XFile file = await _controller!.takePicture();
 
-    if (picked != null) {
-      setState(() {
-        _image = File(picked.path);
-        locationText = "Getting GPS Location...";
-      });
+    setState(() {
+      _image = File(file.path);
+      locationText = "Getting GPS Location...";
+    });
 
-      await getLocation();
-    }
+    await getLocation();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
+    if (_controller == null || !_controller!.value.isInitialized) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
+
       drawer: Drawer(
         child: Container(
           decoration: BoxDecoration(
@@ -330,183 +349,117 @@ Future<void> shareImage()async{
         ),
       ),
 
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.black,
-              Colors.blueGrey.shade900,
-              Colors.black,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      body: _image == null
+          ? Stack(
+        children: [
+
+          /// Live Camera
+          Positioned.fill(
+            child: CameraPreview(_controller!),
           ),
-        ),
 
-        child: Center(
-          child: _image == null
-              ? Column(
-            mainAxisAlignment:
-            MainAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.camera_alt,
-                size: 120,
-                color: Colors.white54,
+          /// Capture Button
+          Positioned(
+            bottom: 30,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: FloatingActionButton(
+                onPressed: takePhoto,
+                child: const Icon(Icons.camera_alt),
               ),
+            ),
+          ),
+        ],
+      )
+          : SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
 
-              SizedBox(height: 20),
+              /// Top Buttons
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 10),
+                child: Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.red,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _image = null;
+                          locationText = "No location";
+                        });
+                      },
+                    ),
 
-              Text(
-                "Capture GPS Photo",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight:
-                  FontWeight.bold,
+                    Row(
+                      children: [
+
+                        IconButton(
+                          onPressed: saveImageToFolder,
+                          icon: const Icon(
+                            Icons.save,
+                            color: Colors.blue,
+                          ),
+                        ),
+
+                        IconButton(
+                          onPressed: shareImage,
+                          icon: const Icon(
+                            Icons.share,
+                            color: Colors.green,
+                          ),
+                        ),
+
+                      ],
+                    )
+                  ],
                 ),
               ),
-            ],
-          )
-              : Stack(
-            children: [
+
+              /// Captured Photo
               ClipRRect(
-                borderRadius:
-                BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20),
                 child: Image.file(
                   _image!,
                   width: double.infinity,
-                  height: double.infinity,
+                  height: 350,
                   fit: BoxFit.cover,
                 ),
               ),
 
-              /// GPS BADGE
-              Positioned(
-                top: 20,
-                right: 20,
-                child: Container(
-                  padding:
-                  const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius:
-                    BorderRadius.circular(
-                      20,
-                    ),
-                  ),
-                  child: const Text(
-                    "GPS ON",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight:
-                      FontWeight.bold,
-                    ),
-                  ),
+              const SizedBox(height: 20),
+
+              /// GPS Location
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.black87,
+                  borderRadius: BorderRadius.circular(25),
                 ),
-              ),
-
-              /// LOCATION CARD
-              Positioned(
-                bottom: 20,
-                left: 15,
-                right: 15,
-                child: Container(
-                  padding:
-                  const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.circular(
-                      25,
-                    ),
-                    color: Colors.black
-                        .withOpacity(0.4),
-                    border: Border.all(
-                      color: Colors.white24,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment
-                        .start,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.location_on,
-                            color:
-                            Colors.orange,
-                          ),
-
-                          SizedBox(width: 8),
-
-                          Text(
-                            "LIVE GPS",
-                            style: TextStyle(
-                              color:
-                              Colors.orange,
-                              fontWeight:
-                              FontWeight
-                                  .bold,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(
-                          height: 10),
-
-                      Text(
-                        locationText,
-                        style:
-                        const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          height: 1.4,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 20,
-                left: 20,
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: saveImageToFolder,
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Icon(
-                          Icons.save,
-                          color: Colors.white,
-                        ),
+                    Icon(Icons.location_on,color: Colors.amber,),
+                    SizedBox(width: 10,),
+                    Expanded(child:
+                    Text(
+                      locationText,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        height: 1.0,
                       ),
                     ),
-
-                    SizedBox(width: 12),
-
-                    GestureDetector(
-                      onTap: shareImage,
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Icon(
-                          Icons.share,
-                          color: Colors.black,
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -516,7 +469,8 @@ Future<void> shareImage()async{
         ),
       ),
 
-      floatingActionButton: Container(
+
+     /* floatingActionButton: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: const LinearGradient(
@@ -544,7 +498,9 @@ Future<void> shareImage()async{
             color: Colors.white,
           ),
         ),
-      ),
+      ),*/
+
+
     );
   }
 }

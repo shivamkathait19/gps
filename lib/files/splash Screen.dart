@@ -15,7 +15,7 @@ class _splasgScreenState extends State<splasgScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-            _controller = AnimationController(vsync: this, duration: Duration(seconds: 5))..repeat(reverse: true);
+            _controller = AnimationController(vsync: this, duration: Duration(seconds:1))..repeat(reverse: true);
   }
 
    @override
@@ -28,8 +28,8 @@ class _splasgScreenState extends State<splasgScreen>
          decoration: BoxDecoration(
            gradient: LinearGradient(
              colors: [
-               Color.lerp(Colors.pink, Colors.orange, _controller.value)!,
-               Color.lerp(Colors.white, Colors.pink, _controller.value)!,
+               Color.lerp(Colors.blueAccent, Colors.blue.shade300, _controller.value)!,
+               Color.lerp(Colors.amber, Colors.yellow.shade900, _controller.value)!,
              ],
              begin: Alignment.topLeft,
              end: Alignment.bottomRight,
@@ -43,7 +43,7 @@ class _splasgScreenState extends State<splasgScreen>
              Padding(
                padding: EdgeInsets.all(0.0),
                child: Padding(
-                 padding:  EdgeInsets.only(left:10),
+                 padding:  EdgeInsets.only(left:5),
                  child: Row(
                    children: [
                      SizedBox(height: 200,),
@@ -51,14 +51,33 @@ class _splasgScreenState extends State<splasgScreen>
                        height: 50,
                        width: 90,
                        decoration: BoxDecoration(
+                         gradient: LinearGradient(
+                         colors: [
+                             Color.lerp(Colors.lightGreenAccent, Colors.pink, _controller.value)!,
+                         Color.lerp(Colors.white, Colors.white, _controller.value)!,
+
+                         ],
+                           begin: Alignment.topLeft,
+                           end: Alignment.bottomRight,
+                         ),
                          color: Colors.white24,
                          borderRadius: BorderRadius.circular(50),
                          border: Border.all(
-                           color: Colors.amber,
-
+                           color: Colors.black,
+                           width: 3
                          ),
                        ),
-                       child: Icon(Icons.location_on),
+                       child: Icon(Icons.location_on,shadows: [
+                         BoxShadow(
+                           color: Colors.black.withOpacity(0.3),
+                           blurRadius: 20,
+                           spreadRadius: 3,
+                           offset: Offset(0, 15),
+                         ),
+
+                       ],
+                       size: 70, color: Colors.blueAccent.shade400,
+                       ),
                      ),
                      Column(
                        children: [

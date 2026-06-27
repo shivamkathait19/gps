@@ -6,7 +6,7 @@
 // @dart = 3.10
 
 import 'dart:io'; // flutter_ignore: dart_io_import.
-import 'package:camera_android/camera_android.dart' as camera_android;
+import 'package:camera_android_camerax/camera_android_camerax.dart' as camera_android_camerax;
 import 'package:geocoding_android/geocoding_android.dart' as geocoding_android;
 import 'package:geolocator_android/geolocator_android.dart' as geolocator_android;
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart' as google_maps_flutter_android;
@@ -48,10 +48,10 @@ class _PluginRegistrant {
   static void register() {
     if (Platform.isAndroid) {
       try {
-        camera_android.AndroidCamera.registerWith();
+        camera_android_camerax.AndroidCameraCameraX.registerWith();
       } catch (err) {
         print(
-          '`camera_android` threw an error: $err. '
+          '`camera_android_camerax` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }
