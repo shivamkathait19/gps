@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +12,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:image/image.dart' as img;
 
-// यहाँ अपनी Google Maps API Key डालें
+
 const String googleMapsApiKey = "YOUR_GOOGLE_MAPS_API_KEY";
 
 void main() {
