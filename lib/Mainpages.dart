@@ -8,6 +8,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:camera/camera.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:image/image.dart' as img;
 
 // यहाँ अपनी Google Maps API Key डालें
 const String googleMapsApiKey = "YOUR_GOOGLE_MAPS_API_KEY";
@@ -44,7 +47,7 @@ class _MainpageState extends State<Mainpage> {
 
   String locationText = "No location";
   double? lat, lng;
-  String? staticMapUrl; // मैप इमेज का URL रखने के लिए
+  String? staticMapUrl;
 
   List<CameraDescription> _cameras = [];
   int _selectedCameraIndex = 0; // 0 = Back, 1 = Front (आमतौर पर)
@@ -57,7 +60,8 @@ class _MainpageState extends State<Mainpage> {
     super.initState();
     loadUserData();
     initCamera();
-    initFrontCamera();
+    getLocation();
+    //initFrontCamera();
   }
 
   @override
@@ -66,7 +70,7 @@ class _MainpageState extends State<Mainpage> {
     super.dispose();
   }
 
-  Future<void>initFrontCamera()async{
+  /*Future<void>initFrontCamera()async{
     final camera = await availableCameras();
     CameraDescription?  frontCamera;
     for(var camera in camera){
@@ -86,12 +90,59 @@ class _MainpageState extends State<Mainpage> {
     if (mounted) {
       setState(() {});
     }
+  }*/
+  Future<File> createGpsPhoto(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+
+    img.Image? image = img.decodeImage(bytes);
+
+    if (image == null) return imageFile;
+
+    String text = '''
+Latitude : ${lat ?? ""}
+Longitude : ${lng ?? ""}
+
+$locationText
+
+Date : ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}
+
+Time : ${DateTime.now().hour}:${DateTime.now().minute}
+''';
+
+    img.fillRect(
+      image,
+      x1: 0,
+      y1: image.height - 220,
+      x2: image.width,
+      y2: image.height,
+      color: img.ColorRgb8(0, 0, 0),
+    );
+
+    img.drawString(
+      image,
+      text,
+      font: img.arial24,
+      x: 20,
+      y: image.height - 200,
+      color: img.ColorRgb8(255, 255, 255),
+    );
+
+    final dir = await getTemporaryDirectory();
+
+    final file = File(
+      "${dir.path}/gps_${DateTime.now().millisecondsSinceEpoch}.jpg",
+    );
+
+    await file.writeAsBytes(img.encodeJpg(image));
+
+    return file;
   }
 
   Future<void> initCamera() async {
     _cameras = await availableCameras();
     if (_cameras.isNotEmpty) {
-      _startCamera(_selectedCameraIndex);
+    _selectedCameraIndex = 0;
+     await   _startCamera(_selectedCameraIndex);
     }
   }
 
@@ -111,10 +162,11 @@ class _MainpageState extends State<Mainpage> {
     }
   }
 
-  // फ्रंट और बैक कैमरा स्विच करने का फंक्शन
+
   void switchCamera() {
-    if (_cameras.length < 2) return; // अगर फोन में एक ही कैमरा है तो कुछ न करें
-    _selectedCameraIndex = (_selectedCameraIndex + 1) % _cameras.length;
+    if (_cameras.length < 2) return;
+    _selectedCameraIndex =
+        (_selectedCameraIndex + 1) % _cameras.length;
     _startCamera(_selectedCameraIndex);
   }
 
@@ -126,9 +178,41 @@ class _MainpageState extends State<Mainpage> {
     });
   }
 
+
+
   Future<void> saveImageToFolder() async {
     if (_image == null) return;
 
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final folder = Directory("${directory.path}/GPSPhotos");
+
+      if (!await folder.exists()) {
+        await folder.create(recursive: true);
+      }
+
+      String fileName =
+          "GPS_${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+      final savedFile = await _image!.copy("${folder.path}/$fileName");
+
+      await GallerySaver.saveImage(savedFile.path);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.green,
+          content: Text("GPS Photo Saved Successfully"),
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
+  /*Future<void> saveImageToFolder() async {
+    if (_image == null) return;
     try {
       final directory = await getApplicationDocumentsDirectory();
       final folderPath = "${directory.path}/GPSPhotos";
@@ -155,7 +239,7 @@ class _MainpageState extends State<Mainpage> {
         SnackBar(content: Text("Error : $e")),
       );
     }
-  }
+  }*/
 
   Future<void> shareImage() async {
     if (_image == null) return;
@@ -227,6 +311,7 @@ class _MainpageState extends State<Mainpage> {
     if (_controller == null || !_controller!.value.isInitialized) return;
 
     final XFile file = await _controller!.takePicture();
+    File original = File (file.path);
 
     setState(() {
       _image = File(file.path);
@@ -234,7 +319,11 @@ class _MainpageState extends State<Mainpage> {
       staticMapUrl = null; // पुराना मैप हटाना
     });
 
-    await getLocation();
+   // await getLocation();
+    File gpsImage = await createGpsPhoto(original);
+    setState(() {
+      _image = gpsImage;
+    });
   }
 
   @override
@@ -339,7 +428,34 @@ class _MainpageState extends State<Mainpage> {
               child: const Icon(Icons.switch_camera, color: Colors.white),
             ),
           ),
+    Positioned(
+    bottom: 130,
+    left: 10,
+    right: 10,
+    child: Container(
 
+      //color: Colors.white,
+    padding:  EdgeInsets.all(10),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: Colors.white
+      ),
+    color: Colors.black54,
+    borderRadius: BorderRadius.circular(12),
+    ),
+    child:Image.asset("assets/map.png",
+    width: 200,
+    height: 200,
+    fit: BoxFit.cover,),
+    /*child: Text(
+    locationText,
+    style: const TextStyle(
+    color: Colors.white,
+    fontSize: 12,
+    ),
+    ),*/
+    ),
+    ),
           /// Capture Button
           Positioned(
             bottom: 30,

@@ -23,11 +23,11 @@ class _splasgScreenState extends State<splasgScreen>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const second(),
+          builder: (context) =>  second(),
         ),
       );
     });
-      }
+
   }
 
 
