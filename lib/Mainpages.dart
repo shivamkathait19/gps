@@ -392,11 +392,11 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
               ),
             ),
             Positioned(
-              bottom: 170,
+              bottom: 120,
               left: 10,
               right: 10,
               child: Container(
-                height: 150,
+                height: 120,
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.black87,

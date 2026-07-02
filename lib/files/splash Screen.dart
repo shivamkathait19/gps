@@ -1,155 +1,175 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gps/files/second.dart';
- class splasgScreen extends StatefulWidget {
-   const splasgScreen({super.key});
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<splasgScreen> createState() => _splasgScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _splasgScreenState extends State<splasgScreen>
- with TickerProviderStateMixin{
-   late AnimationController _controller;
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> scaleAnimation;
+  Timer? timer;
 
-      @override
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-            _controller = AnimationController(vsync: this, duration: Duration(seconds:1))..repeat(reverse: true);
 
-    Timer(const Duration(seconds: 3), () {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+
+    scaleAnimation = Tween<double>(
+      begin: 0.9,
+      end: 1.08,
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+   timer = Timer(const Duration(seconds: 7), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  second(),
+          builder: (_) => Second(),
         ),
       );
-    });
+    }
 
+    );
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Scaffold(
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.lerp(
+                      const Color(0xff0F2027),
+                      const Color(0xff2C5364),
+                      _controller.value)!,
+                  Color.lerp(
+                      const Color(0xff203A43),
+                      const Color(0xff4CA1AF),
+                      _controller.value)!,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  children: [
 
-   @override
-   Widget build(BuildContext context) {
-     return Scaffold(
-       backgroundColor: Colors.grey,
+                    const Spacer(),
 
+                    ScaleTransition(
+                      scale: scaleAnimation,
+                      child: Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(.4),
+                              blurRadius: 30,
+                              spreadRadius: 5,
+                            )
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.location_on,
+                          size: 80,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
 
-       body: Container(
-         decoration: BoxDecoration(
-           gradient: LinearGradient(
-             colors: [
-               Color.lerp(Colors.blueAccent, Colors.blue.shade300, _controller.value)!,
-               Color.lerp(Colors.amber, Colors.yellow.shade900, _controller.value)!,
-             ],
-             begin: Alignment.topLeft,
-             end: Alignment.bottomRight,
-           ),
-         ),
-         child: SafeArea(
-             child: Column(
-           //mainAxisAlignment: MainAxisAlignment.center,
-           crossAxisAlignment: CrossAxisAlignment.center,
-           children: [
-             Padding(
-               padding: EdgeInsets.all(0.0),
-               child: Padding(
-                 padding:  EdgeInsets.only(left:5),
-                 child: Row(
-                   children: [
-                     SizedBox(height: 200,),
-                     Container(
-                       height: 50,
-                       width: 90,
-                       decoration: BoxDecoration(
-                         gradient: LinearGradient(
-                         colors: [
-                             Color.lerp(Colors.lightGreenAccent, Colors.pink, _controller.value)!,
-                         Color.lerp(Colors.white, Colors.white, _controller.value)!,
+                    const SizedBox(height: 30),
 
-                         ],
-                           begin: Alignment.topLeft,
-                           end: Alignment.bottomRight,
-                         ),
-                         color: Colors.white24,
-                         borderRadius: BorderRadius.circular(50),
-                         border: Border.all(
-                           color: Colors.black,
-                           width: 3
-                         ),
-                       ),
-                       child: Icon(Icons.location_on,shadows: [
-                         BoxShadow(
-                           color: Colors.black.withOpacity(0.3),
-                           blurRadius: 20,
-                           spreadRadius: 3,
-                           offset: Offset(0, 15),
-                         ),
+                    const Text(
+                      "GOGO GPS CAMERA",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1,
+                      ),
+                    ),
 
-                       ],
-                       size: 70, color: Colors.blueAccent.shade400,
-                       ),
-                     ),
-                     Column(
-                       children: [
+                    const SizedBox(height: 10),
 
-                         Text("GOGO GPS CAMERA",style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.bold,),),
-                           SizedBox(height: 3, width: 2),
-                         Padding(
-                           padding:EdgeInsets.only(left:5),
-                           child: Text("CAPTURE PROOF, NOT JUST PHOTOS",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,),),
-                         ),
+                    Text(
+                      "Capture Proof, Not Just Photos",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(.9),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
 
-                       ],
-                     ),
+                    const SizedBox(height: 50),
 
-                   ],
-                 ),
+                    const Text(
+                      "Trusted.\nAccurate.\nAuthentic.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 34,
+                        fontWeight: FontWeight.bold,
+                        height: 1.4,
+                      ),
+                    ),
 
-               ),
-             ),
+                    const Spacer(),
 
-             Padding(
-               padding:  EdgeInsets.only(bottom: 50),
-               child: Align(
-                 alignment: Alignment.centerLeft,
-                 child: Text(
-                   "Trusted.\nAccurate.\nAuthentic.",
-                   style: TextStyle(
-                     fontSize: 40,
-                     fontWeight: FontWeight.bold,
-                     color: Color(0xff11184D),
-                     height: 1.5,
-                   ),
-                 ),
-               ),
-             ),
+                    SizedBox(
+                      height: 35,
+                      width: 35,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 4,
+                        color: Colors.white,
+                      ),
+                    ),
 
+                    const SizedBox(height: 25),
 
+                    Text(
+                      "Version 1.23.5",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(.85),
+                        fontSize: 16,
+                      ),
+                    ),
 
-
-             Spacer(),
-
-              Container(
-                width: 40,height: 20,
-                decoration: BoxDecoration(
-                  color: Colors.amber,
-                  shape: BoxShape.circle
+                    const SizedBox(height: 30),
+                  ],
                 ),
               ),
-                 SizedBox(height: 20,),
-             Text("Version 1.23.5",style: TextStyle(
-                fontSize: 20,
-               color: Color(0xff11184D),
-             ),),
- SizedBox(height: 40,)
-           ],
-         )),
-       )
-
-     );
-   }
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

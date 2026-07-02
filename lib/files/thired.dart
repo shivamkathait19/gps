@@ -36,24 +36,71 @@ class _ThiredState extends State<Thired> {
         padding:  EdgeInsets.all(20.0),
         child: Column(
           children: [
-             SizedBox(height: 19,),
-            Text("We need some access!" ,textAlign: TextAlign.center,style: TextStyle(
-              color: Colors.amber, fontSize: 28,
-            ),),
-            Text("You need to grant access to the device camera."
-                " Photo Library and Location to take photos ore record video", textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18,color: Colors.black, fontWeight: FontWeight.w400 ),
+            const SizedBox(height: 20),
+
+            Container(
+              padding:  EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(.75),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.blueAccent.withOpacity(.25),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(.12),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.security,
+                    color: Colors.blue,
+                    size: 20,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Permissions Required",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Please allow Camera and Location permissions to capture GPS-enabled photos.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
             ),
+
              SizedBox(height: 20,),
              Container(
-
                decoration: BoxDecoration(
+                 gradient: LinearGradient(
+                   colors: [
+                     Color(0xffEAF6FF),
+                     Color(0xffD6EFFF),
+                     Colors.white,
+                   ],
+                   begin: Alignment.topCenter,
+                   end: Alignment.bottomCenter,
+                 ),
                  color: Colors.grey,
                  borderRadius: BorderRadius.circular(16),
                  border: Border.all(
-                   color: Colors.grey.shade100
+                   color: Colors.cyanAccent.withOpacity(0.5)
+                 )
 
-                 ),
+
                ),
                child: Row(
                  children: [
@@ -61,7 +108,7 @@ class _ThiredState extends State<Thired> {
                      radius: 28,
                      backgroundColor: Colors.transparent,
                      child: Icon(Icons.camera_alt,
-                       color: Colors.black,size: 35,),
+                       color: Colors.blue,size: 35,),
                    ),
                    Expanded(child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +125,7 @@ class _ThiredState extends State<Thired> {
                        ),
                        ),
                        Switch(value: cemeraAccess,
-                         activeColor: Colors.amber,
+                         activeColor: Colors.blue.shade200,
                          onChanged: (value)async{
                          await requsetCemeraPermi();
                          },
@@ -94,10 +141,20 @@ class _ThiredState extends State<Thired> {
             ),
             Container(
               decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xffEAF6FF),
+                      Color(0xffD6EFFF),
+                      Colors.white,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 color: Colors.grey,
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(
-                  color: Colors.grey.shade600
+                    color: Colors.cyanAccent.withOpacity(0.5)
+                  //color: Colors.grey.shade600
                 )
               ),
               child: Row(
@@ -105,7 +162,7 @@ class _ThiredState extends State<Thired> {
                   CircleAvatar(
                     radius: 28,
                     backgroundColor: Colors.transparent,
-                    child: Icon(Icons.location_on,size: 50,),
+                    child: Icon(Icons.location_on,size: 50,color: Colors.red.shade200,),
                   ),
                   Expanded(child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
