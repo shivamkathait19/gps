@@ -5,6 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 //import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:camera/camera.dart';
@@ -40,7 +41,10 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
+  final ScreenshotController screenshotController = ScreenshotController();
   bool showResult = false;
+  bool isCapturing = false;
+  bool locationLoaded = false;
   CameraController? _controller;
   File? _image;
   String savedImagePath = "";
@@ -70,27 +74,7 @@ class _MainpageState extends State<Mainpage> {
     super.dispose();
   }
 
-  /*Future<void>initFrontCamera()async{
-    final camera = await availableCameras();
-    CameraDescription?  frontCamera;
-    for(var camera in camera){
-      if(camera.lensDirection== CameraLensDirection.front){
-        frontCamera = camera;
-        break;
-      }
-    }
-    frontCamera ??= camera.first;
 
-    _controller = CameraController(
-      frontCamera,
-      ResolutionPreset.high,
-    );
-
-    await _controller!.initialize();
-    if (mounted) {
-      setState(() {});
-    }
-  }*/
   Future<File> createGpsPhoto(File imageFile) async {
     final bytes = await imageFile.readAsBytes();
 
@@ -99,13 +83,9 @@ class _MainpageState extends State<Mainpage> {
     if (image == null) return imageFile;
 
     String text = '''
-Latitude : ${lat ?? ""}
-Longitude : ${lng ?? ""}
 
 $locationText
-
 Date : ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}
-
 Time : ${DateTime.now().hour}:${DateTime.now().minute}
 ''';
 
@@ -210,37 +190,6 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
   }
 
 
-
-  /*Future<void> saveImageToFolder() async {
-    if (_image == null) return;
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final folderPath = "${directory.path}/GPSPhotos";
-      final folder = Directory(folderPath);
-
-      if (!await folder.exists()) {
-        await folder.create(recursive: true);
-      }
-
-      String fileName = "GPS_${DateTime.now().millisecondsSinceEpoch}.jpg";
-      final newImage = await _image!.copy('$folderPath/$fileName');
-      savedImagePath = newImage.path;
-
-      await GallerySaver.saveImage(newImage.path);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text("Image Saved Successfully"),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error : $e")),
-      );
-    }
-  }*/
-
   Future<void> shareImage() async {
     if (_image == null) return;
     await Share.shareXFiles(
@@ -273,13 +222,12 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
       }
 
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: LocationAccuracy.medium,
       );
 
       lat = position.latitude;
       lng = position.longitude;
 
-      // Google Static Maps API URL जनरेट करना (लाल मार्कर के साथ)
       staticMapUrl =
       "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=15&size=400x200&markers=color:red%7C$lat,$lng&key=$googleMapsApiKey";
 
@@ -296,39 +244,51 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
       String currentTime = "${DateTime.now().hour}:${DateTime.now().minute}";
 
       setState(() {
-        locationText = "🏡 Village : $village  🏢 District : $district\n\n"
-            "🛣️ Street : $street  🌍 State : $state  📮 PinCode : $pincode\n\n"
-            "🌏 Country : $country  📅 Date : ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ⏰ Time : $currentTime";
+        locationLoaded = true;
+        locationText = "🏡 Village : $village  🏢 District : $district"
+            "🛣️ Street : $street  🌍 State : $state  📮 PinCode : $pincode"
+            "🌏 Country : $country  📅 Date : ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year} ⏰ Time : $currentTime";
       });
     } catch (e) {
       setState(() {
+        locationLoaded = true;
         locationText = "Error : $e";
       });
     }
   }
 
   Future<void> takePhoto() async {
+    setState(() {
+      isCapturing = true;
+    });
+    await Future.delayed(Duration(milliseconds: 50));
     if (_controller == null || !_controller!.value.isInitialized) return;
 
-    final XFile file = await _controller!.takePicture();
-    File original = File (file.path);
+   await getLocation();
+
+    final Uint8List? bytes = await screenshotController.capture();
+
+    if (bytes == null) return;
+
+    final dir = await getTemporaryDirectory();
+    final file = File("${dir.path}/GPS_${DateTime.now().millisecondsSinceEpoch}logo.png");
+
+    await file.writeAsBytes(bytes);
+
+    await GallerySaver.saveImage(file.path);
 
     setState(() {
-      _image = File(file.path);
-      locationText = "Getting GPS Location...";
-      staticMapUrl = null; // पुराना मैप हटाना
-    });
-
-   // await getLocation();
-    File gpsImage = await createGpsPhoto(original);
-    setState(() {
-      _image = gpsImage;
+      _image = file;
+      isCapturing = false;
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-    if (_controller == null || !_controller!.value.isInitialized) {
+    if (_controller == null ||
+        !_controller!.value.isInitialized ||
+        !locationLoaded) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
@@ -336,7 +296,7 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
       );
     }
     return Scaffold(
-      drawer: Drawer(
+      /*drawer: Drawer(
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -399,7 +359,7 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
             ],
           ),
         ),
-      ),
+      ),*/
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -410,186 +370,245 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
         ),
       ),
       body: _image == null
-          ? Stack(
-        children: [
-          /// Live Camera
-          Positioned.fill(
-            child: CameraPreview(_controller!),
-          ),
-
-          /// Camera Switch Button (Top Right)
-          Positioned(
-            top: 20,
-            right: 20,
-            child: FloatingActionButton(
-              mini: true,
-              backgroundColor: Colors.black54,
-              onPressed: switchCamera,
-              child: const Icon(Icons.switch_camera, color: Colors.white),
+          ? Screenshot(
+        controller: screenshotController,
+            child: Stack(
+                    children: [
+            /// Live Camera
+            Positioned.fill(
+              child: CameraPreview(_controller!),
             ),
-          ),
-    Positioned(
-    bottom: 130,
-    left: 10,
-    right: 10,
-    child: Container(
 
-      //color: Colors.white,
-    padding:  EdgeInsets.all(10),
-    decoration: BoxDecoration(
-      border: Border.all(
-        color: Colors.white
-      ),
-    color: Colors.black54,
-    borderRadius: BorderRadius.circular(12),
-    ),
-    child:Image.asset("assets/map.png",
-    width: 200,
-    height: 200,
-    fit: BoxFit.cover,),
-    /*child: Text(
-    locationText,
-    style: const TextStyle(
-    color: Colors.white,
-    fontSize: 12,
-    ),
-    ),*/
-    ),
-    ),
-          /// Capture Button
-          Positioned(
-            bottom: 30,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: GestureDetector(
-                onTap: takePhoto,
-                child: Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 4),
-                    color: Colors.transparent,
-                  ),
-                  child: Container(
-                    margin: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
+            /// Camera Switch Button (Top Right)
+          if(!isCapturing)
+            Positioned(
+              top: 20,
+              right: 20,
+              child: FloatingActionButton(
+                mini: true,
+                backgroundColor: Colors.black54,
+                onPressed: switchCamera,
+                child: const Icon(Icons.switch_camera, color: Colors.white),
               ),
             ),
-          ),
-        ],
-      )
-          : SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              /// Top Buttons
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.red, size: 30),
-                      onPressed: () {
-                        setState(() {
-                          _image = null;
-                          locationText = "No location";
-                          staticMapUrl = null;
-                        });
-                      },
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: saveImageToFolder,
-                          icon: const Icon(Icons.save, color: Colors.blue),
-                        ),
-                        IconButton(
-                          onPressed: shareImage,
-                          icon: const Icon(Icons.share, color: Colors.green),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-
-              /// Captured Photo
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.file(
-                  _image!,
-                  width: double.infinity,
-                  height: 300,
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-              const SizedBox(height: 15),
-
-              /// Google Map Photo Box (नया फीचर)
-              if (staticMapUrl != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      staticMapUrl!,
-                      width: double.infinity,
-                      height: 150,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          height: 150,
-                          color: Colors.black26,
-                          child: const Center(child: CircularProgressIndicator()),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return const SizedBox.shrink(); // API key न होने पर खाली छोड़ेगा
-                      },
-                    ),
-                  ),
-                ),
-
-              const SizedBox(height: 10),
-
-              /// GPS Location Info Box
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.all(5),
-                padding: const EdgeInsets.all(15),
+            Positioned(
+              bottom: 170,
+              left: 10,
+              right: 10,
+              child: Container(
+                height: 150,
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.black87,
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.location_on, color: Colors.amber),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        locationText,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          height: 1.3,
+
+                    // Map
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: staticMapUrl != null
+                          ? Image.network(
+                        staticMapUrl!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Image(
+                          image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_OyQxmtn6u4XLo7xwGUjt_5IUWHfgutCXzDFpXlXx5g&s=10"),
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
                         ),
+                      )
+                          : Image (
+                          image:NetworkImage(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_OyQxmtn6u4XLo7xwGUjt_5IUWHfgutCXzDFpXlXx5g&s=10",),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
                       ),
+
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+
+                          Text(
+                            locationText,
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 9,
+                            ),
+                          ),
+
+                           SizedBox(height: 5),
+                          Text(
+                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 11),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                      size: 28,
                     ),
                   ],
                 ),
               ),
-            ],
+            ),
+
+            /// Capture Button
+    if(!isCapturing)
+      Positioned(
+              bottom: 30,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: GestureDetector(
+                  onTap: takePhoto,
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 4),
+                      color: Colors.transparent,
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+                    ],
+                  ),
+          )
+          : SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.black,
+            child: Column(
+              children: [
+                /// Top Buttons
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.red, size: 30),
+                        onPressed: () {
+                          setState(() {
+                            _image = null;
+                           // locationText = "No location";
+                            //staticMapUrl = null;
+                          });
+                        },
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: saveImageToFolder,
+                            icon:  Icon(Icons.save, color: Colors.blue),
+                          ),
+                          IconButton(
+                            onPressed: shareImage,
+                            icon: const Icon(Icons.share, color: Colors.green),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+
+                /// Captured Photo
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.file(
+                    _image!,
+                    width: double.infinity,
+                    //height: 500,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                /// Google Map Photo Box (नया फीचर)
+                if (staticMapUrl != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        staticMapUrl!,
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            height: 150,
+                            color: Colors.black26,
+                            child: const Center(child: CircularProgressIndicator()),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return  SizedBox.shrink(); // API key न होने पर खाली छोड़ेगा
+                        },
+                      ),
+                    ),
+                  ),
+
+                const SizedBox(height: 10),
+
+                /// GPS Location Info Box
+               /* Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.circular(25),
+                  ),*/
+                  /*child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                       Icon(Icons.location_on, color: Colors.amber),
+                       SizedBox(width: 20),
+                      /*Expanded(
+                        child: Text(
+                          locationText,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 11,
+                            height: 1.3,
+                          ),
+                        ),
+                      ),*/
+                    ],
+                  ),*/
+               // ),
+              ],
+            ),
           ),
         ),
       ),
@@ -597,7 +616,7 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
   }
 }
 
-class ProfileScreen extends StatefulWidget {
+/*class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
@@ -732,4 +751,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-}
+}*/

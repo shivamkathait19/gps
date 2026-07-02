@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gps/files/thired.dart';
+import 'forth.dart';
 class second extends StatefulWidget {
   const second({super.key});
 
@@ -8,22 +9,18 @@ class second extends StatefulWidget {
 }
 
 class _secondState extends State<second> {
- int selectedIndex = 0;
+ int selectedIndex = -1;
 
 
 
-  final List<Map<String, String>> languages = [
-    {"name": "English", "flag": "🇺🇸"},
-    {"name": "Bahasa Indonesia", "flag": "🇮🇩"},
-    {"name": "Española (Spanish)", "flag": "🇪🇸"},
-    {"name": "Tiếng Việt", "flag": "🇻🇳"},
-    {"name": "ไทย (Thai)", "flag": "🇹🇭"},
-    {"name": "Português", "flag": "🇵🇹"},
-    {"name": "Русский", "flag": "🇷🇺"},
+ final List<Map<String, dynamic>> languages = [
+   {"name": "English", "flag": "🇺🇸"},
+   {"name": "Bahasa Indonesia", "flag": "🇮🇩"},
+   {"name": "हिन्दी", "flag": "🇮🇳", "locale": "hi"},
+   {"name": "Española (Spanish)", "flag": "🇪🇸"},
+   {"name": "ไทย (Thai)", "flag": "🇹🇭"},
 
-
-
-  ];
+ ];
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,7 @@ class _secondState extends State<second> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding:  EdgeInsets.all(20.0),
             child: Text("chosse your prefrence language",textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -51,7 +48,7 @@ class _secondState extends State<second> {
                itemCount: languages.length,
               itemBuilder: (context , index){
                  return GestureDetector(
-                   onTap: (){
+                   onTap: () {
                      setState(() {
                        selectedIndex = index;
                      });
@@ -92,22 +89,29 @@ class _secondState extends State<second> {
                  );
               } )),
                ElevatedButton(
-
                    style: ElevatedButton.styleFrom(
                  backgroundColor: Colors.amber, shape: RoundedRectangleBorder(
                  borderRadius: BorderRadiusGeometry.circular(15),
+
+
                ),shadowColor: Colors.black
                ),
                    onPressed: () {
-                     if(languages.isEmpty ){
-                       Navigator.push(context, MaterialPageRoute(builder: (_) =>Thired()
-                     )
-                     );
-                   }else{
-                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Select the languages")));
+                     if (selectedIndex != -1) {
+                       Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                           builder: (_) => const Thired(),
+                         ),
+                       );
+                     } else {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                           content: Text("Choose your preferred language")
+                         ),
+                       );
                      }
-                       }, child: Text("Next",style: TextStyle(
-                 fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white,) ,))
+                   }, child: Text("Next",))
         ],
       ),
       ),

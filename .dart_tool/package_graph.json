@@ -21,6 +21,7 @@
         "image",
         "path_provider",
         "permission_handler",
+        "screenshot",
         "share_plus",
         "shared_preferences"
       ],
@@ -52,6 +53,13 @@
         "stream_channel",
         "test_api",
         "vector_math"
+      ]
+    },
+    {
+      "name": "screenshot",
+      "version": "3.0.0",
+      "dependencies": [
+        "flutter"
       ]
     },
     {

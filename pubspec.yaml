@@ -37,6 +37,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   gallery_saver_plus: ^3.2.9
   share_plus: ^10.0.2
+  screenshot: ^3.0.0
 
 
 
@@ -64,13 +65,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-#assets:
-  # - assets/map.png
+assets:
+  - assets/logo.png
   #   - images/a_dot_ham.jpeg
 
   # To add assets to your application, add an assets section, like this:
