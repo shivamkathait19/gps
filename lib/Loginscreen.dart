@@ -122,18 +122,7 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                     ),
                   );
                 },
-              ),
-             /* AnimatedBuilder(
-                animation: _animation,
-                builder: (context, child) {
-                  return Transform.translate(
-                    offset: Offset(3, _animation.value),
-                    child: child,
-                  );
-                },
-                child:Image.network("https://static.vecteezy.com/system/resources/thumbnails/009/085/230/small/cartoon-cute-dogs-with-big-bone-vector.jpg", height: 50,)
-
-              ),*/
+              )
 
               SizedBox(height: 20),
               /// 🔹 Title

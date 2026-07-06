@@ -296,7 +296,7 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
       );
     }
     return Scaffold(
-     
+
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
