@@ -122,7 +122,8 @@ class _LoginScreenState extends State<LoginScreen>with SingleTickerProviderState
                     ),
                   );
                 },
-              )
+              ),
+
 
               SizedBox(height: 20),
               /// 🔹 Title
