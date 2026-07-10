@@ -508,7 +508,7 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
                           );
                         },
                         errorBuilder: (context, error, stackTrace) {
-                          return  SizedBox.shrink(); // API key न होने पर खाली छोड़ेगा
+                          return  SizedBox.shrink();
                         },
                       ),
                     ),
