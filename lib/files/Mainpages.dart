@@ -514,6 +514,6 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
                     ),
                   ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 10)
 
-                /// GPS Location Info Box
+
