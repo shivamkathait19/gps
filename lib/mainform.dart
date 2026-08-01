@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
+
 class Mainform extends StatefulWidget {
   const Mainform({super.key});
 
@@ -266,7 +267,7 @@ with SingleTickerProviderStateMixin
                               } else {
 
                                 // SAVE DATA
-                                final prefs = await SharedPreferences.getInstance();
+                                //final prefs = await SharedPreferences.getInstance();
                                 //final prefs = await SharedPreferences.getInstance();
 
                                 await prefs.setString(
