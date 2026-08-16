@@ -295,7 +295,7 @@ with SingleTickerProviderStateMixin
                                 await prefs.setString("dob", dobController.text);
                                 await prefs.setString("gender", selectedGender ?? "");
 
-                                // NEXT PAGE
+                         
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
