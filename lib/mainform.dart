@@ -136,7 +136,7 @@ with SingleTickerProviderStateMixin
 
                         SizedBox(height: 15),
 
-                        /// DOB
+                    
                         TextFormField(
                           controller: dobController,
                           readOnly: true,
