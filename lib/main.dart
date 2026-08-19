@@ -11,9 +11,9 @@ import 'package:firebase_core/firebase_core.dart';
 
 late List<CameraDescription> cameras;
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- cameras = await availableCameras();
+  cameras = await availableCameras();
   await Firebase.initializeApp();
 
   runApp(const MyApp());
@@ -30,15 +30,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-
-          seedColor: Colors.deepPurpleAccent,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
       ),
-      home:SplashScreen(),
+      home: Mainpage(),
     );
   }
 }
