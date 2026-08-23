@@ -258,38 +258,61 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
   }
 
   Future<void> takePhoto() async {
+    if (isCapturing) return;
+
+    if (_controller == null || !_controller!.value.isInitialized) {
+      return;
+    }
+
     setState(() {
       isCapturing = true;
     });
-    await Future.delayed(Duration(milliseconds: 50));
-    if (_controller == null || !_controller!.value.isInitialized) return;
 
-    await getLocation();
+    try {
+      // GPS ko dobara load MAT karo.
+      // Jo location pehle se load hai wahi use hogi.
 
-    final Uint8List? bytes = await screenshotController.capture();
+      final Uint8List? bytes = await screenshotController.capture(
+        delay: const Duration(milliseconds: 100),
+      );
 
-    if (bytes == null) return;
+      if (bytes == null) {
+        throw Exception("Photo capture failed");
+      }
 
-    final dir = await getTemporaryDirectory();
-    final file = File(
-      "${dir.path}/GPS_${DateTime.now().millisecondsSinceEpoch}logo.png",
-    );
+      final dir = await getTemporaryDirectory();
 
-    await file.writeAsBytes(bytes);
+      final file = File(
+        "${dir.path}/GPS_${DateTime.now().millisecondsSinceEpoch}.png",
+      );
 
-    await GallerySaver.saveImage(file.path);
+      await file.writeAsBytes(bytes);
 
-    setState(() {
-      _image = file;
-      isCapturing = false;
-    });
+      if (!mounted) return;
+
+      setState(() {
+        _image = file;
+        isCapturing = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        isCapturing = false;
+      });
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Photo capture failed: $e")));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     // Sirf tab spinner dikhao jab dono (camera + location) load nahi hue
-    final bool cameraReady = _controller != null && _controller!.value.isInitialized;
-    if (!locationLoaded) {
+    final bool cameraReady =
+        _controller != null && _controller!.value.isInitialized;
+    /*if (!locationLoaded) {
       return Scaffold(
         body: Center(
           child: Column(
@@ -302,7 +325,7 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
           ),
         ),
       );
-    }
+    }*/
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
