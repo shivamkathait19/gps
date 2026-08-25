@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,11 +12,6 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:camera/camera.dart';
-import 'dart:typed_data';
-// dart:ui removed — unused import
-import 'package:image/image.dart' as img;
-
-const String googleMapsApiKey = "YOUR_GOOGLE_MAPS_API_KEY";
 
 void main() {
   runApp(const MyApp());
@@ -38,21 +37,23 @@ class Mainpage extends StatefulWidget {
   State<Mainpage> createState() => _MainpageState();
 }
 
-class _MainpageState extends State<Mainpage> {
+class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
   final ScreenshotController screenshotController = ScreenshotController();
-  bool showResult = false;
+  final MapController _mapController = MapController();
+  StreamSubscription<Position>? _positionStreamSubscription;
+
   bool isCapturing = false;
   bool locationLoaded = false;
   CameraController? _controller;
   File? _image;
   String savedImagePath = "";
 
-  String locationText = "No location";
+  String locationText = "📍 Fetching live GPS location...";
   double? lat, lng;
-  String? staticMapUrl;
+  double _currentZoom = 16.0;
 
   List<CameraDescription> _cameras = [];
-  int _selectedCameraIndex = 0; // 0 = Back, 1 = Front (आमतौर पर)
+  int _selectedCameraIndex = 0;
 
   String email = '';
   String username = '';
@@ -60,60 +61,33 @@ class _MainpageState extends State<Mainpage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     loadUserData();
     initCamera();
-    getLocation();
-    //initFrontCamera();
+    startLocationTracking();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _positionStreamSubscription?.cancel();
     _controller?.dispose();
+    _mapController.dispose();
     super.dispose();
   }
 
-  Future<File> createGpsPhoto(File imageFile) async {
-    final bytes = await imageFile.readAsBytes();
-
-    img.Image? image = img.decodeImage(bytes);
-
-    if (image == null) return imageFile;
-
-    String text =
-        '''
-
-$locationText
-Date : ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}
-Time : ${DateTime.now().hour}:${DateTime.now().minute}
-''';
-
-    img.fillRect(
-      image,
-      x1: 0,
-      y1: image.height - 220,
-      x2: image.width,
-      y2: image.height,
-      color: img.ColorRgb8(0, 0, 0),
-    );
-
-    img.drawString(
-      image,
-      text,
-      font: img.arial24,
-      x: 20,
-      y: image.height - 200,
-      color: img.ColorRgb8(255, 255, 255),
-    );
-
-    final dir = await getTemporaryDirectory();
-
-    final file = File(
-      "${dir.path}/gps_${DateTime.now().millisecondsSinceEpoch}.jpg",
-    );
-
-    await file.writeAsBytes(img.encodeJpg(image));
-
-    return file;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_controller == null || !_controller!.value.isInitialized) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive) {
+      _controller?.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      if (_cameras.isNotEmpty) {
+        _startCamera(_selectedCameraIndex);
+      }
+    }
   }
 
   Future<void> initCamera() async {
@@ -126,6 +100,7 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
         if (mounted) setState(() {});
       }
     } catch (e) {
+      debugPrint("Camera init error: $e");
       if (mounted) setState(() {});
     }
   }
@@ -138,11 +113,16 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
     _controller = CameraController(
       _cameras[cameraIndex],
       ResolutionPreset.high,
+      enableAudio: false,
     );
 
-    await _controller!.initialize();
-    if (mounted) {
-      setState(() {});
+    try {
+      await _controller!.initialize();
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      debugPrint("Camera start error: $e");
     }
   }
 
@@ -160,47 +140,13 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
     });
   }
 
-  Future<void> saveImageToFolder() async {
-    if (_image == null) return;
-
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final folder = Directory("${directory.path}/GPSPhotos");
-
-      if (!await folder.exists()) {
-        await folder.create(recursive: true);
-      }
-
-      String fileName = "GPS_${DateTime.now().millisecondsSinceEpoch}.jpg";
-
-      final savedFile = await _image!.copy("${folder.path}/$fileName");
-
-      await GallerySaver.saveImage(savedFile.path);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text("GPS Photo Saved Successfully"),
-        ),
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> shareImage() async {
-    if (_image == null) return;
-    await Share.shareXFiles([
-      XFile(_image!.path),
-    ], text: "Shared from GPS photo App");
-  }
-
-  Future<void> getLocation() async {
+  /// Live GPS Location Stream - continuous tracking in the background
+  Future<void> startLocationTracking() async {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         setState(() {
-          locationLoaded = true; // ✅ spinner band karo
+          locationLoaded = true;
           locationText = "📍 Location Service OFF — Please turn on GPS";
         });
         return;
@@ -214,53 +160,138 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
         setState(() {
-          locationLoaded = true; // ✅ spinner band karo
+          locationLoaded = true;
           locationText = "🚫 Location Permission Denied";
         });
         return;
       }
 
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.medium,
+      // Initial fast location fetch
+      Position initialPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
       );
 
-      lat = position.latitude;
-      lng = position.longitude;
+      _onPositionUpdated(initialPosition);
 
-      staticMapUrl =
-          "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=15&size=400x200&markers=color:red%7C$lat,$lng&key=$googleMapsApiKey";
+      // Start continuous background GPS stream
+      const locationSettings = LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 3, // Update every 3 meters movement
+      );
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat!, lng!);
-      Placemark place = placemarks.first;
-
-      String village = place.locality ?? "";
-      String district = place.subAdministrativeArea ?? "";
-      String street = place.street ?? "";
-      String state = place.administrativeArea ?? "";
-      String country = place.country ?? "";
-      String pincode = place.postalCode ?? "";
-
-      String currentTime = "${DateTime.now().hour}:${DateTime.now().minute}";
-
-      setState(() {
-        locationLoaded = true;
-        locationText =
-            "🏡 Village : $village  🏢 District : $district"
-            "🛣️ Street : $street  🌍 State : $state  📮 PinCode : $pincode"
-            "🌏 Country : $country  📅 Date : ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year} ⏰ Time : $currentTime";
-      });
+      _positionStreamSubscription?.cancel();
+      _positionStreamSubscription = Geolocator.getPositionStream(
+        locationSettings: locationSettings,
+      ).listen(
+        (Position position) {
+          _onPositionUpdated(position);
+        },
+        onError: (error) {
+          debugPrint("Location stream error: $error");
+        },
+      );
     } catch (e) {
       setState(() {
         locationLoaded = true;
-        locationText = "Error : $e";
+        locationText = "Error: $e";
       });
     }
+  }
+
+  void _onPositionUpdated(Position position) {
+    if (!mounted) return;
+
+    setState(() {
+      lat = position.latitude;
+      lng = position.longitude;
+      locationLoaded = true;
+    });
+
+    try {
+      _mapController.move(LatLng(position.latitude, position.longitude), _currentZoom);
+    } catch (_) {}
+
+    _updateAddress(position.latitude, position.longitude);
+  }
+
+  Future<void> _updateAddress(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        latitude,
+        longitude,
+      );
+      if (placemarks.isNotEmpty && mounted) {
+        Placemark place = placemarks.first;
+        String village = place.locality ?? place.subLocality ?? "";
+        String district = place.subAdministrativeArea ?? "";
+        String street = place.street ?? "";
+        String state = place.administrativeArea ?? "";
+        String country = place.country ?? "";
+        String pincode = place.postalCode ?? "";
+
+        String formattedAddress = [
+          if (street.isNotEmpty) "🛣️ $street",
+          if (village.isNotEmpty) "🏡 $village",
+          if (district.isNotEmpty) "🏢 $district",
+          if (state.isNotEmpty) "🌍 $state",
+          if (pincode.isNotEmpty) "📮 $pincode",
+          if (country.isNotEmpty) "🌏 $country",
+        ].join("  ");
+
+        setState(() {
+          locationText = formattedAddress.isNotEmpty
+              ? formattedAddress
+              : "Lat: ${latitude.toStringAsFixed(5)}, Lng: ${longitude.toStringAsFixed(5)}";
+        });
+      }
+    } catch (e) {
+      debugPrint("Address lookup error: $e");
+    }
+  }
+
+  Future<void> saveImageToFolder() async {
+    if (_image == null) return;
+
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final folder = Directory("${directory.path}/GPSPhotos");
+
+      if (!await folder.exists()) {
+        await folder.create(recursive: true);
+      }
+
+      String fileName = "GPS_${DateTime.now().millisecondsSinceEpoch}.jpg";
+      final savedFile = await _image!.copy("${folder.path}/$fileName");
+
+      await GallerySaver.saveImage(savedFile.path);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text("GPS Photo Saved Successfully!"),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint("Save image error: $e");
+    }
+  }
+
+  Future<void> shareImage() async {
+    if (_image == null) return;
+    await Share.shareXFiles([
+      XFile(_image!.path),
+    ], text: "Shared from GPS Photo App");
   }
 
   Future<void> takePhoto() async {
     if (isCapturing) return;
 
     if (_controller == null || !_controller!.value.isInitialized) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Camera not ready")),
+      );
       return;
     }
 
@@ -269,11 +300,8 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
     });
 
     try {
-      // GPS ko dobara load MAT karo.
-      // Jo location pehle se load hai wahi use hogi.
-
       final Uint8List? bytes = await screenshotController.capture(
-        delay: const Duration(milliseconds: 100),
+        delay: const Duration(milliseconds: 150),
       );
 
       if (bytes == null) {
@@ -281,7 +309,6 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
       }
 
       final dir = await getTemporaryDirectory();
-
       final file = File(
         "${dir.path}/GPS_${DateTime.now().millisecondsSinceEpoch}.png",
       );
@@ -296,44 +323,46 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
       });
     } catch (e) {
       if (!mounted) return;
-
       setState(() {
         isCapturing = false;
       });
-
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Photo capture failed: $e")));
     }
   }
 
+  void _recenterMap() {
+    if (lat != null && lng != null) {
+      _mapController.move(LatLng(lat!, lng!), 16.0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Sirf tab spinner dikhao jab dono (camera + location) load nahi hue
     final bool cameraReady =
         _controller != null && _controller!.value.isInitialized;
-    /*if (!locationLoaded) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              CircularProgressIndicator(color: Colors.blueAccent),
-              SizedBox(height: 16),
-              Text("Loading GPS...", style: TextStyle(color: Colors.grey)),
-            ],
-          ),
-        ),
-      );
-    }*/
+
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        elevation: 0,
+        elevation: 2,
         centerTitle: true,
-        backgroundColor: Colors.blueGrey,
-        title: const Text(
-          "GPS Photo App",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        backgroundColor: const Color(0xff1f2937),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(Icons.location_on, color: Colors.orangeAccent, size: 22),
+            SizedBox(width: 8),
+            Text(
+              "GPS Camera & Live Map",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ],
         ),
       ),
       body: _image == null
@@ -342,104 +371,194 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final totalHeight = constraints.maxHeight;
-                  // Camera takes top 65%, Map takes bottom 35%
-                  final cameraHeight = totalHeight * 0.65;
-                  final mapHeight = totalHeight * 0.35;
+                  // Camera takes top 62%, Live Map takes bottom 38%
+                  final cameraHeight = totalHeight * 0.62;
+                  final mapHeight = totalHeight * 0.38;
 
                   return Stack(
                     children: [
-                      /// ─── FULL BACKGROUND: Map at bottom ───
+                      /// ─── 1. CAMERA PREVIEW (Top 62%) ───
                       Positioned(
-                        bottom: 0,
+                        top: 0,
                         left: 0,
                         right: 0,
-                        height: mapHeight,
-                        child: staticMapUrl != null
-                            ? Image.network(
-                                staticMapUrl!,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stack) =>
-                                    Container(
-                                      color: Colors.grey[900],
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.map,
-                                          color: Colors.white54,
-                                          size: 60,
-                                        ),
+                        height: cameraHeight,
+                        child: Container(
+                          color: Colors.black,
+                          child: cameraReady
+                              ? ClipRect(
+                                  child: OverflowBox(
+                                    alignment: Alignment.center,
+                                    child: FittedBox(
+                                      fit: BoxFit.cover,
+                                      child: SizedBox(
+                                        width: _controller!.value.previewSize?.height ?? constraints.maxWidth,
+                                        height: _controller!.value.previewSize?.width ?? cameraHeight,
+                                        child: CameraPreview(_controller!),
                                       ),
                                     ),
-                              )
-                            : Container(
-                                color: Colors.grey[900],
-                                child: const Center(
+                                  ),
+                                )
+                              : const Center(
                                   child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: Colors.orangeAccent,
                                   ),
                                 ),
-                              ),
+                        ),
                       ),
 
-                      /// ─── Dark gradient over map for text readability ───
+                      /// ─── 2. LIVE GPS MAP (Bottom 38%) ───
                       Positioned(
                         bottom: 0,
                         left: 0,
                         right: 0,
                         height: mapHeight,
                         child: Container(
-                          decoration: BoxDecoration(
+                          color: const Color(0xff111827),
+                          child: lat != null && lng != null
+                              ? FlutterMap(
+                                  mapController: _mapController,
+                                  options: MapOptions(
+                                    initialCenter: LatLng(lat!, lng!),
+                                    initialZoom: _currentZoom,
+                                    onPositionChanged: (pos, hasGesture) {
+                                      if (pos.zoom != null) {
+                                        _currentZoom = pos.zoom!;
+                                      }
+                                    },
+                                    interactionOptions: const InteractionOptions(
+                                      flags: InteractiveFlag.all,
+                                    ),
+                                  ),
+                                  children: [
+                                    TileLayer(
+                                      urlTemplate:
+                                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                      userAgentPackageName:
+                                          'com.example.gpsapp',
+                                    ),
+                                    MarkerLayer(
+                                      markers: [
+                                        Marker(
+                                          point: LatLng(lat!, lng!),
+                                          width: 50,
+                                          height: 50,
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Container(
+                                                width: 44,
+                                                height: 44,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.blue.withValues(alpha: 0.28),
+                                                  border: Border.all(
+                                                    color: Colors.blueAccent,
+                                                    width: 1.5,
+                                                  ),
+                                                ),
+                                              ),
+                                              const Icon(
+                                                Icons.my_location,
+                                                color: Colors.redAccent,
+                                                size: 26,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : const Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        color: Colors.orangeAccent,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Acquiring GPS Signal...",
+                                        style: TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                        ),
+                      ),
+
+                      /// ─── 3. DIVIDER BAR BETWEEN CAMERA & MAP ───
+                      Positioned(
+                        top: cameraHeight - 3,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 4,
+                          decoration: const BoxDecoration(
                             gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
                               colors: [
-                                Colors.black.withValues(alpha: 0.0),
-                                Colors.black.withValues(alpha: 0.55),
+                                Colors.deepOrangeAccent,
+                                Colors.orangeAccent,
+                                Colors.amberAccent,
                               ],
                             ),
                           ),
                         ),
                       ),
 
-                      /// ─── CAMERA PREVIEW (top portion) ───
+                      /// ─── 4. GRADIENT OVERLAY ON MAP FOR TEXT READABILITY ───
                       Positioned(
-                        top: 0,
+                        bottom: 0,
                         left: 0,
                         right: 0,
-                        height: cameraHeight,
-                        child: CameraPreview(_controller!),
+                        height: mapHeight,
+                        child: IgnorePointer(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withValues(alpha: 0.2),
+                                  Colors.black.withValues(alpha: 0.75),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
 
-                      /// ─── Thin divider / GPS watermark bar between camera & map ───
-                      Positioned(
-                        top: cameraHeight - 2,
-                        left: 0,
-                        right: 0,
-                        child: Container(height: 4, color: Colors.orangeAccent),
-                      ),
-
-                      /// ─── Location text overlay on the map section ───
+                      /// ─── 5. LIVE ADDRESS & TIMESTAMP OVERLAY ───
                       Positioned(
                         bottom: 8,
-                        left: 12,
-                        right: 50,
+                        left: 10,
+                        right: 75,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
-                              children: const [
-                                Icon(
-                                  Icons.location_on,
-                                  color: Colors.redAccent,
-                                  size: 16,
+                              children: [
+                                Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.greenAccent,
+                                    shape: BoxShape.circle,
+                                  ),
                                 ),
-                                SizedBox(width: 4),
-                                Text(
-                                  "GPS Location",
+                                const SizedBox(width: 6),
+                                const Text(
+                                  "LIVE GPS TRACKING",
                                   style: TextStyle(
                                     color: Colors.orangeAccent,
-                                    fontSize: 11,
+                                    fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    letterSpacing: 1,
+                                    letterSpacing: 1.1,
                                   ),
                                 ),
                               ],
@@ -452,99 +571,137 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 9.5,
-                                fontWeight: FontWeight.w500,
-                                height: 1.4,
+                                fontWeight: FontWeight.w600,
+                                height: 1.35,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black,
+                                    blurRadius: 4,
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 3),
                             Text(
-                              "📅 ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  "
-                              "⏰ ${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}",
+                              "📅 ${DateTime.now().day.toString().padLeft(2, '0')}/${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().year}  ⏰ ${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}:${DateTime.now().second.toString().padLeft(2, '0')}",
                               style: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 10,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
                         ),
                       ),
 
-                      /// ─── Lat/Lng chip (bottom right of map) ───
-                      if (lat != null && lng != null)
-                        Positioned(
-                          bottom: 10,
-                          right: 10,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.6),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Colors.orangeAccent,
-                                width: 1,
+                      /// ─── 6. LAT/LNG CHIP & RECENTER BUTTON (Bottom Right) ───
+                      Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: _recenterMap,
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: Colors.black87,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.orangeAccent,
+                                    width: 1.2,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.gps_fixed,
+                                  color: Colors.orangeAccent,
+                                  size: 18,
+                                ),
                               ),
                             ),
-                            child: Text(
-                              "${lat!.toStringAsFixed(5)}, ${lng!.toStringAsFixed(5)}",
-                              style: const TextStyle(
+                            const SizedBox(height: 6),
+                            if (lat != null && lng != null)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black87,
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                    color: Colors.orangeAccent,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  "${lat!.toStringAsFixed(4)}\n${lng!.toStringAsFixed(4)}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+
+                      /// ─── 7. CAMERA SWITCH BUTTON (Top Right) ───
+                      if (!isCapturing)
+                        Positioned(
+                          top: 12,
+                          right: 12,
+                          child: GestureDetector(
+                            onTap: switchCamera,
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white38),
+                              ),
+                              child: const Icon(
+                                Icons.switch_camera,
                                 color: Colors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
+                                size: 22,
                               ),
                             ),
                           ),
                         ),
 
-                      /// ─── Camera Switch Button (Top Right) ───
+                      /// ─── 8. CAPTURE BUTTON (Floating over divider) ───
                       if (!isCapturing)
                         Positioned(
-                          top: 16,
-                          right: 16,
-                          child: FloatingActionButton(
-                            mini: true,
-                            backgroundColor: Colors.black54,
-                            onPressed: switchCamera,
-                            child: const Icon(
-                              Icons.switch_camera,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-
-                      /// ─── Capture Button (center, just above map area) ───
-                      if (!isCapturing)
-                        Positioned(
-                          top: cameraHeight - 55,
+                          top: cameraHeight - 38,
                           left: 0,
                           right: 0,
                           child: Center(
                             child: GestureDetector(
                               onTap: takePhoto,
                               child: Container(
-                                height: 70,
-                                width: 70,
+                                height: 72,
+                                width: 72,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.white,
-                                    width: 4,
+                                    width: 3.5,
                                   ),
-                                  color: Colors.black26,
+                                  color: Colors.black45,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.orangeAccent.withValues(
-                                        alpha: 0.6,
-                                      ),
-                                      blurRadius: 16,
+                                      color: Colors.orangeAccent.withValues(alpha: 0.6),
+                                      blurRadius: 18,
                                       spreadRadius: 2,
                                     ),
                                   ],
                                 ),
                                 child: Container(
-                                  margin: const EdgeInsets.all(6),
+                                  margin: const EdgeInsets.all(5),
                                   decoration: const BoxDecoration(
                                     color: Colors.white,
                                     shape: BoxShape.circle,
@@ -555,12 +712,12 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
                           ),
                         ),
 
-                      /// ─── Loading spinner while capturing ───
+                      /// ─── 9. CAPTURING LOADING OVERLAY ───
                       if (isCapturing)
-                        const Positioned.fill(
-                          child: ColoredBox(
-                            color: Colors.black38,
-                            child: Center(
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black54,
+                            child: const Center(
                               child: CircularProgressIndicator(
                                 color: Colors.orangeAccent,
                               ),
@@ -576,42 +733,50 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
               child: SingleChildScrollView(
                 child: Container(
                   color: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     children: [
-                      /// Top Buttons
+                      /// Action Bar
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
                               icon: const Icon(
                                 Icons.close,
-                                color: Colors.red,
+                                color: Colors.redAccent,
                                 size: 30,
                               ),
                               onPressed: () {
                                 setState(() {
                                   _image = null;
-                                  // locationText = "No location";
-                                  //staticMapUrl = null;
                                 });
                               },
                             ),
                             Row(
                               children: [
-                                IconButton(
+                                ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blueAccent,
+                                  ),
                                   onPressed: saveImageToFolder,
-                                  icon: Icon(Icons.save, color: Colors.blue),
+                                  icon: const Icon(Icons.save, color: Colors.white),
+                                  label: const Text(
+                                    "Save",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                                IconButton(
+                                const SizedBox(width: 8),
+                                ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                  ),
                                   onPressed: shareImage,
-                                  icon: const Icon(
-                                    Icons.share,
-                                    color: Colors.green,
+                                  icon: const Icon(Icons.share, color: Colors.white),
+                                  label: const Text(
+                                    "Share",
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ],
@@ -620,49 +785,17 @@ Time : ${DateTime.now().hour}:${DateTime.now().minute}
                         ),
                       ),
 
-                      /// Captured Photo
+                      /// Captured Image Preview (Has Camera + Map combined!)
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(16),
                         child: Image.file(
                           _image!,
                           width: double.infinity,
-                          //height: 500,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                         ),
                       ),
 
-                      const SizedBox(height: 15),
-
-                      /// Google Map Photo Box (नया फीचर)
-                      if (staticMapUrl != null)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(
-                              staticMapUrl!,
-                              width: double.infinity,
-                              height: 200,
-                              fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Container(
-                                      height: 150,
-                                      color: Colors.black26,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    );
-                                  },
-                              errorBuilder: (context, error, stackTrace) {
-                                return SizedBox.shrink();
-                              },
-                            ),
-                          ),
-                        ),
-
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
