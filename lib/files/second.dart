@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gps/files/forth.dart';
 import 'package:gps/files/thired.dart';
 
 class Second extends StatefulWidget {
@@ -12,11 +13,11 @@ class _SecondState extends State<Second> {
   int selectedIndex = -1;
 
   final List<Map<String, String>> languages = [
-    {"name": "English", "flag": "🇺🇸"},
-    {"name": "Bahasa Indonesia", "flag": "🇮🇩"},
-    {"name": "हिन्दी", "flag": "🇮🇳"},
-    {"name": "Español", "flag": "🇪🇸"},
-    {"name": "ไทย (Thai)", "flag": "🇹🇭"},
+    {"name": "English", "flag": "🇺🇸", "code": "en"},
+    {"name": "Bahasa Indonesia", "flag": "🇮🇩", "code": "id"},
+    {"name": "हिन्दी", "flag": "🇮🇳", "code": "hi"},
+    {"name": "Español", "flag": "🇪🇸", "code": "es"},
+    {"name": "ไทย (Thai)", "flag": "🇹🇭", "code": "th"},
   ];
 
   @override
@@ -194,6 +195,9 @@ class _SecondState extends State<Second> {
                         );
                         return;
                       }
+
+                      // Save selected language to AppLanguage
+                      AppLanguage.currentLocaleCode = languages[selectedIndex]["code"]!;
 
                       Navigator.push(
                         context,

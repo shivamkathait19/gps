@@ -31,16 +31,15 @@ class _SplashScreenState extends State<SplashScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-   timer = Timer(const Duration(seconds: 7), () {
+   timer = Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => Second(),
         ),
       );
-    }
-
-    );
+    });
   }
 
   @override

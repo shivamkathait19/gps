@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:gps/Mainpages.dart';
+import 'package:gps/files/Mainpages.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Thired extends StatefulWidget {
@@ -11,20 +11,20 @@ class Thired extends StatefulWidget {
 }
 
 class _ThiredState extends State<Thired> {
-  bool cemeraAccess = false;
-  bool LocationAccess = false;
+  bool cameraAccess = false;
+  bool locationAccess = false;
 
-  Future<void> requsetCemeraPermi()async{
+  Future<void> requestCameraPermission() async {
    PermissionStatus status = await Permission.camera.request();
     setState(() {
-      cemeraAccess = status.isGranted;
+      cameraAccess = status.isGranted;
     });
   }
 
-  Future<void> requsetLocationpermi()async{
-    PermissionStatus status= await Permission.location.request();
+  Future<void> requestLocationPermission() async {
+    PermissionStatus status = await Permission.location.request();
   setState(() {
-    LocationAccess = status.isGranted;
+    locationAccess = status.isGranted;
   });
   }
 
@@ -114,20 +114,20 @@ class _ThiredState extends State<Thired> {
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
                        Text(
-                         "Cemera Access",style: TextStyle(
+                         "Camera Access",style: TextStyle(
                          fontSize: 22,
                          fontWeight: FontWeight.bold,
 
                        ),),
-                       Text("App needs access to your cemera for capture photo & videos",style: TextStyle(
+                       Text("App needs access to your camera for capture photo & videos",style: TextStyle(
                          color: Colors.black,
                          fontSize: 15,
                        ),
                        ),
-                       Switch(value: cemeraAccess,
+                       Switch(value: cameraAccess,
                          activeColor: Colors.blue.shade200,
                          onChanged: (value)async{
-                         await requsetCemeraPermi();
+                         await requestCameraPermission();
                          },
                        )
                      ],
@@ -172,10 +172,10 @@ class _ThiredState extends State<Thired> {
                           fontWeight: FontWeight.bold,fontSize: 20,
                       ),),
                        Text(    "App needs access to your location for display current location.",),
-                      Switch(value: LocationAccess,
+                      Switch(value: locationAccess,
                           activeColor: Colors.amber,
-                          onChanged: (value)async{
-                       await requsetLocationpermi();
+                          onChanged: (value) async {
+                       await requestLocationPermission();
                           })
                     ],
                   )),
@@ -192,7 +192,7 @@ class _ThiredState extends State<Thired> {
               ),
                 children: [
                   TextSpan(
-                    text: "Terms end Service " ,style: TextStyle(
+                    text: "Terms of Service " ,style: TextStyle(
                     color: Colors.blue
                   ),
 
@@ -225,11 +225,11 @@ class _ThiredState extends State<Thired> {
                     ),
                   ),
                   onPressed: () {
-                      if(cemeraAccess && LocationAccess){
+                      if(cameraAccess && locationAccess){
                         Navigator.push(context, MaterialPageRoute(builder: (_)=>Mainpage()));
                       } else{
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Please allow Cemera & Location permission")),
+                          SnackBar(content: Text("Please allow Camera & Location permission")),
                         );
                       }// Next Screen
                   },

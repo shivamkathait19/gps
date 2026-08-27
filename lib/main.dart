@@ -1,11 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:gps/Loginscreen.dart';
-import 'package:gps/Mainpages.dart';
-import 'package:gps/files/forth.dart';
-import 'package:gps/files/second.dart';
-import 'package:gps/files/thired.dart';
-import 'package:gps/mainform.dart';
 import 'package:gps/files/splash%20Screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
