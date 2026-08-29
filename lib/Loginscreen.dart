@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:gps/Mainpages.dart';
+import 'package:gps/files/Mainpages.dart';
 import 'package:gps/mainform.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,10 +25,6 @@ class _LoginScreenState extends State<LoginScreen>
 
   Future<User?> signInWithGoogle() async {
     await GoogleSignIn().signOut();
-
-    final GoogleSignInAccount? googleUser = await GoogleSignIn(
-      forceCodeForRefreshToken: true,
-    ).signOut();
     setState(() => isLoading = true);
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -89,7 +85,9 @@ class _LoginScreenState extends State<LoginScreen>
         animation: _controller,
         builder: (context, child) {
           return Container(
-            height: 950,
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -369,7 +367,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Center(
-                                      child: Text("Please fill all detalis"),
+                                      child: Text("Please fill all details"),
                                     ),
                                   ),
                                 );
@@ -386,6 +384,20 @@ class _LoginScreenState extends State<LoginScreen>
                               // CHECK LOGIN
                               if (_emailController.text == savedEmail &&
                                   _passController.text == savedPassword) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                await Future.delayed(
+                                  Duration(seconds: 2),
+                                );
+                                setState(() {
+                                  isLoading = false;
+                                });
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => Mainpage()),
+                                );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -393,21 +405,6 @@ class _LoginScreenState extends State<LoginScreen>
                                   ),
                                 );
                               }
-
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await Future.delayed(
-                                Duration(seconds: 5),
-                              ); // fake delay
-                              setState(() {
-                                isLoading = false;
-                              });
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => Mainpage()),
-                              );
                             },
                             child: Text("Login"),
                           ),
@@ -439,7 +436,7 @@ class _LoginScreenState extends State<LoginScreen>
                                         isLoading = true;
                                       });
                                       final user = await signInWithGoogle();
-                                      if (signInWithGoogle != null) {
+                                      if (user != null) {
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(

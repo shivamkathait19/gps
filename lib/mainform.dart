@@ -66,7 +66,9 @@ with SingleTickerProviderStateMixin
           animation: _controller,
           builder: (context, child ){
             return Container(
-              height: 950,
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height,
+              ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -136,7 +138,7 @@ with SingleTickerProviderStateMixin
 
                         SizedBox(height: 15),
 
-                    
+                        flutter build apk --release
                         TextFormField(
                           controller: dobController,
                           readOnly: true,
