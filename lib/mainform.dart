@@ -138,7 +138,7 @@ with SingleTickerProviderStateMixin
 
                         SizedBox(height: 15),
 
-                        flutter build apk --release
+
                         TextFormField(
                           controller: dobController,
                           readOnly: true,

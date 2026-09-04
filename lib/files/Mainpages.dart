@@ -443,6 +443,7 @@ class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
         _controller != null && _controller!.value.isInitialized;
 
     return Scaffold(
+     
       backgroundColor: Colors.black,
       body: SafeArea(
         top: false,
