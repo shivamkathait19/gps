@@ -12,6 +12,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:camera/camera.dart';
+import 'package:gps/files/saved.dart';
 
 
 
@@ -443,7 +444,7 @@ class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
         _controller != null && _controller!.value.isInitialized;
 
     return Scaffold(
-     
+      drawer: const Saved(),
       backgroundColor: Colors.black,
       body: SafeArea(
         top: false,
