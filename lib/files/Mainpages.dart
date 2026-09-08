@@ -409,6 +409,11 @@ class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
       );
 
       await file.writeAsBytes(bytes);
+        // Save the file path to SharedPreferences for history
+        final prefs = await SharedPreferences.getInstance();
+        final List<String> saved = prefs.getStringList('saved_photos') ?? [];
+        saved.add(file.path);
+        await prefs.setStringList('saved_photos', saved);
 
       if (!mounted) return;
 
@@ -506,6 +511,13 @@ class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
                         ),
                         onPressed: switchCamera,
                         tooltip: "Switch Camera",
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.history, color: Colors.white, size: 24),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PhotoHistoryPage()));
+                        },
+                        tooltip: "Photo History",
                       ),
                     ],
                   ),
