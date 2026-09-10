@@ -13,6 +13,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:camera/camera.dart';
 import 'package:gps/files/saved.dart';
+import '../photo_history_page.dart';
 
 
 
@@ -632,7 +633,7 @@ class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
                       border: Border.all(color: Colors.white, width: 4),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withValues(alpha: 0.15),
+                          color: Colors.white.withOpacity(0.15),
                           blurRadius: 10,
                           spreadRadius: 2,
                         ),
@@ -661,15 +662,15 @@ class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
   Widget _buildGpsStampCard() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.72),
+        color: Colors.black.withOpacity(0.72),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
+          color: Colors.white.withOpacity(0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
+            color: Colors.black.withOpacity(0.5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
