@@ -1,8 +1,11 @@
-import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// Global list of available cameras
+List<CameraDescription> cameras = [];
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
@@ -18,7 +21,16 @@ class _CameraPageState extends State<CameraPage> {
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
+    // Initialize cameras list first, then set up the controller
+    _initializeCameras().then((_) => _initializeCamera());
+  }
+
+  Future<void> _initializeCameras() async {
+    try {
+      cameras = await availableCameras();
+    } catch (e) {
+      debugPrint('Error initializing cameras: $e');
+    }
   }
 
   Future<void> _initializeCamera() async {
