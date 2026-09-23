@@ -575,8 +575,7 @@ class _MainpageState extends State<Mainpage> with WidgetsBindingObserver {
                         ),
                       ),
 
-                      /// ─── LAYER 2: UI-ONLY OVERLAYS (NEVER CAPTURED IN PHOTO) ───
-                      /// Focus Grid Lines (Visual only)
+                    
                       if (isGridOn)
                         IgnorePointer(
                           child: CustomPaint(
