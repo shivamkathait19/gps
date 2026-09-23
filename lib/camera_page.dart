@@ -1,4 +1,3 @@
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Global list of available cameras
 List<CameraDescription> cameras = [];
 
+//List<CameraDescription> cameras = [];
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
 
@@ -22,15 +22,7 @@ class _CameraPageState extends State<CameraPage> {
   void initState() {
     super.initState();
     // Initialize cameras list first, then set up the controller
-    _initializeCameras().then((_) => _initializeCamera());
-  }
-
-  Future<void> _initializeCameras() async {
-    try {
-      cameras = await availableCameras();
-    } catch (e) {
-      debugPrint('Error initializing cameras: $e');
-    }
+    _initializeCamera().then((_) => _initializeCamera());
   }
 
   Future<void> _initializeCamera() async {
@@ -67,18 +59,18 @@ class _CameraPageState extends State<CameraPage> {
     try {
       final XFile raw = await _controller.takePicture();
       final savedPath = await _saveAndPersist(raw);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('फ़ोटो सहेजी गई: $savedPath')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Photo Saved: $savedPath')));
     } catch (e) {
-      debugPrint('कैप्चर त्रुटि: $e');
+      debugPrint('PHOTO CAPTURE ERROR: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('कैमरा')),
+      appBar: AppBar(title: const Text('Camera')),
       body: _isInitialized
           ? CameraPreview(_controller)
           : const Center(child: CircularProgressIndicator()),
