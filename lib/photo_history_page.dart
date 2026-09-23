@@ -13,7 +13,7 @@ class PhotoHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('फ़ोटो इतिहास')),
+      appBar: AppBar(title: const Text('Histroy')),
       body: FutureBuilder<List<String>>(
         future: _loadSavedPhotos(),
         builder: (context, snapshot) {
