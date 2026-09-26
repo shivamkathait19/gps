@@ -22,7 +22,7 @@ class PhotoHistoryPage extends StatelessWidget {
           }
           final photos = snapshot.data!;
           if (photos.isEmpty) {
-            return const Center(child: Text('कोई फ़ोटो नहीं सहेजी गई।'));
+            return const Center(child: Text('null photos ।'));
           }
           return GridView.builder(
             padding: const EdgeInsets.all(4),
